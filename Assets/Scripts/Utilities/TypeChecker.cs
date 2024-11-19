@@ -244,15 +244,17 @@ public class TypeChecker
     public static void CheckEffectivity(Type attackingType, Type defendingType)
     {
 
+
+
         string effectivity = GetEffectivenessMultiplier(attackingType, defendingType)
                switch { 
-                    0 => "no effect",
-                    0.5f => "not very effective", 
-                    1 => "OK", 2 => "super effective", 
+                    0 => "has no effect",
+                    0.5f => "is not very effective", 
+                    1 => "is ok", 2 => "is super effective", 
                     _ => "[ERROR]" 
                 };
 
-        Debug.Log($"{attackingType.ToString()} { effectivity} against {defendingType.ToString()}");
+        Debug.Log($"{attackingType.ToString()} {effectivity} against {defendingType.ToString()}");
     }
 
 

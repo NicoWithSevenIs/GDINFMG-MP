@@ -21,6 +21,8 @@ public class TypeCheckingDebugger : MonoBehaviour
     [Header("Effectivity Checker")]
     [SerializeField] internal Type attack;
     [SerializeField] internal Type defend;
+
+    private void Start() => hasSecondType = false;
 }
 
 
