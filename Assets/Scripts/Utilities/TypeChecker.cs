@@ -23,17 +23,15 @@ public class TypeChecker
     private const float NO_EFFECT = 0f;
 
 
-    private TypeChecker() { 
-        
-        /*
+    /*
         //Creates an entry for each element in Enum TYPE
         int size = Enum.GetNames( typeof( Type ) ).Length;
         for(int i = 0; i < size; i++)
             ttable[(Type)i] = new();
-        */
+    */
 
-        HandleCombinations();
-    }
+    private TypeChecker() => HandleCombinations();
+    
 
     //Type Matrix too confusing to work with hahahhaha
     private void HandleCombinations()
@@ -230,26 +228,27 @@ public class TypeChecker
 
 
 
-    float GetEffectivenessMultiplier(Type attackingType, Type DefendingType1, Type? DefendingType2 = null)
+    public static float GetEffectivenessMultiplier(Type attackingType, Type DefendingType1, Type? DefendingType2 = null)
     {
         float multiplier = 1f;
 
-        if (ttable[attackingType].ContainsKey(DefendingType1))
-            multiplier *= ttable[attackingType][DefendingType1];
+        if (Instance.ttable[attackingType].ContainsKey(DefendingType1))
+            multiplier *= Instance.ttable[attackingType][DefendingType1];
 
-        if (DefendingType2 != null && ttable[attackingType].ContainsKey(DefendingType2.Value))
-            multiplier *= ttable[attackingType][DefendingType2.Value];
+        if (DefendingType2 != null && Instance.ttable[attackingType].ContainsKey(DefendingType2.Value))
+            multiplier *= Instance.ttable[attackingType][DefendingType2.Value];
 
         return multiplier;
     }
 
-    void CheckEffectivity(Type attackingType, Type defendingType)
+    public static void CheckEffectivity(Type attackingType, Type defendingType)
     {
 
         string effectivity = GetEffectivenessMultiplier(attackingType, defendingType)
                switch { 
-                    0.5f => "NOT VERY EFFECTIVE", 
-                    1 => "OK", 2 => "SUPER EFFECTIVE", 
+                    0 => "no effect",
+                    0.5f => "not very effective", 
+                    1 => "OK", 2 => "super effective", 
                     _ => "[ERROR]" 
                 };
 
