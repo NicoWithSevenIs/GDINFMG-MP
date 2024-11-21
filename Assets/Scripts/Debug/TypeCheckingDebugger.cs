@@ -8,19 +8,19 @@ using static UnityEngine.GraphicsBuffer;
 public class TypeCheckingDebugger : MonoBehaviour
 {
     [Header("Check Multiplier")]
-    [SerializeField] internal Type attackerType;
+    [SerializeField] internal EType attackerType;
 
 
-    [SerializeField] internal Type defendingType1;
+    [SerializeField] internal EType defendingType1;
 
     [SerializeField] internal bool hasSecondType;
-    [SerializeField] internal Type defendingType2;
+    [SerializeField] internal EType defendingType2;
 
 
 
     [Header("Effectivity Checker")]
-    [SerializeField] internal Type attack;
-    [SerializeField] internal Type defend;
+    [SerializeField] internal EType attack;
+    [SerializeField] internal EType defend;
 
     private void Start() => hasSecondType = false;
 }
@@ -42,13 +42,13 @@ public class TypeCheckingDebugger_Editor : Editor
 
         GUILayout.Label("Multiplier Checker", boldStyle);
         EditorGUILayout.Space(5);
-        script.attackerType = (Type)EditorGUILayout.EnumPopup("Attacker Type Type", script.attackerType);
-        script.defendingType1 = (Type)EditorGUILayout.EnumPopup("Defender First Type", script.defendingType1);
+        script.attackerType = (EType)EditorGUILayout.EnumPopup("Attacker Type Type", script.attackerType);
+        script.defendingType1 = (EType)EditorGUILayout.EnumPopup("Defender First Type", script.defendingType1);
 
         script.hasSecondType = EditorGUILayout.Toggle("Has Second Type", script.hasSecondType);
 
         if (script.hasSecondType)
-            script.defendingType2 = (Type)EditorGUILayout.EnumPopup("Defender Second Type", script.defendingType2);
+            script.defendingType2 = (EType)EditorGUILayout.EnumPopup("Defender Second Type", script.defendingType2);
 
         EditorGUILayout.Space();
         
@@ -61,8 +61,8 @@ public class TypeCheckingDebugger_Editor : Editor
 
         GUILayout.Label("Effectiveness Checker", boldStyle);
         EditorGUILayout.Space(5);
-        script.attack = (Type)EditorGUILayout.EnumPopup("Attacker Type Type", script.attack);
-        script.defend = (Type)EditorGUILayout.EnumPopup("Defender First Type", script.defend);
+        script.attack = (EType)EditorGUILayout.EnumPopup("Attacker Type Type", script.attack);
+        script.defend = (EType)EditorGUILayout.EnumPopup("Defender First Type", script.defend);
 
         EditorGUILayout.Space();
 
@@ -70,7 +70,7 @@ public class TypeCheckingDebugger_Editor : Editor
 
         if (GUILayout.Button("Swap"))
         {
-            Type temp = script.attack;
+            EType temp = script.attack;
             script.attack = script.defend;
             script.defend = temp;
         }
