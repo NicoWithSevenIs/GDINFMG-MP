@@ -31,7 +31,6 @@ public class MoveManager: MonoBehaviour
     }
     [SerializeField] private List<Debugger> debuggerList = new();
 
-
     public MoveData RetrieveMoveData(int key) => moveDict.GetValueOrDefault(key).Data;
     public Action<Pokemon, Pokemon> RetrieveMoveAction(int key) => moveDict.GetValueOrDefault(key).PerformMove;
 
@@ -69,5 +68,6 @@ public class MoveManager: MonoBehaviour
             debuggerList.Add(d);    
         }
     }
+
 
 }
