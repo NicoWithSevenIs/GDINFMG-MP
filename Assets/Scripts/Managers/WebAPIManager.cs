@@ -26,6 +26,9 @@ public class WebAPIManager : MonoBehaviour
     private Dictionary<string, Sprite> downloadedSprites = new();
     public async Task DownloadImage(string url)
     {
+        if (downloadedSprites.ContainsKey(url))
+            return;
+                  
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
         await request.SendWebRequest();
 
@@ -35,16 +38,21 @@ public class WebAPIManager : MonoBehaviour
             Texture2D tex = response.texture;
             downloadedSprites[url] =  Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.one * 0.5f);
         }
+        else
+        {
+            Debug.Log(response.error);
+        }
 
-        
     }
 
+    /*
     public async Task<Sprite> WaitForSprite(string url)
     {
-        if(!downloadedSprites.ContainsKey(url))
-            await DownloadImage(url);
+        await DownloadImage(url);
+        Debug.Log("Downloaded");
         return downloadedSprites[url];
     }
+    */
 
     public Sprite GetSprite(string url) => downloadedSprites.ContainsKey(url) ? downloadedSprites[url] : null;
  

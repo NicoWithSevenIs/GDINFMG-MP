@@ -10,14 +10,28 @@ public class UI_LoadScreen : MonoBehaviour
     [SerializeField] private Image loadBar;
     [SerializeField] private float transitionTime;
     [SerializeField] private float holdTime;
+    [SerializeField] private float rotateSpeed;
+
+    private void Start()
+    {
+        loadBar.fillAmount = 0;
+    }
+
     private void Update()
     {
         loadBar.fillAmount += (1/transitionTime) * Time.deltaTime;
 
-
-
-        if (loadBar.fillAmount == 1 && BattleManager.instance.loadProgress == 1f)
-            Utilities.InvokeAfter(this, holdTime, () => gameObject.SetActive(false));
+        if (loadBar.fillAmount == 1)
+        {
+            if (BattleManager.instance.loadProgress == 1f)
+            {
+                Utilities.InvokeAfter(this, holdTime, () => gameObject.SetActive(false));
+            }
+            else
+            {
+                loadBar.rectTransform.Rotate(Vector3.forward * Time.deltaTime * rotateSpeed);
+            }
+        }
 
     }
 }

@@ -19,12 +19,11 @@ public class BattleManager : MonoBehaviour
 
     public const string BASE_URL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
 
-
     private List<Task> downloadQueue = new();
 
     public float loadProgress
     {
-        get => downloadQueue.Count > 0 ? (float)(downloadQueue.Where(t => t.IsCompleted).Count() / (float)downloadQueue.Count) : 0;
+        get => downloadQueue.Count > 0 ? ((float)downloadQueue.Where(t => t.IsCompleted).Count() / (float)downloadQueue.Count) : 0;
     }
 
     [SerializeField] private List<int> toDownload; 
@@ -36,10 +35,12 @@ public class BattleManager : MonoBehaviour
         for(int id = 1; id <= 3; id++)
         {
             string frontFile =  $"{BASE_URL}{id}.png";
-            string backFile =   $"{BASE_URL}/back/{id}.png";
+            string backFile =   $"{BASE_URL}back/{id}.png";
 
             downloadQueue.Add(WebAPIManager.Instance.DownloadImage(frontFile));
             downloadQueue.Add(WebAPIManager.Instance.DownloadImage(backFile));
         }
     }
 }
+
+

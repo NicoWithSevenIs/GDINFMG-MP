@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f1ac9e6a74f3b8f4184909813abd3ed7
+guid: 2fd9669468e274e45a99446b1e24bd82
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2152439151637484888
-    second: "Pok\xE9_Ball_icon.svg_0"
+      213: 9188706581615298274
+    second: icons8-male-96_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -24,7 +24,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 1
+  isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "Pok\xE9_Ball_icon.svg_0"
+      name: icons8-male-96_0
       rect:
         serializedVersion: 2
-        x: 143
-        y: 141
-        width: 1766
-        height: 1766
+        x: 19
+        y: 4
+        width: 56
+        height: 90
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -127,8 +127,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 855def911000fdd10800000000000000
-      internalID: 2152439151637484888
+      spriteID: 2e6497eb3f7d48f70800000000000000
+      internalID: 9188706581615298274
       vertices: []
       indices: 
       edges: []
@@ -143,8 +143,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      "Pok\xE9_Ball_icon.svg_0": 2152439151637484888
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
