@@ -13,7 +13,7 @@ public struct Pokemon_Data
     public Texture2D back_sprite;
 
     public EType type1;
-    public EType type2;
+    public EType? type2;
 
     public Stat baseStats;
 
@@ -26,7 +26,7 @@ public struct Pokemon_Data
             string name,
             ESex sex,
             EType type1,
-            EType type2,
+            EType? type2,
             Texture2D front_sprite,
             Texture2D back_sprite,
             Stat baseStats,
