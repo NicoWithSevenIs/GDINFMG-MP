@@ -5,5 +5,6 @@ using UnityEngine;
 public enum ESex
 {
     MALE,
-    FEMALE
+    FEMALE,
+    NONE
 }

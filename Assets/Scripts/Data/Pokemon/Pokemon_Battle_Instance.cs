@@ -22,6 +22,7 @@ public class Pokemon_Battle_Instance
     private float currentHP;
 
     public float CurrentHealth { get => currentHP; }
+    public bool isFainted { get => currentHP <= 0; }
 
     public Pokemon_Battle_Instance(Pokemon pokemon)
     {

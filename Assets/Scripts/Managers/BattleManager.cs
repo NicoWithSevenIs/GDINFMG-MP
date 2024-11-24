@@ -26,8 +26,21 @@ public class BattleManager : MonoBehaviour
         get => downloadQueue.Count > 0 ? ((float)downloadQueue.Where(t => t.IsCompleted).Count() / (float)downloadQueue.Count) : 0;
     }
 
-    [SerializeField] private List<int> toDownload; 
+    private class Battler {
 
+        private Pokemon_Battle_Instance[] party;
+        private int activePokemon = 0;
+
+        public void SwitchPokemon(int index)
+        {
+
+        }
+
+    }
+
+
+    
+   
     private void Initialize()
     {
         //make queries here
