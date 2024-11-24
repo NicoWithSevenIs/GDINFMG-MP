@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EventBroadcaster
 {
@@ -12,6 +13,11 @@ public class EventBroadcaster
             get => instance ?? (instance = new EventBroadcaster());
         }
     #endregion
+
+    private EventBroadcaster()
+    {
+        SceneManager.sceneUnloaded += s => events.Clear();
+    }
 
     private Dictionary<string, Action<Dictionary<string, object>> > events = new();
 
@@ -31,7 +37,7 @@ public class EventBroadcaster
         Instance.events.Clear();
     }
 
-    public static void InvokeObserver(string EventName, Dictionary<string, object> parameters)
+    public static void InvokeEvent(string EventName, Dictionary<string, object> parameters)
     {
         if (Instance.events.ContainsKey(EventName))
             Instance.events[EventName]?.Invoke(parameters);

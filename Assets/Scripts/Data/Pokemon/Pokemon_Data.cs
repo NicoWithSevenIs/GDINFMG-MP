@@ -9,9 +9,6 @@ public struct Pokemon_Data
     public string name;
     public ESex sex;
 
-    public Texture2D front_sprite;
-    public Texture2D back_sprite;
-
     public EType type1;
     public EType? type2;
 
@@ -37,8 +34,6 @@ public struct Pokemon_Data
         this.id = id;
         this.name = name;
         this.sex = sex;
-        this.front_sprite = front_sprite;
-        this.back_sprite = back_sprite;
         this.type1 = type1;
         this.type2 = type2;
         this.weight = weight;
