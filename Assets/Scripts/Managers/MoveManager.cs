@@ -14,7 +14,7 @@ public class MoveManager: MonoBehaviour
         if (instance == null)
             instance = this;
         else Destroy(gameObject);
-
+        DontDestroyOnLoad(gameObject);
         Build();
     }
     #endregion
@@ -31,9 +31,8 @@ public class MoveManager: MonoBehaviour
     }
     [SerializeField] private List<Debugger> debuggerList = new();
 
-
     public MoveData RetrieveMoveData(int key) => moveDict.GetValueOrDefault(key).Data;
-    public Action<Pokemon, Pokemon> RetrieveMoveAction(int key) => moveDict.GetValueOrDefault(key).PerformMove;
+    public Action<Pokemon_Battle_Instance, Pokemon_Battle_Instance> RetrieveMoveAction(int key) => moveDict.GetValueOrDefault(key).PerformMove;
 
     public void Build()
     {
@@ -69,5 +68,6 @@ public class MoveManager: MonoBehaviour
             debuggerList.Add(d);    
         }
     }
+
 
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Move
 {
     public abstract int ID {get;}
-    public abstract void PerformMove(Pokemon attacker, Pokemon target);
+    public abstract void PerformMove(Pokemon_Battle_Instance attacker, Pokemon_Battle_Instance target);
 
     private MoveData? m_Data = null;
 
