@@ -17,6 +17,7 @@ public class EventBroadcaster
     private EventBroadcaster()
     {
         SceneManager.sceneUnloaded += s => events.Clear();
+        SceneManager.sceneLoaded += (s, t) => Debug.Log(events.Count);
     }
 
     private Dictionary<string, Action<Dictionary<string, object>> > events = new();

@@ -65,6 +65,14 @@ public class BattleManager : MonoBehaviour
             if(Enemy.AvailablePokemon > 0)
                 Enemy.SwitchPokemon(Enemy.ActivePokemonIndex + 1);
         });
+
+        EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, t => {
+            if (t["Battler Name"] as string != "Player")
+                return;
+
+            if (Player.AvailablePokemon > 0)
+                EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_FORCE_SWITCH);
+        });
     }
 
     

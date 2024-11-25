@@ -15,5 +15,7 @@ public static class EVENT_NAMES
     public static class UI_EVENTS
     {
         public const string ON_LOADING_FINISHED = "ON_LOADING_FINISHED";
+        public const string ON_VIEWER_INVOKED = "ON_VIEWER_INVOKED";
+        public const string ON_FORCE_SWITCH = "ON_FORCE_SWITCH";
     }
 }

@@ -14,15 +14,7 @@ public class UI_Navigation : MonoBehaviour
     {
         ReturnToRoot();
         EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_CHANGED, t => ReturnToRoot());
-
-        //this should be invoked in the battle manager
-        EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, t => {
-            if (t["Battler Name"] as string != "Player")
-                return;
-
-            if(BattleManager.instance.AvailablePlayerPokemon > 0)
-                InvokeSwitchMenu(true);
-        });
+        EventBroadcaster.AddObserver(EVENT_NAMES.UI_EVENTS.ON_FORCE_SWITCH, t => InvokeSwitchMenu(true));
     }
 
     public void ReturnToRoot()

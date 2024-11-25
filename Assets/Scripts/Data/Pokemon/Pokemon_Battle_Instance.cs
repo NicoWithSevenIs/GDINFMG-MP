@@ -11,6 +11,8 @@ public class Pokemon_Battle_Instance
 
     private StatModHandler modHandler = new();
     private Stat totalStats;
+
+    public Stat TotalStats { get => totalStats;  }
     public Stat stat { 
         get => modHandler.ApplyMods(totalStats);
     }
@@ -54,14 +56,14 @@ public class Pokemon_Battle_Instance
 
     public void TakeDamage(float damage)
     {
-        currentHP -= damage;
+        currentHP = Mathf.Max(0, currentHP - damage);
 
         var p = new Dictionary<string, object>();
         p["Battler Name"] = ownerType;
         p["Active Pokemon"] = this;
         EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_HEALTH_CHANGED, p);
 
-        if (currentHP <= 0)
+        if (currentHP == 0)
             EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, p);
     }
 
@@ -78,14 +80,14 @@ public class Pokemon_Battle_Instance
 
             Nature.GetNatureMultiplier(pokemon.nature, out increasedByNature, out decreasedByNature);
 
-
             foreach (var key in keys)
             {
                 float Base = pokemon.data.baseStats.GetByEnum(key);
                 float IV = pokemon.IV.GetByEnum(key);
                 float EV = pokemon.EV.GetByEnum(key);
 
-                float inner = 2 * Base + IV + (EV / 4) * LEVEL;
+                float inner = 2 * Base + IV + Mathf.Floor(EV / 4);
+                inner *= LEVEL;
                 inner /= 100;
 
                 if (key == EStatType.HEALTH)

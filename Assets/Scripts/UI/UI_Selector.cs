@@ -41,4 +41,11 @@ public class UI_Selector : MonoBehaviour
     {
         BattleManager.instance.SwitchPlayerPokemon(SelectionIndex);
     }
+
+    public void InvokeViewScreen()
+    {
+        var p = new Dictionary<string, object>();
+        p["Party Index"] = SelectionIndex;
+        EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_VIEWER_INVOKED, p);
+    }
 }
