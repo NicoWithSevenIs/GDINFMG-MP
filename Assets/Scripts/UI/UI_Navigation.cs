@@ -11,6 +11,7 @@ public class UI_Navigation : MonoBehaviour
     private void Awake()
     {
         ReturnToRoot();
+        EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_CHANGED, t => ReturnToRoot());
     }
 
     public void ReturnToRoot()

@@ -9,6 +9,8 @@ public class UI_PokemonIcon : MonoBehaviour
     private Image pokemon;
     private void Awake()
     {
+      
+        pokemon = GetComponent<Image>();
         EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_CHANGED, t => {
 
             if (t["Battler Name"] as string != ownerName)

@@ -36,6 +36,8 @@ public class WebAPIManager : MonoBehaviour
         if (string.IsNullOrEmpty(response.error))
         {
             Texture2D tex = response.texture;
+            tex.filterMode = FilterMode.Point;
+           
             downloadedSprites[url] =  Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), Vector2.one * 0.5f);
         }
         else

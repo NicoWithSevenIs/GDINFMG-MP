@@ -23,7 +23,12 @@ public class Pokemon_Battle_Instance
     private float currentHP;
 
     public float CurrentHealth { get => currentHP; }
+
+    public float HealthPercentage { get => currentHP / stat.Health; }
+
     public bool isFainted { get => currentHP <= 0; }
+
+
 
 
     private string front_url;
@@ -50,7 +55,11 @@ public class Pokemon_Battle_Instance
     public void TakeDamage(float damage)
     {
         currentHP -= damage;
-        EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_HEALTH_CHANGED);
+
+        var p = new Dictionary<string, object>();
+        p["Battler Name"] = "Player";
+        p["Active Pokemon"] = this;
+        EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_HEALTH_CHANGED, p);
 
         if (currentHP <= 0)
             EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT);

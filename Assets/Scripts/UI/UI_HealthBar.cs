@@ -44,7 +44,7 @@ public class UI_HealthBar : MonoBehaviour
             return;
 
         var mon = p["Active Pokemon"] as Pokemon_Battle_Instance;
-        healthBarFill.fillAmount = mon.CurrentHealth / mon.Pokemon.data.baseStats.Health;
+        healthBarFill.fillAmount = mon.HealthPercentage;
     }
 
 

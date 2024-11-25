@@ -57,10 +57,18 @@ public class BattleManager : MonoBehaviour
 
         DownloadSprites(Player.Party);
         DownloadSprites(Enemy.Party);
+
     }
+
+    
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Player.ActivePokemon.TakeDamage(10);
+        }
+
         if(!hasLoaded && loadProgress == 1f)
         {
             EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_LOADING_FINISHED);
@@ -69,6 +77,22 @@ public class BattleManager : MonoBehaviour
             hasLoaded = true;
         }
     }
+
+    #region Wrapping
+
+
+    public void SwitchPlayerPokemon(int index)
+    {
+        Player.SwitchPokemon(index);
+    }
+
+    public int GetPlayerActivePokemonIndex() => Player.ActivePokemonIndex;
+
+    public Pokemon_Battle_Instance GetPlayerPokemon(int index) => Player.GetPokemon(index);
+
+    #endregion
+
+
 }
 
 
