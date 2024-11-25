@@ -15,8 +15,9 @@ public class Pokemon_Battle_Instance
         get => modHandler.ApplyMods(totalStats);
     }
 
-    private EAilmentType? ailemntType = null;
-    public EAilmentType? AilmentType { get => ailemntType; }
+    private EAilmentType? ailmentType = null;
+    public EAilmentType? AilmentType { get => ailmentType; }
+
 
     public const int LEVEL = 50;
     private float currentHP;
@@ -24,17 +25,35 @@ public class Pokemon_Battle_Instance
     public float CurrentHealth { get => currentHP; }
     public bool isFainted { get => currentHP <= 0; }
 
+
+    private string front_url;
+    public string Front_Sprite_URL { get => front_url; }
+
+    private string back_url;
+    public string Back_Sprite_URL { get => back_url; }
+
+
     public Pokemon_Battle_Instance(Pokemon pokemon)
     {
         this.pokemon = pokemon;
+        GetTotalStat();
         currentHP = stat.Health;
+
+    }
+
+    public void SetSprite(string front, string back)
+    {
+        this.front_url = front;
+        this.back_url = back;
     }
 
     public void TakeDamage(float damage)
     {
         currentHP -= damage;
+        EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_HEALTH_CHANGED);
 
-        //if(currentHP <= 0) Invoke On Death Event
+        if (currentHP <= 0)
+            EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT);
     }
 
  

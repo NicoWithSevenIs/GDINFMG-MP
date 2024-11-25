@@ -29,19 +29,44 @@ public class BattleManager : MonoBehaviour
     Battler Player;
     Battler Enemy;
 
-    
-   
+    private bool hasLoaded = false;
+
     private void Initialize()
     {
         //make queries here
 
-        for(int id = 1; id <= 3; id++)
-        {
-            string frontFile =  $"{BASE_URL}{id}.png";
-            string backFile =   $"{BASE_URL}back/{id}.png";
+        Player = new Battler(Battler.PLAYER, SampleMons.GetList());
+        Enemy  = new Battler(Battler.ENEMY, SampleMons.GetList());
 
-            downloadQueue.Add(WebAPIManager.Instance.DownloadImage(frontFile));
-            downloadQueue.Add(WebAPIManager.Instance.DownloadImage(backFile));
+
+        void DownloadSprites(Pokemon_Battle_Instance[] Party)
+        {
+            foreach (var battle_instance in Party)
+            {
+                int id = battle_instance.Pokemon.data.id;
+
+                string frontFile = $"{BASE_URL}{id}.png";
+                string backFile = $"{BASE_URL}back/{id}.png";
+
+                downloadQueue.Add(WebAPIManager.Instance.DownloadImage(frontFile));
+                downloadQueue.Add(WebAPIManager.Instance.DownloadImage(backFile));
+
+                battle_instance.SetSprite(frontFile, backFile);
+            }
+        }
+
+        DownloadSprites(Player.Party);
+        DownloadSprites(Enemy.Party);
+    }
+
+    private void Update()
+    {
+        if(!hasLoaded && loadProgress == 1f)
+        {
+            EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_LOADING_FINISHED);
+            Player.SwitchPokemon(Player.ActivePokemonIndex);
+            Enemy.SwitchPokemon(Enemy.ActivePokemonIndex);
+            hasLoaded = true;
         }
     }
 }

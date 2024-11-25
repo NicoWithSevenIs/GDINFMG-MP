@@ -23,7 +23,9 @@ public class EventBroadcaster
 
     public static void AddObserver(string EventName, Action<Dictionary<string, object>> parameters)
     {
-        Instance.events.Add(EventName, parameters);
+        if (!Instance.events.ContainsKey(EventName))
+            Instance.events.Add(EventName, parameters);
+        else Instance.events[EventName] += parameters;
     }
 
     public static void RemoveObserver(string EventName, Action<Dictionary<string, object>> parameters)
@@ -37,7 +39,7 @@ public class EventBroadcaster
         Instance.events.Clear();
     }
 
-    public static void InvokeEvent(string EventName, Dictionary<string, object> parameters)
+    public static void InvokeEvent(string EventName, Dictionary<string, object> parameters = null)
     {
         if (Instance.events.ContainsKey(EventName))
             Instance.events[EventName]?.Invoke(parameters);

@@ -12,6 +12,10 @@ public class UI_LoadScreen : MonoBehaviour
     [SerializeField] private float holdTime;
     [SerializeField] private float rotateSpeed;
 
+
+    private bool canDisable = false;
+    public bool CanDisable { get => canDisable; }
+
     private void Start()
     {
         loadBar.fillAmount = 0;
@@ -25,7 +29,7 @@ public class UI_LoadScreen : MonoBehaviour
         {
             if (BattleManager.instance.loadProgress == 1f)
             {
-                Utilities.InvokeAfter(this, holdTime, () => gameObject.SetActive(false));
+                Utilities.InvokeAfter(this, holdTime, () => canDisable = true);
             }
             else
             {

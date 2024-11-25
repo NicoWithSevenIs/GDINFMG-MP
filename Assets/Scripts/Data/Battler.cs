@@ -5,12 +5,16 @@ using UnityEngine;
 public class Battler
 {
     public const int PARTY_SIZE =3 ;
+    public const string PLAYER = "Player";
+    public const string ENEMY = "Enemy";
 
+
+    private string battlerName;
 
     private Pokemon_Battle_Instance[] party;
+    public Pokemon_Battle_Instance[] Party { get => party; }
+
     private int activePokemonIndex = 0;
-
-
     public int ActivePokemonIndex { get => activePokemonIndex; }
     public Pokemon_Battle_Instance ActivePokemon { get =>  party[activePokemonIndex]; }
 
@@ -25,18 +29,19 @@ public class Battler
         activePokemonIndex = index;
 
         var p = new Dictionary<string, object>();
+        p.Add("Battler Name", battlerName);
         p.Add("Active Pokemon", ActivePokemon);
 
         EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_CHANGED, p);
     }
 
-    public Battler(List<Pokemon> mons)
+    public Battler(string battlerName, List<Pokemon> mons)
     {
         party = new Pokemon_Battle_Instance[3];
         for (int i = 0; i < PARTY_SIZE; i++)
             party[i] = new Pokemon_Battle_Instance(mons[i]);
 
-        SwitchPokemon(0);
+        this.battlerName = battlerName;
     }
 
     
