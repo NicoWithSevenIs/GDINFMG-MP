@@ -8,10 +8,21 @@ public class UI_Navigation : MonoBehaviour
     [SerializeField] private GameObject moveMenu;
     [SerializeField] private GameObject switchMenu;
 
+    [SerializeField] private GameObject switchMenuBackButton;
+
     private void Awake()
     {
         ReturnToRoot();
         EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_CHANGED, t => ReturnToRoot());
+
+        //this should be invoked in the battle manager
+        EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, t => {
+            if (t["Battler Name"] as string != "Player")
+                return;
+
+            if(BattleManager.instance.AvailablePlayerPokemon > 0)
+                InvokeSwitchMenu(true);
+        });
     }
 
     public void ReturnToRoot()
@@ -28,11 +39,12 @@ public class UI_Navigation : MonoBehaviour
         switchMenu.SetActive(false);
     }
 
-    public void InvokeSwitchMenu()
+    public void InvokeSwitchMenu(bool forceSwitch)
     {
         rootMenu.SetActive(false);
         moveMenu.SetActive(false);
         switchMenu.SetActive(true);
+        switchMenuBackButton.SetActive(!forceSwitch);
     }
 
 }

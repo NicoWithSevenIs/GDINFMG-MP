@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Battler
@@ -17,6 +18,8 @@ public class Battler
     private int activePokemonIndex = 0;
     public int ActivePokemonIndex { get => activePokemonIndex; }
     public Pokemon_Battle_Instance ActivePokemon { get =>  party[activePokemonIndex]; }
+
+    public int AvailablePokemon { get => party.Where(t => !t.isFainted).Count(); }
 
     public Pokemon_Battle_Instance GetPokemon(int index){
         index = Mathf.Clamp(index, 0, PARTY_SIZE - 1);
@@ -39,7 +42,7 @@ public class Battler
     {
         party = new Pokemon_Battle_Instance[3];
         for (int i = 0; i < PARTY_SIZE; i++)
-            party[i] = new Pokemon_Battle_Instance(mons[i]);
+            party[i] = new Pokemon_Battle_Instance(mons[i], battlerName);
 
         this.battlerName = battlerName;
     }

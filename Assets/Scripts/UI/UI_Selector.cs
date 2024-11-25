@@ -31,7 +31,10 @@ public class UI_Selector : MonoBehaviour
 
     private void SetButtonEnabled()
     {
-        SelectionButton.SetActive(BattleManager.instance.GetPlayerActivePokemonIndex() != SelectionIndex);
+
+        bool pokemonNotFielded = BattleManager.instance.GetPlayerActivePokemonIndex() != SelectionIndex;
+        bool pokemonNotFainted = !BattleManager.instance.GetPlayerPokemon(SelectionIndex).isFainted;
+        SelectionButton.SetActive(pokemonNotFielded && pokemonNotFainted);
     }
 
     public void DeclareSelection()

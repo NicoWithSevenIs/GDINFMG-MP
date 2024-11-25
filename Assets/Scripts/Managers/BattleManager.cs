@@ -58,6 +58,13 @@ public class BattleManager : MonoBehaviour
         DownloadSprites(Player.Party);
         DownloadSprites(Enemy.Party);
 
+        EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, t => {
+            if (t["Battler Name"] as string != "Enemy")
+                return;
+
+            if(Enemy.AvailablePokemon > 0)
+                Enemy.SwitchPokemon(Enemy.ActivePokemonIndex + 1);
+        });
     }
 
     
@@ -69,7 +76,12 @@ public class BattleManager : MonoBehaviour
             Player.ActivePokemon.TakeDamage(10);
         }
 
-        if(!hasLoaded && loadProgress == 1f)
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            Enemy.ActivePokemon.TakeDamage(10);
+        }
+
+        if (!hasLoaded && loadProgress == 1f)
         {
             EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_LOADING_FINISHED);
             Player.SwitchPokemon(Player.ActivePokemonIndex);
@@ -89,6 +101,17 @@ public class BattleManager : MonoBehaviour
     public int GetPlayerActivePokemonIndex() => Player.ActivePokemonIndex;
 
     public Pokemon_Battle_Instance GetPlayerPokemon(int index) => Player.GetPokemon(index);
+
+    public int GetEnemyPokemonIndex(Pokemon_Battle_Instance battle_instance)
+    {
+        for(int i =0; i< Enemy.Party.Count(); i++)
+            if (Enemy.Party[i] == battle_instance) 
+                return i;
+
+        return -1;
+    }
+
+    public int AvailablePlayerPokemon { get =>  Player.AvailablePokemon; }
 
     #endregion
 

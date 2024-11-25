@@ -29,7 +29,7 @@ public class Pokemon_Battle_Instance
     public bool isFainted { get => currentHP <= 0; }
 
 
-
+    private string ownerType;
 
     private string front_url;
     public string Front_Sprite_URL { get => front_url; }
@@ -38,12 +38,12 @@ public class Pokemon_Battle_Instance
     public string Back_Sprite_URL { get => back_url; }
 
 
-    public Pokemon_Battle_Instance(Pokemon pokemon)
+    public Pokemon_Battle_Instance(Pokemon pokemon, string ownerType)
     {
         this.pokemon = pokemon;
         GetTotalStat();
         currentHP = stat.Health;
-
+        this.ownerType = ownerType;
     }
 
     public void SetSprite(string front, string back)
@@ -57,12 +57,12 @@ public class Pokemon_Battle_Instance
         currentHP -= damage;
 
         var p = new Dictionary<string, object>();
-        p["Battler Name"] = "Player";
+        p["Battler Name"] = ownerType;
         p["Active Pokemon"] = this;
         EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_HEALTH_CHANGED, p);
 
         if (currentHP <= 0)
-            EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT);
+            EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, p);
     }
 
  
