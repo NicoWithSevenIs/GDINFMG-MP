@@ -26,18 +26,8 @@ public class BattleManager : MonoBehaviour
         get => downloadQueue.Count > 0 ? ((float)downloadQueue.Where(t => t.IsCompleted).Count() / (float)downloadQueue.Count) : 0;
     }
 
-    private class Battler {
-
-        private Pokemon_Battle_Instance[] party;
-        private int activePokemon = 0;
-
-        public void SwitchPokemon(int index)
-        {
-
-        }
-
-    }
-
+    Battler Player;
+    Battler Enemy;
 
     
    

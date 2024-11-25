@@ -7,6 +7,7 @@ public static class EVENT_NAMES
     public static class BATTLE_EVENTS
     {
         public const string ON_POKEMON_FAINT = "ON_FAINT";
+        public const string ON_POKEMON_CHANGED = "ON_POKEMON_CHANGED";
     }
 
 
