@@ -8,6 +8,8 @@ public class Earthquake : Move
 
     public override void PerformMove(Pokemon_Battle_Instance attacker, Pokemon_Battle_Instance target)
     {
-        throw new System.NotImplementedException();
+        bool isACriticalStrike;
+        float damage = Pokemon_Battle_Instance.CalculateDamage(attacker, target, m_Data.Value.power, m_Data.Value.type, m_Data.Value.moveType, out isACriticalStrike);
+        target.TakeDamage(damage);
     }
 }

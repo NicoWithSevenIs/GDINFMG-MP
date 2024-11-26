@@ -206,17 +206,7 @@ public class TypeChecker
             {EType.FAIRY,    SUPER_EFFECTIVE},
         });
 
-        AddTypeEffectiveness(EType.STEEL, new() {
-            {EType.FIRE,     NOT_VERY_EFFECTIVE},
-            {EType.WATER,    NOT_VERY_EFFECTIVE},
-            {EType.ELECTRIC, NOT_VERY_EFFECTIVE},
-            {EType.ICE,      SUPER_EFFECTIVE},
-            {EType.BUG,      SUPER_EFFECTIVE},
-            {EType.STEEL,    NOT_VERY_EFFECTIVE},
-            {EType.FAIRY,    SUPER_EFFECTIVE},
-        });
-
-        AddTypeEffectiveness(EType.STEEL, new() {
+        AddTypeEffectiveness(EType.FAIRY, new() {
             {EType.FIRE,     NOT_VERY_EFFECTIVE},
             {EType.FIGHTING, SUPER_EFFECTIVE},
             {EType.POISON,   NOT_VERY_EFFECTIVE},
@@ -224,6 +214,7 @@ public class TypeChecker
             {EType.DARK,     SUPER_EFFECTIVE},
             {EType.STEEL,    NOT_VERY_EFFECTIVE},
         });
+
     }
 
 

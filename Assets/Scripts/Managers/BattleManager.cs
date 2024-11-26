@@ -73,6 +73,25 @@ public class BattleManager : MonoBehaviour
             if (Player.AvailablePokemon > 0)
                 EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_FORCE_SWITCH);
         });
+
+        EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_MOVE_DECLARED, t => {
+
+            int moveID;
+            switch(t["Battler Name"] as string)
+            {
+                case "Player":
+                    moveID = Player.ActivePokemon.Pokemon.moveSet[(int)t["Move Index"]];
+                    MoveManager.GetMove(moveID).PerformMove(Player.ActivePokemon, Enemy.ActivePokemon);
+                    break;
+
+                case "Enemy":
+                    moveID = Enemy.ActivePokemon.Pokemon.moveSet[(int)t["Move Index"]];
+                    MoveManager.GetMove(moveID).PerformMove(Enemy.ActivePokemon, Player.ActivePokemon);
+                    break;
+            }
+         
+
+        });
     }
 
     
@@ -92,7 +111,6 @@ public class BattleManager : MonoBehaviour
         if (!hasLoaded && loadProgress == 1f)
         {
             EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_LOADING_FINISHED);
-            SampleMons.Instance.MakeMoves();
             Player.SwitchPokemon(Player.ActivePokemonIndex);
             Enemy.SwitchPokemon(Enemy.ActivePokemonIndex);
             hasLoaded = true;
