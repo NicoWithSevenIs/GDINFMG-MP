@@ -67,6 +67,8 @@ public static class Nature {
         incremented = EStatType.HEALTH;
         decremented = EStatType.HEALTH;
 
+        bool hasBeenFound = false;
+
         foreach (var increasedStat in natures)
         {
             incremented = increasedStat.Key;
@@ -76,8 +78,16 @@ public static class Nature {
                 decremented = decreasedStat.Key;
 
                 if (decreasedStat.Value == nature)
+                {
+                    hasBeenFound = true;
                     break;
+                }
+                   
             }
+
+            if (hasBeenFound)
+                break;
+
         }
 
         if (incremented == EStatType.HEALTH || decremented == EStatType.HEALTH)

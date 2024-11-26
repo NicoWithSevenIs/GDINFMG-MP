@@ -26,34 +26,104 @@ public class BattleManager : MonoBehaviour
         get => downloadQueue.Count > 0 ? ((float)downloadQueue.Where(t => t.IsCompleted).Count() / (float)downloadQueue.Count) : 0;
     }
 
-    private class Battler {
+    Battler Player;
+    Battler Enemy;
 
-        private Pokemon_Battle_Instance[] party;
-        private int activePokemon = 0;
+    private bool hasLoaded = false;
 
-        public void SwitchPokemon(int index)
-        {
-
-        }
-
-    }
-
-
-    
-   
     private void Initialize()
     {
         //make queries here
 
-        for(int id = 1; id <= 3; id++)
-        {
-            string frontFile =  $"{BASE_URL}{id}.png";
-            string backFile =   $"{BASE_URL}back/{id}.png";
+        Player = new Battler(Battler.PLAYER, SampleMons.GetList());
+        Enemy  = new Battler(Battler.ENEMY, SampleMons.GetList());
 
-            downloadQueue.Add(WebAPIManager.Instance.DownloadImage(frontFile));
-            downloadQueue.Add(WebAPIManager.Instance.DownloadImage(backFile));
+
+        void DownloadSprites(Pokemon_Battle_Instance[] Party)
+        {
+            foreach (var battle_instance in Party)
+            {
+                int id = battle_instance.Pokemon.data.id;
+
+                string frontFile = $"{BASE_URL}{id}.png";
+                string backFile = $"{BASE_URL}back/{id}.png";
+
+                downloadQueue.Add(WebAPIManager.Instance.DownloadImage(frontFile));
+                downloadQueue.Add(WebAPIManager.Instance.DownloadImage(backFile));
+
+                battle_instance.SetSprite(frontFile, backFile);
+            }
+        }
+
+        DownloadSprites(Player.Party);
+        DownloadSprites(Enemy.Party);
+
+        EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, t => {
+            if (t["Battler Name"] as string != "Enemy")
+                return;
+
+            if(Enemy.AvailablePokemon > 0)
+                Enemy.SwitchPokemon(Enemy.ActivePokemonIndex + 1);
+        });
+
+        EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, t => {
+            if (t["Battler Name"] as string != "Player")
+                return;
+
+            if (Player.AvailablePokemon > 0)
+                EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_FORCE_SWITCH);
+        });
+    }
+
+    
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Player.ActivePokemon.TakeDamage(10);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            Enemy.ActivePokemon.TakeDamage(10);
+        }
+
+        if (!hasLoaded && loadProgress == 1f)
+        {
+            EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_LOADING_FINISHED);
+            Player.SwitchPokemon(Player.ActivePokemonIndex);
+            Enemy.SwitchPokemon(Enemy.ActivePokemonIndex);
+            hasLoaded = true;
         }
     }
+
+    #region Wrapping
+
+
+    public void SwitchPlayerPokemon(int index)
+    {
+        Player.SwitchPokemon(index);
+    }
+
+    public int GetPlayerActivePokemonIndex() => Player.ActivePokemonIndex;
+
+    public Pokemon_Battle_Instance GetPlayerPokemon(int index) => Player.GetPokemon(index);
+
+    public int GetEnemyPokemonIndex(Pokemon_Battle_Instance battle_instance)
+    {
+        for(int i =0; i< Enemy.Party.Count(); i++)
+            if (Enemy.Party[i] == battle_instance) 
+                return i;
+
+        return -1;
+    }
+
+    public int AvailablePlayerPokemon { get =>  Player.AvailablePokemon; }
+
+    #endregion
+
+
 }
 
 

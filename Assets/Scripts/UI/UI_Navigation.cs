@@ -8,9 +8,13 @@ public class UI_Navigation : MonoBehaviour
     [SerializeField] private GameObject moveMenu;
     [SerializeField] private GameObject switchMenu;
 
+    [SerializeField] private GameObject switchMenuBackButton;
+
     private void Awake()
     {
         ReturnToRoot();
+        EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_CHANGED, t => ReturnToRoot());
+        EventBroadcaster.AddObserver(EVENT_NAMES.UI_EVENTS.ON_FORCE_SWITCH, t => InvokeSwitchMenu(true));
     }
 
     public void ReturnToRoot()
@@ -27,11 +31,12 @@ public class UI_Navigation : MonoBehaviour
         switchMenu.SetActive(false);
     }
 
-    public void InvokeSwitchMenu()
+    public void InvokeSwitchMenu(bool forceSwitch)
     {
         rootMenu.SetActive(false);
         moveMenu.SetActive(false);
         switchMenu.SetActive(true);
+        switchMenuBackButton.SetActive(!forceSwitch);
     }
 
 }

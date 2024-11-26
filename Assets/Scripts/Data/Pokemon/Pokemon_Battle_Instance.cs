@@ -11,30 +11,60 @@ public class Pokemon_Battle_Instance
 
     private StatModHandler modHandler = new();
     private Stat totalStats;
+
+    public Stat TotalStats { get => totalStats;  }
     public Stat stat { 
         get => modHandler.ApplyMods(totalStats);
     }
 
-    private EAilmentType? ailemntType = null;
-    public EAilmentType? AilmentType { get => ailemntType; }
+    private EAilmentType? ailmentType = null;
+    public EAilmentType? AilmentType { get => ailmentType; }
+
 
     public const int LEVEL = 50;
     private float currentHP;
 
     public float CurrentHealth { get => currentHP; }
+
+    public float HealthPercentage { get => currentHP / stat.Health; }
+
     public bool isFainted { get => currentHP <= 0; }
 
-    public Pokemon_Battle_Instance(Pokemon pokemon)
+
+    private string ownerType;
+
+    private string front_url;
+    public string Front_Sprite_URL { get => front_url; }
+
+    private string back_url;
+    public string Back_Sprite_URL { get => back_url; }
+
+
+    public Pokemon_Battle_Instance(Pokemon pokemon, string ownerType)
     {
         this.pokemon = pokemon;
+        GetTotalStat();
         currentHP = stat.Health;
+        this.ownerType = ownerType;
+    }
+
+    public void SetSprite(string front, string back)
+    {
+        this.front_url = front;
+        this.back_url = back;
     }
 
     public void TakeDamage(float damage)
     {
-        currentHP -= damage;
+        currentHP = Mathf.Max(0, currentHP - damage);
 
-        //if(currentHP <= 0) Invoke On Death Event
+        var p = new Dictionary<string, object>();
+        p["Battler Name"] = ownerType;
+        p["Active Pokemon"] = this;
+        EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_HEALTH_CHANGED, p);
+
+        if (currentHP == 0)
+            EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, p);
     }
 
  
@@ -50,14 +80,14 @@ public class Pokemon_Battle_Instance
 
             Nature.GetNatureMultiplier(pokemon.nature, out increasedByNature, out decreasedByNature);
 
-
             foreach (var key in keys)
             {
                 float Base = pokemon.data.baseStats.GetByEnum(key);
                 float IV = pokemon.IV.GetByEnum(key);
                 float EV = pokemon.EV.GetByEnum(key);
 
-                float inner = 2 * Base + IV + (EV / 4) * LEVEL;
+                float inner = 2 * Base + IV + Mathf.Floor(EV / 4);
+                inner *= LEVEL;
                 inner /= 100;
 
                 if (key == EStatType.HEALTH)
