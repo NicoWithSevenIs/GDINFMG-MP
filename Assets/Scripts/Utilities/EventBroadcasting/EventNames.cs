@@ -17,5 +17,7 @@ public static class EVENT_NAMES
         public const string ON_VIEWER_INVOKED = "ON_VIEWER_INVOKED";
         public const string ON_FORCE_SWITCH = "ON_FORCE_SWITCH";
         public const string ON_MOVE_VIEWER_INVOKED = "ON_MOVE_VIEWER_INVOKED";
+        public const string ON_DIALOGUE_INVOKED = "ON_DIALOGUE_INVOKED";
+        public const string ON_DIALOGUE_ENDED = "ON_DIALOGUE_ENDED";
     }
 }

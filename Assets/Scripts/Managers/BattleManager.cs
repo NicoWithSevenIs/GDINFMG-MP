@@ -64,6 +64,7 @@ public class BattleManager : MonoBehaviour
 
             if(Enemy.AvailablePokemon > 0)
                 Enemy.SwitchPokemon(Enemy.ActivePokemonIndex + 1);
+            
         });
 
         EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, t => {
@@ -82,6 +83,13 @@ public class BattleManager : MonoBehaviour
                 case "Player":
                     moveID = Player.ActivePokemon.Pokemon.moveSet[(int)t["Move Index"]];
                     MoveManager.GetMove(moveID).PerformMove(Player.ActivePokemon, Enemy.ActivePokemon);
+                    
+                    var p = new Dictionary<string, object>();
+                    p["Messages"] = new List<string>() { 
+                        $"{Player.ActivePokemon.Pokemon.data.name} used {MoveManager.GetMove(moveID).Data.name}"
+                    };
+                    EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, p);
+
                     break;
 
                 case "Enemy":
@@ -90,7 +98,6 @@ public class BattleManager : MonoBehaviour
                     break;
             }
          
-
         });
     }
 
