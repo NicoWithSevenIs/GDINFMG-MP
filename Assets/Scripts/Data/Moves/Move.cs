@@ -9,21 +9,9 @@ public abstract class Move
 
     private MoveData? m_Data = null;
 
-    public MoveData Data { 
-        get {
-            RequestMove(); //force request move if move is still somewhat null
-            return m_Data.Value;
-        } 
-    }
-
-    public virtual void RequestMove()
-    {
-        if (m_Data != null)
-            return;
-
-        var def = new MoveData("[ERROR]", "Move Request Failure", 0, 0, 1);
-        m_Data = def;
-        //make query here
+    public MoveData Data {
+        get => m_Data.Value;
+        set => m_Data = value;
     }
 
     

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,9 @@ public struct Pokemon
     public Stat IV;
     public Stat EV;
 
+    public int[] moveSet;
 
+    /*
     public Pokemon(int playerID, int pokemonData, ESex sex, Stat IV, Stat EV, string nature)
     {
         data = PokemonDataManager.RequestPokemon(pokemonData).Value;
@@ -23,8 +26,9 @@ public struct Pokemon
         this.nature = nature;
         this.sex = sex;
     }
+    */
 
-    public Pokemon(int playerID, Pokemon_Data data, ESex sex, Stat IV, Stat EV, string nature)
+    public Pokemon(int playerID, Pokemon_Data data, ESex sex, Stat IV, Stat EV, string nature, int[] moveSet)
     {
         this.data = data;
         ownerID = playerID;
@@ -32,6 +36,9 @@ public struct Pokemon
         this.EV = EV;
         this.nature = nature;
         this.sex = sex;
+
+        this.moveSet = new int[4];
+        Array.Copy(moveSet, this.moveSet, 4);
     }
 
 

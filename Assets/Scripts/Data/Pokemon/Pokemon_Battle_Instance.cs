@@ -6,29 +6,26 @@ using UnityEngine;
 public class Pokemon_Battle_Instance 
 {
 
+    public const int LEVEL = 50;
+
     private Pokemon pokemon;
     public Pokemon Pokemon { get => pokemon; }
 
     private StatModHandler modHandler = new();
     private Stat totalStats;
-
     public Stat TotalStats { get => totalStats;  }
-    public Stat stat { 
-        get => modHandler.ApplyMods(totalStats);
-    }
+    public Stat stat {  get => modHandler.ApplyMods(totalStats); }
 
+    /*
     private EAilmentType? ailmentType = null;
     public EAilmentType? AilmentType { get => ailmentType; }
+    */
 
-
-    public const int LEVEL = 50;
     private float currentHP;
-
     public float CurrentHealth { get => currentHP; }
-
     public float HealthPercentage { get => currentHP / stat.Health; }
-
     public bool isFainted { get => currentHP <= 0; }
+
 
 
     private string ownerType;
@@ -155,10 +152,11 @@ public class Pokemon_Battle_Instance
         //Random
         damage *= Random.Range(85f, 100f) / 100f;
 
+        /*
         //Burn
         if (attacker.AilmentType == EAilmentType.BURN)
             damage *= 0.5f;
-
+        */
 
         return damage;
     }
