@@ -92,6 +92,7 @@ public class BattleManager : MonoBehaviour
         if (!hasLoaded && loadProgress == 1f)
         {
             EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_LOADING_FINISHED);
+            SampleMons.Instance.MakeMoves();
             Player.SwitchPokemon(Player.ActivePokemonIndex);
             Enemy.SwitchPokemon(Enemy.ActivePokemonIndex);
             hasLoaded = true;

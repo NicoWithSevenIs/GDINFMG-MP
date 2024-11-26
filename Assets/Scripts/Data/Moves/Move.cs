@@ -13,6 +13,4 @@ public abstract class Move
         get => m_Data.Value;
         set => m_Data = value;
     }
-
-    
 }
