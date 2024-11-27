@@ -18,7 +18,7 @@ public class UI_Navigation : MonoBehaviour
 
         rootMenu.gameObject.SetActive(true);
         moveMenu.gameObject.SetActive(true);
-        switchMenu.gameObject.SetActive(true);
+        switchMenu.gameObject.SetActive(false);
 
         EventBroadcaster.AddObserver(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, t => DisableAll());
         EventBroadcaster.AddObserver(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_ENDED, t => ReturnToRoot());
@@ -35,28 +35,28 @@ public class UI_Navigation : MonoBehaviour
     {
         SetUIActive(rootMenu, false);
         SetUIActive(moveMenu, false);
-        SetUIActive(switchMenu, false);
+        switchMenu.gameObject.SetActive(false);
     }
 
     public void ReturnToRoot()
     {
         SetUIActive(rootMenu, true);
         SetUIActive(moveMenu, false);
-        SetUIActive(switchMenu, false);
+        switchMenu.gameObject.SetActive(false);
     }
 
     public void InvokeMoveMenu()
     {
         SetUIActive(rootMenu, false);
         SetUIActive(moveMenu, true);
-        SetUIActive(switchMenu, false);
+        switchMenu.gameObject.SetActive(false);
     }
 
     public void InvokeSwitchMenu(bool forceSwitch)
     {
         SetUIActive(rootMenu, false);
         SetUIActive(moveMenu, false);
-        SetUIActive(switchMenu, true);
+        switchMenu.gameObject.SetActive(true);
         switchMenuBackButton.SetActive(!forceSwitch);
     }
 
