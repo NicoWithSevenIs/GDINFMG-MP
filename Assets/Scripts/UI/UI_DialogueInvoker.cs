@@ -8,22 +8,16 @@ public class UI_DialogueInvoker : MonoBehaviour
     [SerializeField] private CanvasGroup dialogueBox;
     [SerializeField] private TextMeshProUGUI dialogueText;
 
-
-    private Queue<string> dialogueQueue = new();
-
-    private bool isDialogueActive { get => dialogueBox.alpha == 1f;  }
-
     private void Awake()
     {
         dialogueBox.gameObject.SetActive(true);
         SetUIActive(dialogueBox, false);
         EventBroadcaster.AddObserver(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, t => {
-            var dialogueList = t["Messages"] as List<string>;
+            dialogueText.text = t["Message"] as string;
             SetUIActive(dialogueBox, true);
-            foreach (var dialogue in dialogueList) 
-                dialogueQueue.Enqueue(dialogue);
-            Next();
         });
+        EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, t => SetUIActive(dialogueBox, false));
+        EventBroadcaster.AddObserver(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_ENDED, t => SetUIActive(dialogueBox, false));
     }
 
     public void SetUIActive(CanvasGroup group, bool active)
@@ -33,26 +27,5 @@ public class UI_DialogueInvoker : MonoBehaviour
         group.interactable = active;
     }
 
-    private void Next()
-    {
-        string s = dialogueQueue.Dequeue();
-        dialogueText.text = s;
-    }
-
-    private void Update()
-    {
-        if (!Input.GetMouseButtonDown(0) || !isDialogueActive)
-            return;
-        
-        if(dialogueQueue.Count == 0)
-        {
-            SetUIActive(dialogueBox, false);
-            EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_ENDED);
-        }
-        else
-        {
-            Next();
-        }   
-    }
 
 }

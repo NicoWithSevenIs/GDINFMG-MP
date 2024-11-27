@@ -19,6 +19,9 @@ public class UI_Navigation : MonoBehaviour
         rootMenu.gameObject.SetActive(true);
         moveMenu.gameObject.SetActive(true);
         switchMenu.gameObject.SetActive(true);
+
+        EventBroadcaster.AddObserver(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, t => DisableAll());
+        EventBroadcaster.AddObserver(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_ENDED, t => ReturnToRoot());
     }
 
     public void SetUIActive(CanvasGroup group, bool active)
@@ -26,6 +29,13 @@ public class UI_Navigation : MonoBehaviour
         group.alpha = active ? 1 : 0;
         group.blocksRaycasts = active;
         group.interactable = active;
+    }
+
+    public void DisableAll()
+    {
+        SetUIActive(rootMenu, false);
+        SetUIActive(moveMenu, false);
+        SetUIActive(switchMenu, false);
     }
 
     public void ReturnToRoot()

@@ -29,6 +29,7 @@ public class Pokemon_Battle_Instance
 
 
     private string ownerType;
+    public string OwnerType { get => ownerType; }
 
     private string front_url;
     public string Front_Sprite_URL { get => front_url; }
@@ -60,8 +61,6 @@ public class Pokemon_Battle_Instance
         p["Active Pokemon"] = this;
         EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_HEALTH_CHANGED, p);
 
-        if (currentHP == 0)
-            EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, p);
     }
 
  
@@ -143,8 +142,20 @@ public class Pokemon_Battle_Instance
 
         //CRIT
         isACriticalStrike = Random.Range(1, 25) == 24;
+        //isACriticalStrike = true;
         if (isACriticalStrike)
+        {
             damage *= (2 * Pokemon_Battle_Instance.LEVEL + 5) / Pokemon_Battle_Instance.LEVEL + 5;
+
+            var comp = new ActionSequenceComponent(() => {
+                var p = new Dictionary<string, object>();
+                p["Message"] = $"It was a Critical Hit!";
+                EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, p);
+            }, true);
+
+            ActionSequencer.AddToSequenceFront(new() {comp}, 0);
+        }
+    
 
         //Type Effectiveness
         damage *= TypeChecker.GetEffectivenessMultiplier(type, target.Pokemon.data.type1, target.Pokemon.data.type2);

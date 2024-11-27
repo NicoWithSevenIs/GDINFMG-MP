@@ -10,6 +10,7 @@ public static class EVENT_NAMES
         public const string ON_POKEMON_CHANGED = "ON_POKEMON_CHANGED";
         public const string ON_POKEMON_HEALTH_CHANGED = "ON_POKEMON_HEALTH_CHANGED";
         public const string ON_POKEMON_MOVE_DECLARED = "ON_POKEMON_MOVE_DECLARED";
+        public const string ON_CRITICAL_HIT = "ON_CRITICAL_HIT";
     }
     public static class UI_EVENTS
     {
