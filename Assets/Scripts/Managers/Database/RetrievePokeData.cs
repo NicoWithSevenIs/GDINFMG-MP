@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using static Unity.Burst.Intrinsics.X86;
 
 public class RetrievePokeData : MonoBehaviour
 {
-    private List<Pokemon_Data> pokeDataHolder = new List<Pokemon_Data>();
+    public List<Pokemon_Data> pokeDataHolder = new List<Pokemon_Data>();
+    public List<string> natureList = new List<string>();
+    public bool request_finished = false;
+
    public void callRetrievePokemon(int id, int currIndex)
    {    
         StartCoroutine(RetrieveMon(id, currIndex));
@@ -81,9 +85,9 @@ public class RetrievePokeData : MonoBehaviour
                                  new Stat(hp, attack, defense, special_attack, special_defense, speed), 
                                  refData.weight, refData.height);
                 this.pokeDataHolder.Add(newData);
-
-                this.printPokeData();
-                this.printPokeStats();
+                this.request_finished = true;
+                //this.printPokeData();
+                //this.printPokeStats();
             }
         }
         else
@@ -270,4 +274,102 @@ public class RetrievePokeData : MonoBehaviour
 
         return null;
     }
+
+
+    public ESex RandomGenerateSex(Pokemon pokemon)
+    {
+        int randomGender = Random.Range(1, 3);
+        switch (randomGender)
+        {
+            case 1:
+                return ESex.MALE;
+            case 2:
+                return ESex.FEMALE;
+        }
+
+        return ESex.NONE;
+    }
+
+    public Stat RandomGenerateIVs()
+    {
+        float hp = 0.0f;
+        float atk = 0.0f;
+        float sp_atk = 0.0f;
+        float def = 0.0f;
+        float sp_def = 0.0f;
+        float spe = 0.0f;
+
+        for (int i = 0; i < 6; i++)
+        {
+            float randomIV = Random.Range(0.0f, 32.0f);
+            switch (i)
+            {
+                case 0:
+                    hp = randomIV;
+                    break;
+                case 1:
+                    atk = randomIV;
+                    break;
+                case 2:
+                    sp_atk = randomIV;
+                    break;
+                case 3:
+                    def = randomIV;
+                    break;
+                case 4:
+                    sp_def = randomIV;
+                    break;
+                case 5:
+                    spe = randomIV;
+                    break;
+            }
+        }
+
+        Stat ivStats = new Stat(hp, atk, def, sp_atk, sp_def, spe);
+        return ivStats;
+    }
+
+    public Stat RandomGenerateEVs()
+    {
+        Stat evStats = new Stat(85.0f, 85.0f, 85.0f, 85.0f, 85.0f, 85.0f);
+        return evStats;
+    }
+
+    public string RandomGenerateNature()
+    {
+        if (natureList.Count == 0)
+        {
+            natureList.Add("Hardy");
+            natureList.Add("Lonely");
+            natureList.Add("Brave");
+            natureList.Add("Adamant");
+            natureList.Add("Naughty");
+            natureList.Add("Bold");
+            natureList.Add("Docile");
+            natureList.Add("Relaxed");
+            natureList.Add("Impish");
+            natureList.Add("Lax");
+            natureList.Add("Timid");
+            natureList.Add("Hasty");
+            natureList.Add("Serious");
+            natureList.Add("Jolly");
+            natureList.Add("Naive");
+            natureList.Add("Modest");
+            natureList.Add("Mild");
+            natureList.Add("Quiet");
+            natureList.Add("Bashful");
+            natureList.Add("Rash");
+            natureList.Add("Hardy");
+            natureList.Add("Calm");
+            natureList.Add("Gentle");
+            natureList.Add("Sassy");
+            natureList.Add("Careful");
+            natureList.Add("Quirky");
+        }
+        
+        int randomNature = Random.Range(0, natureList.Count);
+        return natureList[randomNature];
+    }
+
+
 }

@@ -22,12 +22,32 @@ public class DatabaseManager : MonoBehaviour
     
     public void GeneratePlayerParty()
     {
-        for (int i = 0; i < 1; i++)
+        List<Pokemon> pokemonHolder = new List<Pokemon> ();   
+        for (int i = 0; i < 3; i++)
         {
             int randomized_int = Random.Range(1, 11);
-            retrievePokeData.callRetrievePokemon(randomized_int, i);
-            
+            retrievePokeData.callRetrievePokemon(randomized_int, i);        
         }
 
+        if (retrievePokeData.request_finished)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+
+                Pokemon newMon = new Pokemon();
+                retrievePokeData.RandomGenerateSex(newMon);
+                newMon.IV = retrievePokeData.RandomGenerateIVs();
+                newMon.EV = retrievePokeData.RandomGenerateEVs();
+                newMon.nature = retrievePokeData.RandomGenerateNature();
+                newMon.data = retrievePokeData.pokeDataHolder[i];
+                pokemonHolder.Add(newMon);
+            }
+
+            retrievePokeData.request_finished = false;
+            retrievePokeData.pokeDataHolder.Clear();
+        }        
     }
+
+
+
 }
