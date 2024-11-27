@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System;
 using UnityEngine.U2D;
+using UnityEditor.Experimental.GraphView;
 
 public class BattleManager : MonoBehaviour
 {
@@ -91,6 +92,14 @@ public class BattleManager : MonoBehaviour
         void HandleFainting(Pokemon_Battle_Instance mon, string name)
         {
             var faintPrompt = new List<ActionSequenceComponent>() {
+                        new ActionSequenceComponent(
+                            () => {
+                                var p = new Dictionary<string, object>();
+                                string affix = mon == Enemy.ActivePokemon ? "Foe " : "";
+                                p["Message"] =  $"{affix}{mon.Pokemon.data.name} fainted!" ;
+                                EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, p);
+                            }, true
+                        ),
                         new ActionSequenceComponent(
                             () => {
                                 var p = new Dictionary<string, object>();
