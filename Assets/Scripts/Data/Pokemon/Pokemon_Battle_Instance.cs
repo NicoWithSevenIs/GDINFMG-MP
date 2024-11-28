@@ -13,6 +13,8 @@ public class Pokemon_Battle_Instance
     public Pokemon Pokemon { get => pokemon; }
 
     private StatModHandler modHandler = new();
+    public StatModHandler ModHandler { get => modHandler; }
+
     private Stat totalStats;
     public Stat TotalStats { get => totalStats;  }
     public Stat stat {  get => modHandler.ApplyMods(totalStats); }
@@ -147,7 +149,7 @@ public class Pokemon_Battle_Instance
         //CRIT
 
         int random = Random.Range(Mathf.Min(critRateMultiplier, 24), 25);
-        Debug.Log("RNG " + random);
+    
         isACriticalStrike = random == 24;
         //isACriticalStrike = true;
         if (isACriticalStrike)

@@ -136,17 +136,6 @@ public class BattleManager : MonoBehaviour
                 if (Enemy.ActivePokemon.CurrentHealth == 0)
                     HandleFainting(Enemy.ActivePokemon, Enemy.ActivePokemon.OwnerType);
                 
-
-         
-                /*
-                if (attacker.CurrentHealth == 0)
-                    HandleFainting(attacker, attacker.OwnerType);
-
-                if (target.CurrentHealth == 0)
-                    HandleFainting(target, target.OwnerType);
-                */
-
-               
             };
 
             var prompt = new ActionSequenceComponent(promptAction, true);
