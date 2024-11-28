@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class Pokemon_Battle_Instance 
 {
@@ -136,6 +137,8 @@ public class Pokemon_Battle_Instance
         float damage = levelMultiplier * power * (A / D) / 50 + 2;
 
 
+        List<ActionSequenceComponent> prompts = new();
+
         //STAB
         if (attacker.Pokemon.data.type1 == type || attacker.Pokemon.data.type2 == type)
             damage *= 1.5f;
@@ -147,18 +150,43 @@ public class Pokemon_Battle_Instance
         {
             damage *= (2 * Pokemon_Battle_Instance.LEVEL + 5) / Pokemon_Battle_Instance.LEVEL + 5;
 
-            var comp = new ActionSequenceComponent(() => {
+            var critComp = new ActionSequenceComponent(() => {
                 var p = new Dictionary<string, object>();
                 p["Message"] = $"It was a Critical Hit!";
                 EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, p);
             }, true);
 
-            ActionSequencer.AddToSequenceFront(new() {comp}, 0);
+
+            prompts.Add(critComp);
+           
         }
-    
+
 
         //Type Effectiveness
-        damage *= TypeChecker.GetEffectivenessMultiplier(type, target.Pokemon.data.type1, target.Pokemon.data.type2);
+
+        float TypeMultiplier = TypeChecker.GetEffectivenessMultiplier(type, target.Pokemon.data.type1, target.Pokemon.data.type2);
+        damage *= TypeMultiplier;
+
+        if(TypeMultiplier != 1)
+        {
+            var typeComp = new ActionSequenceComponent(() => {
+                var p = new Dictionary<string, object>();
+
+                if(TypeMultiplier == 0)
+                    p["Message"] = $"It had No Effect";
+                else if (TypeMultiplier < 1)
+                    p["Message"] = $"It's Not Very Effective";
+                else if (TypeMultiplier > 1)
+                    p["Message"] = $"It's Super Effective";
+
+                EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, p);
+            }, true);
+
+            prompts.Add(typeComp);
+        }
+
+        ActionSequencer.AddToSequenceFront(prompts, 0);
+
 
         //Random
         damage *= Random.Range(85f, 100f) / 100f;

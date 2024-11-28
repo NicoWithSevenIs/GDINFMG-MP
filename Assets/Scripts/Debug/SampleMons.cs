@@ -43,8 +43,8 @@ public class SampleMons
     {
         tackle = new MoveData("Charge Beam", "Hits Mon", 1000, 35, EType.ELECTRIC, EMoveType.PHYSICAL);
         scratch = new MoveData("Dragon Dance", "Hits Mon", 1, 35, EType.DRAGON, EMoveType.SPECIAL);
-        growl = new MoveData("Moon Blast", "Hits Mon", 40, 35, EType.FAIRY, EMoveType.PHYSICAL);
-        earthQuake = new MoveData("Shadow Ball", "Hits Mon", 40, 35, EType.GHOST, EMoveType.STATUS);
+        growl = new MoveData("Shadow Ball", "Hits Mon", 40, 35, EType.GHOST, EMoveType.PHYSICAL);
+        earthQuake = new MoveData("Moon Blast", "Hits Mon", 40, 35, EType.FAIRY, EMoveType.STATUS);
 
         Move mTackle = MoveManager.GetMove(1);
         mTackle.Data = tackle;
