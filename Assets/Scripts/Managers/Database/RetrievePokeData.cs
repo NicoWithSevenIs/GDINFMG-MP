@@ -11,7 +11,7 @@ public class RetrievePokeData : MonoBehaviour
     public bool request_finished = false;
 
    public void callRetrievePokemon(int id, int currIndex)
-   {    
+   {
         StartCoroutine(RetrieveMon(id, currIndex));
    }
 
@@ -86,8 +86,8 @@ public class RetrievePokeData : MonoBehaviour
                                  refData.weight, refData.height);
                 this.pokeDataHolder.Add(newData);
                 this.request_finished = true;
-                //this.printPokeData();
-                //this.printPokeStats();
+                this.printPokeData();
+                this.printPokeStats();
             }
         }
         else
@@ -99,7 +99,7 @@ public class RetrievePokeData : MonoBehaviour
 
     private void printPokeData()
     {
-        Debug.Log("Pokemon Data Holder Size: " + pokeDataHolder.Count);
+        //Debug.Log("Pokemon Data Holder Size: " + pokeDataHolder.Count);
         Debug.Log("Pokemon ID: " + pokeDataHolder[0].id);
         Debug.Log("Pokemon Name: " + pokeDataHolder[0].name);
         Debug.Log("Pokemon Type 1: " + pokeDataHolder[0].type1);
