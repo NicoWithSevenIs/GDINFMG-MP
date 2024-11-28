@@ -151,6 +151,7 @@ Transform:
   m_Children:
   - {fileID: 759256816}
   - {fileID: 1056447762}
+  - {fileID: 401601278}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &127587487
@@ -167,7 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   retrievePokeData: {fileID: 759256817}
   retrieveMoveData: {fileID: 1056447763}
-  partysize: 1
+  partysize: 3
 --- !u!1 &155700100
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,6 +261,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &401601277
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 401601278}
+  - component: {fileID: 401601279}
+  m_Layer: 0
+  m_Name: DB_Utility_Helper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &401601278
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401601277}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 127587486}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &401601279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401601277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9ef21f61d727b94fb44f600325000ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  natureList: []
 --- !u!1 &665877730
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,8 +429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 813d8a26d3cf89642b87feb411cc0000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  natureList: []
-  request_finished: 0
+  utilHelper: {fileID: 401601279}
 --- !u!1 &974452297
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,9 +576,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c228a581b7331b47a95d6d8605466cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  utilHelper: {fileID: 401601279}
   movePoolIDs: 
-  hasRetrievedMovePool: 0
-  hasRetrievedMoves: 0
 --- !u!1 &1122186139
 GameObject:
   m_ObjectHideFlags: 0
