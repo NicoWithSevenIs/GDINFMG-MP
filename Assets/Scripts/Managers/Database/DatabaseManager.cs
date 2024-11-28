@@ -28,7 +28,7 @@ public class DatabaseManager : MonoBehaviour
     public void GeneratePlayerParty()
     {
         // generate pokemon_data
-        Debug.Log("About to Get Pokemon Data...");
+        //Debug.Log("About to Get Pokemon Data...");
         for (int i = 0; i < partysize; i++)
         {
             int randomized_int = Random.Range(1, 11);
@@ -76,7 +76,8 @@ public class DatabaseManager : MonoBehaviour
                 if (retrieve_result[0].Contains("Success"))
                 {
                     retrievePokeData.retrievePokeData2(retrieve_result, refData);
-                    //StartCoroutine(RetrievePokeMovePool(pokemonID));
+                retrievePokeData.generatePokemonWithNoMoves(refData);
+                    StartCoroutine(RetrievePokeMovePool(pokemonID, currIndex));
 
                 }
             }
@@ -87,7 +88,7 @@ public class DatabaseManager : MonoBehaviour
         }
 
 
-    public IEnumerator RetrievePokeMovePool(int pokemonID)
+    public IEnumerator RetrievePokeMovePool(int pokemonID, int currentIndex)
     {
         WWWForm form = new WWWForm();
         form.AddField("pokemonID", pokemonID);
@@ -106,7 +107,7 @@ public class DatabaseManager : MonoBehaviour
             if (retrieve_result[0].Contains("Success"))
             {
                 retrieveMoveData.retrieveMovePool(retrieve_result);
-                this.SelectMove(pokemonID);
+                this.SelectMove(pokemonID, currentIndex);
             }
             else
             {
@@ -119,14 +120,39 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
-    private void SelectMove(int pokemonID)
+    private void SelectMove(int pokemonID, int currentIndex)
     {
         List<int> movePoolCopy = retrieveMoveData.movePoolIDs;
+        List<int> usedIndices = new List<int>();
         List<int> selectedIDs = new List<int>();
+
         for (int i = 0; i < 4; i++)
         {
-            int randomIndex = Random.Range(0, movePoolCopy.Count);
-            selectedIDs.Add(movePoolCopy[randomIndex]); 
+            int randomIndex;
+            do
+            {
+                randomIndex = Random.Range(0, movePoolCopy.Count);
+            } while (usedIndices.Contains(randomIndex));    
+            usedIndices.Add(randomIndex);
+            selectedIDs.Add(movePoolCopy[randomIndex]);
+        }
+
+        Debug.Log("pokemon name: " + retrievePokeData.pokemonHolder[0].data.name);
+        //Debug.Log("Current Index: " + currentIndex);
+        Debug.Log("Pokemon Holder Count: " + retrievePokeData.pokemonHolder.Count);
+
+        
+        for (int i = 0; i < retrievePokeData.pokemonHolder.Count; i++)
+        {
+            Debug.Log("i value: " + i);
+            Debug.Log("Mon Moveset Length: " + retrievePokeData.pokemonHolder[i].moveSet.Length);
+            for(int j = 0; j < retrievePokeData.pokemonHolder[i].moveSet.Length; j++)
+            {
+                retrievePokeData.pokemonHolder[i].moveSet[j] = selectedIDs[j];
+                Debug.Log("check pokemon holder move id data: index " + j + ": " + retrievePokeData.pokemonHolder[i].moveSet[j]);
+            }
+            
+
         }
 
         for (int i = 0; i < selectedIDs.Count; i++)
@@ -154,7 +180,8 @@ public class DatabaseManager : MonoBehaviour
             string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\t');
             if (retrieve_result[0].Contains("Success"))
             {
-                retrieveMoveData.retrieveMoveData(retrieve_result);
+                retrieveMoveData.retrieveMoveData(retrieve_result, moveID);
+
             }
             else
             {
@@ -171,6 +198,17 @@ public class DatabaseManager : MonoBehaviour
         //Debug.Log("PokeHolder Size: " + retrievePokeData.pokeDataHolder.Count);
     }
 
+    private IEnumerator SendToPokeDetails(Pokemon pokemon)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("playerID", pokemon.data.id);
+        form.AddField("pokemonID", pokemon.data.id);
+        form.AddField("nature", pokemon.nature);
+        form.AddField("gender", pokemon.sex.ToString());
+
+        UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/register_player_mon.php", form);
+        yield return retrieve_req.SendWebRequest();
+    }
 
 }
 

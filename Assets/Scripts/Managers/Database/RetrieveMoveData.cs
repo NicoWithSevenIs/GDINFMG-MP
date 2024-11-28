@@ -11,7 +11,7 @@ public class RetrieveMoveData : MonoBehaviour
     public DB_Utility_Helper utilHelper;
     public List<int> movePoolIDs = new List<int>();
     public List<MoveData> chosenMoves = new List<MoveData>();
-
+    
     public void retrieveMovePool(string[] retrieve_result)
     {
         movePoolIDs.Add(int.Parse(retrieve_result[1]));
@@ -21,10 +21,10 @@ public class RetrieveMoveData : MonoBehaviour
         movePoolIDs.Add(int.Parse(retrieve_result[5]));
         movePoolIDs.Add(int.Parse(retrieve_result[6]));
 
-        this.printMovePoolIDs();
+        //this.printMovePoolIDs();
     }
 
-    public void retrieveMoveData(string[] retrieve_result)
+    public void retrieveMoveData(string[] retrieve_result, int moveID)
     {
         string name = retrieve_result[1];
         string description = retrieve_result[2];
@@ -33,7 +33,10 @@ public class RetrieveMoveData : MonoBehaviour
         EMoveType moveGroup = utilHelper.getDecipheredMoveType(retrieve_result[4]);
         MoveData newMove = new MoveData(name, description, power, 100, moveType, moveGroup);
         this.chosenMoves.Add(newMove);
-        this.printMoveData();
+
+        //Move move = MoveManager.GetMove(moveID);
+        //move.Data = newMove;
+        //this.printMoveData();
     }
 
 

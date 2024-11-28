@@ -40,8 +40,8 @@ public class RetrievePokeData : MonoBehaviour
                          new Stat(hp, attack, defense, special_attack, special_defense, speed),
                          refData.weight, refData.height);
         this.pokeDataHolder.Add(newData);
-        this.printPokeData();
-        this.printPokeStats();
+        //this.printPokeData();
+        //this.printPokeStats();
     }
 
     public void generatePokemonWithNoMoves(Pokemon_Data data)
@@ -51,7 +51,8 @@ public class RetrievePokeData : MonoBehaviour
         pokemon.sex = utilHelper.RandomGenerateSex();
         pokemon.IV = utilHelper.RandomGenerateIVs();
         pokemon.EV = utilHelper.RandomGenerateEVs();
-        pokemon.nature = utilHelper.RandomGenerateNature(); 
+        pokemon.nature = utilHelper.RandomGenerateNature();
+        pokemon.moveSet = new int[4];
         this.pokemonHolder.Add(pokemon);    
     
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public static class PlayerManager
 {
+    public static int playerID = 121;
     public static int currentFloor;
     public static int currentMoney;
     public static List<Pokemon> party;
