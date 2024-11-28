@@ -117,7 +117,8 @@ public class Pokemon_Battle_Instance
        float power,
        EType type,
        EMoveType moveClass,
-       out bool isACriticalStrike
+       out bool isACriticalStrike,
+       int critRateMultiplier = 1
    )
     {
         if (moveClass == EMoveType.STATUS)
@@ -144,7 +145,10 @@ public class Pokemon_Battle_Instance
             damage *= 1.5f;
 
         //CRIT
-        isACriticalStrike = Random.Range(1, 25) == 24;
+
+        int random = Random.Range(Mathf.Min(critRateMultiplier, 24), 25);
+        Debug.Log("RNG " + random);
+        isACriticalStrike = random == 24;
         //isACriticalStrike = true;
         if (isACriticalStrike)
         {

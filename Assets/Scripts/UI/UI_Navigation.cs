@@ -14,7 +14,7 @@ public class UI_Navigation : MonoBehaviour
     {
         ReturnToRoot();
         EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_CHANGED, t => ReturnToRoot());
-        EventBroadcaster.AddObserver(EVENT_NAMES.UI_EVENTS.ON_FORCE_SWITCH, t => InvokeSwitchMenu(true));
+        EventBroadcaster.AddObserver(EVENT_NAMES.UI_EVENTS.ON_FORCE_SWITCH, t => InvokeSwitchMenu(true) );
 
         rootMenu.gameObject.SetActive(true);
         moveMenu.gameObject.SetActive(true);

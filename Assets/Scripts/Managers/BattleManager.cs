@@ -98,7 +98,7 @@ public class BattleManager : MonoBehaviour
                                 string affix = mon == Enemy.ActivePokemon ? "Foe " : "";
                                 p["Message"] =  $"{affix}{mon.Pokemon.data.name} fainted!" ;
                                 EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, p);
-                            }, true
+                            }, true, false
                         ),
                         new ActionSequenceComponent(
                             () => {
@@ -106,7 +106,7 @@ public class BattleManager : MonoBehaviour
                                 p["Battler Name"] = name;
                                 p["Active Pokemon"] = mon;
                                 EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, p);
-                            }, false
+                            }, false, false
                         )
                     };
 
@@ -128,12 +128,25 @@ public class BattleManager : MonoBehaviour
 
                 m.PerformMove(attacker, target);
 
-                if(target.CurrentHealth == 0)
-                    HandleFainting(target, target.OwnerType);
+                //bandaid fix
+                if (Player.ActivePokemon.CurrentHealth == 0)
+                    HandleFainting(Player.ActivePokemon, Player.ActivePokemon.OwnerType);
+
+           
+                if (Enemy.ActivePokemon.CurrentHealth == 0)
+                    HandleFainting(Enemy.ActivePokemon, Enemy.ActivePokemon.OwnerType);
                 
-                if(attacker.CurrentHealth == 0)
+
+         
+                /*
+                if (attacker.CurrentHealth == 0)
                     HandleFainting(attacker, attacker.OwnerType);
-        
+
+                if (target.CurrentHealth == 0)
+                    HandleFainting(target, target.OwnerType);
+                */
+
+               
             };
 
             var prompt = new ActionSequenceComponent(promptAction, true);
@@ -161,7 +174,7 @@ public class BattleManager : MonoBehaviour
             AddToSequence(playerMoveID, Player.ActivePokemon, Enemy.ActivePokemon);
         }
         
-        ActionSequencer.AddToSequenceBack(actions, 2);
+        ActionSequencer.AddToSequenceFront(actions, 2);
         ActionSequencer.Perform();
 
     }

@@ -6,11 +6,13 @@ public class ActionSequenceComponent
 {
     public Action action;
     public bool willPauseSequence;
+    public bool canBeCleared;
 
-    public ActionSequenceComponent(Action action, bool willPauseSequence = false)
+    public ActionSequenceComponent(Action action, bool willPauseSequence = false, bool canBeCleared = true)
     {
         this.action = action;
         this.willPauseSequence = willPauseSequence;
+        this.canBeCleared = canBeCleared;
     }
 }
 
@@ -24,9 +26,21 @@ public class ActionSequencer : MonoBehaviour
         if (Instance == null)
             Instance = this;
         else Destroy(gameObject);
+
         EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, t => { 
-            foreach(var channel in sequencer)  
-                channel.Clear();
+
+            for(int i = 0; i < CHANNELS; i++)
+            {
+                LinkedList<ActionSequenceComponent> doNotDelete = new();
+                foreach (var component in sequencer[i])
+                {
+                    if (component.canBeCleared == false)
+                        doNotDelete.AddLast(component);
+                }
+                sequencer[i].Clear();
+                sequencer[i] = new(doNotDelete);
+            }
+       
         });
 
 

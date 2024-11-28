@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Scratch : Move
+public class HydroPump : Move
 {
     public override int ID => 2;
 
