@@ -27,16 +27,40 @@ public class DatabaseManager : MonoBehaviour
 
     public void GeneratePlayerParty()
     {
-        // generate pokemon_data
-        //Debug.Log("About to Get Pokemon Data...");
+        List<int> usedIndices = new List<int>();
+        List<int> selectedIndices = new List<int>();
         for (int i = 0; i < partysize; i++)
         {
-            int randomized_int = Random.Range(1, 11);
-            //Debug.Log("randomzied int: " + randomized_int);
-            StartCoroutine(RetrieveMon(randomized_int, i));        
+            int randomized_int;
+            do
+            {
+                randomized_int = Random.Range(1, 11);
+                //Debug.Log("Gen Party i value: " + i);
+                //Debug.Log("Gen Party Random Int: " + randomized_int);
+            } while (usedIndices.Contains(randomized_int));
+            usedIndices.Add(randomized_int);
+            selectedIndices.Add(randomized_int);
         }
+
+        StartCoroutine(GenerateMon(selectedIndices, 0));
     }
 
+    private IEnumerator GenerateMon(List<int> selectedIndices, int index)
+    {
+        if (index < selectedIndices.Count)
+        {
+            int pokemonID = selectedIndices[index];
+            Debug.Log("Starting RetrieveMon for pokemonID: " + pokemonID);
+
+            yield return StartCoroutine(RetrieveMon(pokemonID, index));
+
+            yield return StartCoroutine(GenerateMon(selectedIndices, index + 1));
+        }
+        else
+        {
+            Debug.Log("All Pokemon have been processed.");
+        }
+    }
 
     private IEnumerator RetrieveMon(int pokemonID, int currIndex)
     {
@@ -52,7 +76,7 @@ public class DatabaseManager : MonoBehaviour
             if (retrieve_result[0].Contains("Success"))
             {
                 Pokemon_Data data = retrievePokeData.retrievePokeData1(retrieve_result);
-                StartCoroutine(RetrieveStat(pokemonID, currIndex, data));
+                yield return StartCoroutine(RetrieveStat(pokemonID, currIndex, data));
             }
         }       
     }
@@ -76,8 +100,8 @@ public class DatabaseManager : MonoBehaviour
                 if (retrieve_result[0].Contains("Success"))
                 {
                     retrievePokeData.retrievePokeData2(retrieve_result, refData);
-                retrievePokeData.generatePokemonWithNoMoves(refData);
-                    StartCoroutine(RetrievePokeMovePool(pokemonID, currIndex));
+                    retrievePokeData.generatePokemonWithNoMoves(refData);
+                    yield return StartCoroutine(RetrievePokeMovePool(pokemonID, currIndex));
 
                 }
             }
@@ -107,7 +131,7 @@ public class DatabaseManager : MonoBehaviour
             if (retrieve_result[0].Contains("Success"))
             {
                 retrieveMoveData.retrieveMovePool(retrieve_result);
-                this.SelectMove(pokemonID, currentIndex);
+                yield return StartCoroutine(SelectMove(pokemonID, currentIndex));
             }
             else
             {
@@ -120,7 +144,7 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
-    private void SelectMove(int pokemonID, int currentIndex)
+    private IEnumerator SelectMove(int pokemonID, int currentIndex)
     {
         List<int> movePoolCopy = retrieveMoveData.movePoolIDs;
         List<int> usedIndices = new List<int>();
@@ -137,29 +161,27 @@ public class DatabaseManager : MonoBehaviour
             selectedIDs.Add(movePoolCopy[randomIndex]);
         }
 
-        Debug.Log("pokemon name: " + retrievePokeData.pokemonHolder[0].data.name);
-        //Debug.Log("Current Index: " + currentIndex);
-        Debug.Log("Pokemon Holder Count: " + retrievePokeData.pokemonHolder.Count);
+        Debug.Log("Pokemon Name: " + retrievePokeData.pokemonHolder[currentIndex].data.name);
+        Debug.Log("Move Pool Copy size: " + movePoolCopy.Count);
+
+        for (int i = 0; i < selectedIDs.Count; i++)
+        {
+            Debug.Log("selected ids: " + selectedIDs[i]);
+        }
+
 
         
-        for (int i = 0; i < retrievePokeData.pokemonHolder.Count; i++)
+  
+        for(int j = 0; j < retrievePokeData.pokemonHolder[currentIndex].moveSet.Length; j++)
         {
-            Debug.Log("i value: " + i);
-            Debug.Log("Mon Moveset Length: " + retrievePokeData.pokemonHolder[i].moveSet.Length);
-            for(int j = 0; j < retrievePokeData.pokemonHolder[i].moveSet.Length; j++)
-            {
-                retrievePokeData.pokemonHolder[i].moveSet[j] = selectedIDs[j];
-                Debug.Log("check pokemon holder move id data: index " + j + ": " + retrievePokeData.pokemonHolder[i].moveSet[j]);
-            }
-            
-
+            retrievePokeData.pokemonHolder[currentIndex].moveSet[j] = selectedIDs[j];
+            Debug.Log("check pokemon holder move id data: index " + j + ": " + retrievePokeData.pokemonHolder[currentIndex].moveSet[j]);
         }
 
         for (int i = 0; i < selectedIDs.Count; i++)
         {
-            StartCoroutine(RetrievePokeMoveData(selectedIDs[i]));
+            yield return StartCoroutine(RetrievePokeMoveData(selectedIDs[i]));
         }
-
     }
 
     private IEnumerator RetrievePokeMoveData(int moveID)
@@ -170,18 +192,13 @@ public class DatabaseManager : MonoBehaviour
         UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/retrieve_move.php", form);
         yield return retrieve_req.SendWebRequest();
 
-        if (retrieve_req == null)
-        {
-            Debug.LogError("Retrieve_Req is null.");
-        }
-
         if (retrieve_req.result == UnityWebRequest.Result.Success)
         {
             string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\t');
             if (retrieve_result[0].Contains("Success"))
             {
                 retrieveMoveData.retrieveMoveData(retrieve_result, moveID);
-
+                retrieveMoveData.clearLists();               
             }
             else
             {
@@ -190,24 +207,68 @@ public class DatabaseManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Response: " + retrieve_req.error);
             Debug.LogError("Web Request for RetrievePokeData faled.");
             
         }
+        
+    }
 
-        //Debug.Log("PokeHolder Size: " + retrievePokeData.pokeDataHolder.Count);
+    public void callSendBackData()
+    {
+        StartCoroutine(SendBackData());
+    }
+
+    public IEnumerator SendBackData()
+    {
+      yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[0]));
+
+      yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[1]));
+
+      yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[2]));
     }
 
     private IEnumerator SendToPokeDetails(Pokemon pokemon)
     {
         WWWForm form = new WWWForm();
-        form.AddField("playerID", pokemon.data.id);
+        form.AddField("playerID", pokemon.ownerID);
         form.AddField("pokemonID", pokemon.data.id);
-        form.AddField("nature", pokemon.nature);
-        form.AddField("gender", pokemon.sex.ToString());
+        form.AddField("pokemonGender", pokemon.sex.ToString());
+        form.AddField("pokemonNature", pokemon.nature);
+        form.AddField("moveID1", pokemon.moveSet[0]);
+        form.AddField("moveID2", pokemon.moveSet[1]);
+        form.AddField("moveID3", pokemon.moveSet[2]);
+        form.AddField("moveID4", pokemon.moveSet[3]);
 
-        UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/register_player_mon.php", form);
-        yield return retrieve_req.SendWebRequest();
+        UnityWebRequest send_req = UnityWebRequest.Post("http://localhost/send_to_pokedetails.php", form);
+        yield return send_req.SendWebRequest();
+
+
+        if (send_req == null)
+        {
+            Debug.LogError("Send Req is null.");
+        }
+
+        if (send_req.result == UnityWebRequest.Result.Success)
+        {
+            string[] retrieve_result = send_req.downloadHandler.text.Split('\t');
+            if (retrieve_result[0].Contains("Success"))
+            {
+                Debug.Log("Send Req back!");
+            }
+            else
+            {
+                Debug.Log("Response: " + send_req.downloadHandler.text);
+                Debug.Log("Send data failed.");
+            }
+        }
+        else
+        {
+            Debug.Log("Error: " + send_req.error);
+            Debug.Log("Response: " + send_req.downloadHandler.text);
+            Debug.LogError("Web Request for SendToPokeDetails faled.");
+
+        }
+
     }
 
 }

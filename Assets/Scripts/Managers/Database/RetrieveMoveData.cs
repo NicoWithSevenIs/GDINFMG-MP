@@ -39,6 +39,11 @@ public class RetrieveMoveData : MonoBehaviour
         //this.printMoveData();
     }
 
+    public void clearLists()
+    {
+        this.movePoolIDs.Clear();
+        this.chosenMoves.Clear();
+    }
 
     private void printMovePoolIDs()
     {
