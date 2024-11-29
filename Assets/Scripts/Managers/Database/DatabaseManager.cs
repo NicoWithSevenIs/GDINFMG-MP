@@ -26,7 +26,14 @@ public class DatabaseManager : MonoBehaviour
     }
 
     public void GeneratePlayerParty()
-    {
+    {   
+        if (retrievePokeData.pokemonHolder.Count != 0)
+        {
+            retrievePokeData.pokemonHolder.Clear();
+            retrievePokeData.pokeDataHolder.Clear();
+            retrieveMoveData.clearLists();
+        }
+
         List<int> usedIndices = new List<int>();
         List<int> selectedIndices = new List<int>();
         for (int i = 0; i < partysize; i++)
@@ -58,6 +65,7 @@ public class DatabaseManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("Generated Pokemons: " + retrievePokeData.pokemonHolder.Count);
             Debug.Log("All Pokemon have been processed.");
         }
     }
@@ -213,22 +221,42 @@ public class DatabaseManager : MonoBehaviour
         
     }
 
-    public void callSendBackData()
+    public void callSendBackData ()
     {
-        StartCoroutine(SendBackData());
+        if (retrievePokeData.pokemonHolder.Count != 0)
+        {
+            StartCoroutine(SendBackData());
+        }
+        else
+        {
+            Debug.Log("Not enough party members!");
+        }
+       
     }
 
     public IEnumerator SendBackData()
     {
-      yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[0]));
+        yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[0], 0));
 
-      yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[1]));
+        Debug.Log("Finished 0 Index");
 
-      yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[2]));
+        yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[1], 1));
+
+        Debug.Log("Finished 1 Index");
+
+        yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[2], 2));
+
+        Debug.Log("Finished 2 Index");
+
+        Debug.Log("clear all the holders");
+
+        retrievePokeData.pokemonHolder.Clear();
+        retrievePokeData.pokeDataHolder.Clear();
+        retrieveMoveData.clearLists();
     }
 
-    private IEnumerator SendToPokeDetails(Pokemon pokemon)
-    {
+    private IEnumerator SendToPokeDetails(Pokemon pokemon, int partyMemberNum)
+    {   
         WWWForm form = new WWWForm();
         form.AddField("playerID", pokemon.ownerID);
         form.AddField("pokemonID", pokemon.data.id);
@@ -238,6 +266,8 @@ public class DatabaseManager : MonoBehaviour
         form.AddField("moveID2", pokemon.moveSet[1]);
         form.AddField("moveID3", pokemon.moveSet[2]);
         form.AddField("moveID4", pokemon.moveSet[3]);
+        form.AddField("partyMemberNum", partyMemberNum);
+
 
         UnityWebRequest send_req = UnityWebRequest.Post("http://localhost/send_to_pokedetails.php", form);
         yield return send_req.SendWebRequest();
@@ -258,17 +288,16 @@ public class DatabaseManager : MonoBehaviour
             else
             {
                 Debug.Log("Response: " + send_req.downloadHandler.text);
-                Debug.Log("Send data failed.");
+                Debug.LogWarning("Send data failed.");
             }
         }
         else
         {
-            Debug.Log("Error: " + send_req.error);
+            Debug.Log("Error: " + send_req.error + " Party Num: " + partyMemberNum);
             Debug.Log("Response: " + send_req.downloadHandler.text);
-            Debug.LogError("Web Request for SendToPokeDetails faled.");
+            Debug.LogWarning("Web Request for SendToPokeDetails faled.");
 
         }
-
     }
 
 }
