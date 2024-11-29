@@ -1,0 +1,41 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class UI_ViewPokemonMenu: MonoBehaviour
+{
+    [SerializeField] private CanvasGroup ViewScreen;
+    [SerializeField] private UI_DisplayViewPokemon display;
+    [SerializeField] private UI_DataViewPokemon data;
+
+    public void SetUIActive(CanvasGroup group, bool active)
+    {
+        group.alpha = active ? 1 : 0;
+        group.blocksRaycasts = active;
+        group.interactable = active;
+    }
+
+    private void Awake()
+    {
+        ViewScreen.gameObject.SetActive(true);
+
+        SetUIActive(ViewScreen, false);
+        EventBroadcaster.AddObserver(EVENT_NAMES.UI_EVENTS.ON_VIEWER_INVOKED, t => {
+            LoadPokemonToViewer((int)t["Party Index"]);
+            SetUIActive(ViewScreen, true);
+        });
+    }
+
+    private void LoadPokemonToViewer(int partyIndex)
+    {
+        Pokemon_Battle_Instance i = BattleManager.instance.GetPlayerPokemon(partyIndex);
+        display.LoadPokemonData(i);
+        data.LoadPokemonData(i);
+    }
+
+    public void ExitViewScreen()
+    {
+        SetUIActive(ViewScreen, false);
+    }
+
+}

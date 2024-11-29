@@ -2,17 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pokemon_Data : MonoBehaviour
+public struct Pokemon_Data 
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public int id;
+    public string name;
+   
+
+    public EType type1;
+    public EType? type2;
+
+    public Stat baseStats;
+
+    public float weight;
+    public float height;
+
+    public Pokemon_Data
+        (   
+            int id,
+            string name,
+            EType type1,
+            EType? type2,
+            Stat baseStats,
+            float weight,
+            float height
+        )
     {
-        
+        this.id = id;
+        this.name = name;
+        this.type1 = type1;
+        this.type2 = type2;
+        this.weight = weight;
+        this.height = height;
+        this.baseStats = baseStats;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
