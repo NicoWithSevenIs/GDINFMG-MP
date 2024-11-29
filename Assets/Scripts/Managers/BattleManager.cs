@@ -65,8 +65,13 @@ public class BattleManager : MonoBehaviour
             if (t["Battler Name"] as string != "Enemy")
                 return;
 
-            if(Enemy.AvailablePokemon > 0)
+            if (Enemy.AvailablePokemon > 0 )
                 Enemy.SwitchPokemon(Enemy.ActivePokemonIndex + 1);
+            else
+            {
+                EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_PLAYER_WIN);
+                Debug.Log("Player Won");
+            }
             
         });
 
@@ -76,6 +81,11 @@ public class BattleManager : MonoBehaviour
 
             if (Player.AvailablePokemon > 0)
                 EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_FORCE_SWITCH);
+            else
+            {
+                EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_ENEMY_WIN);
+                Debug.Log("Enemy Won");
+            }
         });
 
         EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_MOVE_DECLARED, PerformMove);

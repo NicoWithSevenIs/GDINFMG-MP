@@ -20,6 +20,15 @@ public class UI_HealthBar : MonoBehaviour
     {
         EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_CHANGED, OnPokemonSwitched);
         EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_HEALTH_CHANGED, OnHealthUpdate);
+
+        void OnBattleOver(Dictionary<string, object> data) => gameObject.SetActive(false);
+
+
+        switch (owner)
+        {
+            case "Player": EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_ENEMY_WIN, OnBattleOver); break;
+            case "Enemy": EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_PLAYER_WIN, OnBattleOver); break;
+        }
     }
 
     public void OnPokemonSwitched(Dictionary<string, object> p)

@@ -24,5 +24,17 @@ public class UI_PokemonIcon : MonoBehaviour
                 pokemon.sprite = WebAPIManager.Instance.GetSprite(battle_instance.Front_Sprite_URL);
 
         });
+
+        void OnBattleOver(Dictionary<string, object> data) => gameObject.SetActive(false);
+        
+
+        switch (ownerName)
+        {
+            case "Player": EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_ENEMY_WIN, OnBattleOver); break;
+            case "Enemy": EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_PLAYER_WIN, OnBattleOver); break;
+        }
+
+
+
     }
 }
