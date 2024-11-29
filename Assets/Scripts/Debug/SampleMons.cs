@@ -44,7 +44,7 @@ public class SampleMons
         tackle = new MoveData("Close Combat", "Hits Mon", 110, 35, EType.FIGHTING, EMoveType.PHYSICAL);
         hydroPump = new MoveData("Hydro Pump", "The target is blasted by a huge volume of water launched under great pressure.", 110, 35, EType.WATER, EMoveType.SPECIAL);
         growl = new MoveData("Dragon Dance", "Hits Mon", 40, 35, EType.DRAGON, EMoveType.STATUS);
-        earthQuake = new MoveData("Brave Bird", "Hits Mon", 110, 35, EType.FLYING, EMoveType.PHYSICAL);
+        earthQuake = new MoveData("Charge Beam", "Hits Mon", 60, 35, EType.ELECTRIC, EMoveType.SPECIAL);
 
         Move mTackle = MoveManager.GetMove(18);
         mTackle.Data = tackle;

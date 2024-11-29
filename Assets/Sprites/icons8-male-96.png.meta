@@ -143,7 +143,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      icons8-male-96_0: 9188706581615298274
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
