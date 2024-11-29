@@ -8,6 +8,7 @@ public class StatModHandler
 {
     private Dictionary<EStatType, int> mods = new();
 
+    public Dictionary<EStatType, int> Mods { get => mods; }
     public StatModHandler()
     {
         int count = Enum.GetNames(typeof(EStatType)).Length;
