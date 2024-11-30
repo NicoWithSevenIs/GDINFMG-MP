@@ -11,5 +11,5 @@ public class TailSlap : Move
         bool isACriticalStrike;
         float damage = Pokemon_Battle_Instance.CalculateDamage(attacker, target, m_Data.Value.power, m_Data.Value.type, m_Data.Value.moveType, out isACriticalStrike);
         target.TakeDamage(damage);
-    }
+    }   
 }

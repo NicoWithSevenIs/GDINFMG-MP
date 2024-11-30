@@ -55,7 +55,7 @@ public class SampleMons
         Move mGrowl = MoveManager.GetMove(20);
         mGrowl.Data = growl;
 
-        Move mEarthquake = MoveManager.GetMove(9);
+        Move mEarthquake = MoveManager.GetMove(4);
         mEarthquake.Data = earthQuake;
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DragonPulse : Move
 {
-    public override int ID => 18;
+    public override int ID => 19;
 
     public override void PerformMove(Pokemon_Battle_Instance attacker, Pokemon_Battle_Instance target)
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Scratch : Move
 {
-    public override int ID => 5;
+    public override int ID => 101;
 
     public override void PerformMove(Pokemon_Battle_Instance attacker, Pokemon_Battle_Instance target)
     {
