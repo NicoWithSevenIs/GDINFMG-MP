@@ -1,0 +1,26 @@
+DROP TABLE IF EXISTS Pokemon;
+CREATE TABLE Pokemon (pokemonID INT, pokemonName VARCHAR(50), 
+                      pokemonType1 VARCHAR(10), pokemonType2 VARCHAR(10), 
+                      pokemonStatsID INT, pokemonWeight INT, pokemonHeight INT, isInParty bool);
+
+DROP TABLE IF EXISTS PokeStats;
+CREATE TABLE PokeStats (statsID INT, hp INT, speed INT,
+                        attack INT, spAttack INT, defense INT, spDefense INT);
+                        
+ DROP TABLE IF EXISTS MovePool;
+ CREATE TABLE MovePool (pokemonID INT, moveID1 INT, moveID2 INT, moveID3 INT, moveID4 INT);
+ 
+ DROP TABLE IF EXISTS Move;
+ CREATE TABLE Move (moveID INT, moveName VARCHAR(50), moveType VARCHAR(10), 
+                    moveDescription TEXT, movePP INT, movePower INT);
+                    
+DROP TABLE IF EXISTS Player;
+CREATE TABLE Player (playerID INT, currency INT, currentFloor INT);
+
+DROP TABLE IF EXISTS PokemonDetails;
+CREATE TABLE PokemonDetails(playerID INT, pokemonID1 INT, pokemonID2 INT, pokemonID3 INT);
+
+
+                    
+ 
+ 

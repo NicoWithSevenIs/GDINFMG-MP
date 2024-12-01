@@ -46,7 +46,7 @@ public class BattleManager : MonoBehaviour
         {
             foreach (var battle_instance in Party)
             {
-                int id = battle_instance.Pokemon.data.id;
+                int id = battle_instance.Pokemon.data.spriteID;
 
                 string frontFile = $"{BASE_URL}{id}.png";
                 string backFile = $"{BASE_URL}back/{id}.png";

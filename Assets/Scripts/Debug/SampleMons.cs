@@ -24,9 +24,9 @@ public class SampleMons
 
     public SampleMons()
     {
-        monData1 = new(572, "Minccino", EType.NORMAL, null, new Stat(55,50,40,40,40,75), 5.8f, 0.4f);
-        monData2 = new(380, "Latias", EType.DRAGON, EType.PSYCHIC, new Stat(80,80,90,110,130,110), 52f, 1.8f);
-        monData3 = new(802, "Marshadow", EType.FIGHTING, EType.GHOST, new Stat(90,125,80,90,90,125), 22.2f, 0.7f);
+        monData1 = new(7, 572, "Minccino", EType.NORMAL, null, new Stat(55,50,40,40,40,75), 5.8f, 0.4f);
+        monData2 = new(9, 380, "Latias", EType.DRAGON, EType.PSYCHIC, new Stat(80,80,90,110,130,110), 52f, 1.8f);
+        monData3 = new(10, 802, "Marshadow", EType.FIGHTING, EType.GHOST, new Stat(90,125,80,90,90,125), 22.2f, 0.7f);
 
         mon = new(1, monData1, ESex.MALE, new Stat(31, 31, 31, 31, 31, 31), new Stat(6, 252, 0, 0, 0, 252), "Jolly", new int[4]{20,2,18,8});
         mon2 = new(1, monData2, ESex.FEMALE, new Stat(31, 31, 31, 31, 31, 31), new Stat(6, 0, 0, 252, 0, 252), "Timid", new int[4] { 20, 2, 18, 8 });

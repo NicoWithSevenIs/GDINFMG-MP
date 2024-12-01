@@ -6,6 +6,7 @@ public struct Pokemon_Data
 {
 
     public int id;
+    public int spriteID;
     public string name;
    
 
@@ -20,6 +21,7 @@ public struct Pokemon_Data
     public Pokemon_Data
         (   
             int id,
+            int spriteID,
             string name,
             EType type1,
             EType? type2,
@@ -29,6 +31,7 @@ public struct Pokemon_Data
         )
     {
         this.id = id;
+        this.spriteID = spriteID;
         this.name = name;
         this.type1 = type1;
         this.type2 = type2;
