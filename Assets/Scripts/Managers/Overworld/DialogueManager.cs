@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -11,19 +13,25 @@ public class DialogueManager : MonoBehaviour
     {
         if (Instance == null)
             Instance = this;
-        else Destroy(gameObject);   
+        else Destroy(gameObject);
+
+        EventBroadcaster.AddObserver(EVENT_NAMES.OVERWORLD_EVENTS.ON_DIALOGUE_INVOKED, QueueDialogue);
     }
 
     #endregion
 
     private Queue<string> dialogueQueue = new();
     private string currentSpeaker;
+    private Action OnDialogueEnded;
 
-    public void QueueDialogue(string speaker, List<string> dialogueList)
+
+    public void QueueDialogue(Dictionary<string, object> p )
     {
-        currentSpeaker = speaker;
-        foreach(var d in dialogueList) 
+        currentSpeaker = p["Dialogue Speaker"] as string;
+
+        foreach(var d in p["Dialogue"] as List<string>) 
             dialogueQueue.Enqueue(d);
+
         Next();
     }
 
@@ -33,12 +41,28 @@ public class DialogueManager : MonoBehaviour
         p["Dialogue"] = dialogueQueue.Dequeue();
         p["Dialogue Speaker"] = currentSpeaker;
         EventBroadcaster.InvokeEvent(EVENT_NAMES.OVERWORLD_EVENTS.ON_DIALOGUE_CONTINUED, p);
+
+        if (dialogueQueue.Count == 0)
+        {
+            EventBroadcaster.InvokeEvent(EVENT_NAMES.OVERWORLD_EVENTS.ON_DIALOGUE_LEFT);
+
+            //Assign Stuff here
+
+            SceneManager.LoadScene("Nico Scene");
+        }
     }
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && dialogueQueue.Count > 0)
+
+        if (!Input.GetMouseButtonDown(0))
+            return;
+
+        if (dialogueQueue.Count > 0)
+        {
             Next();
+        } 
+     
     }
 
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class OUI_DIalogue : MonoBehaviour
+public class OUI_Dialogue : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI trainerName;
     [SerializeField] private TextMeshProUGUI dialogue;

@@ -16,7 +16,10 @@ public class EventBroadcaster
 
     private EventBroadcaster()
     {
-        SceneManager.sceneUnloaded += s => events.Clear();
+        SceneManager.sceneUnloaded += s => {
+            Debug.Log("Cleaning Up Listeners");
+            events.Clear(); 
+        };
         SceneManager.sceneLoaded += (s, t) => Debug.Log(events.Count);
     }
 
