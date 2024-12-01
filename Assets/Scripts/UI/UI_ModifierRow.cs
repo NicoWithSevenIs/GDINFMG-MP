@@ -8,20 +8,14 @@ public class UI_ModifierRow : MonoBehaviour
     [SerializeField] private CanvasGroup ups;
     [SerializeField] private CanvasGroup downs;
 
-    public void SetUIActive(CanvasGroup group, bool active)
-    {
-        group.alpha = active ? 1 : 0;
-        group.blocksRaycasts = active;
-        group.interactable = active;
-    }
 
     private void Awake()
     {
         ups.gameObject.SetActive(true); 
         downs.gameObject.SetActive(true);
 
-        SetUIActive(ups, false);
-        SetUIActive(downs, false);
+        Utilities.SetUIActive(ups, false);
+        Utilities.SetUIActive(downs, false);
     }
 
     public void LoadMods(int modCount)
@@ -38,8 +32,8 @@ public class UI_ModifierRow : MonoBehaviour
 
         modCount = Mathf.Clamp(modCount, -6, 6);
 
-        SetUIActive(ups, modCount > 0);
-        SetUIActive(downs, modCount < 0);
+        Utilities.SetUIActive(ups, modCount > 0);
+        Utilities.SetUIActive(downs, modCount < 0);
 
         Transform t = modCount > 0 ? ups.transform : modCount < 0 ? downs.transform : null;
         float s = Mathf.Abs(modCount);

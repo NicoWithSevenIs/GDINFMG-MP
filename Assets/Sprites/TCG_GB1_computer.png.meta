@@ -143,7 +143,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      TCG_GB1_computer_0: -7163952707090790889
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
