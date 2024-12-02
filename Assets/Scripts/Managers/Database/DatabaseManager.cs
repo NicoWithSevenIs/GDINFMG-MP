@@ -361,7 +361,7 @@ public class DatabaseManager : MonoBehaviour
 
         if (retrieve_req.result == UnityWebRequest.Result.Success)
         {
-            string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\n');
+            //string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\n');
 
         }
         else
