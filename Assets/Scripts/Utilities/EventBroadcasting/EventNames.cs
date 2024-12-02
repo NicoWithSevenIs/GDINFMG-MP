@@ -23,4 +23,13 @@ public static class EVENT_NAMES
         public const string ON_DIALOGUE_INVOKED = "ON_DIALOGUE_INVOKED";
         public const string ON_DIALOGUE_ENDED = "ON_DIALOGUE_ENDED";
     }
+
+    public static class OVERWORLD_EVENTS
+    {
+        public const string ON_DIALOGUE_CONTINUED = "ON_DIALOGUE_CONTINUED";
+        public const string ON_DIALOGUE_INVOKABLE = "ON_DIALOGUE_INVOKABLE";
+        public const string ON_DIALOGUE_INVOKED = "ON_DIALOGUE_INVOKED";
+        public const string ON_DIALOGUE_LEFT = "ON_DIALOGUE_LEFT";
+    }
+
 }

@@ -13,4 +13,11 @@ public static class Utilities
         }
         script.StartCoroutine(waiter());
     }
+
+    public static void SetUIActive(CanvasGroup group, bool active)
+    {
+        group.alpha = active ? 1 : 0;
+        group.blocksRaycasts = active;
+        group.interactable = active;
+    }
 }

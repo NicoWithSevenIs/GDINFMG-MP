@@ -8,21 +8,16 @@ public class UI_ViewPokemonMenu: MonoBehaviour
     [SerializeField] private UI_DisplayViewPokemon display;
     [SerializeField] private UI_DataViewPokemon data;
 
-    public void SetUIActive(CanvasGroup group, bool active)
-    {
-        group.alpha = active ? 1 : 0;
-        group.blocksRaycasts = active;
-        group.interactable = active;
-    }
+
 
     private void Awake()
     {
         ViewScreen.gameObject.SetActive(true);
 
-        SetUIActive(ViewScreen, false);
+        Utilities.SetUIActive(ViewScreen, false);
         EventBroadcaster.AddObserver(EVENT_NAMES.UI_EVENTS.ON_VIEWER_INVOKED, t => {
             LoadPokemonToViewer((int)t["Party Index"]);
-            SetUIActive(ViewScreen, true);
+            Utilities.SetUIActive(ViewScreen, true);
         });
     }
 
@@ -35,7 +30,7 @@ public class UI_ViewPokemonMenu: MonoBehaviour
 
     public void ExitViewScreen()
     {
-        SetUIActive(ViewScreen, false);
+        Utilities.SetUIActive(ViewScreen, false);
     }
 
 }

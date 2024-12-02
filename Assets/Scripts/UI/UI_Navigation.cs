@@ -24,38 +24,33 @@ public class UI_Navigation : MonoBehaviour
         EventBroadcaster.AddObserver(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_ENDED, t => ReturnToRoot());
     }
 
-    public void SetUIActive(CanvasGroup group, bool active)
-    {
-        group.alpha = active ? 1 : 0;
-        group.blocksRaycasts = active;
-        group.interactable = active;
-    }
+
 
     public void DisableAll()
     {
-        SetUIActive(rootMenu, false);
-        SetUIActive(moveMenu, false);
+        Utilities.SetUIActive(rootMenu, false);
+        Utilities.SetUIActive(moveMenu, false);
         switchMenu.gameObject.SetActive(false);
     }
 
     public void ReturnToRoot()
     {
-        SetUIActive(rootMenu, true);
-        SetUIActive(moveMenu, false);
+        Utilities.SetUIActive(rootMenu, true);
+        Utilities.SetUIActive(moveMenu, false);
         switchMenu.gameObject.SetActive(false);
     }
 
     public void InvokeMoveMenu()
     {
-        SetUIActive(rootMenu, false);
-        SetUIActive(moveMenu, true);
+        Utilities.SetUIActive(rootMenu, false);
+        Utilities.SetUIActive(moveMenu, true);
         switchMenu.gameObject.SetActive(false);
     }
 
     public void InvokeSwitchMenu(bool forceSwitch)
     {
-        SetUIActive(rootMenu, false);
-        SetUIActive(moveMenu, false);
+        Utilities.SetUIActive(rootMenu, false);
+        Utilities.SetUIActive(moveMenu, false);
         switchMenu.gameObject.SetActive(true);
         switchMenuBackButton.SetActive(!forceSwitch);
     }

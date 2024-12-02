@@ -4,8 +4,7 @@ using UnityEngine;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
-using UnityEngine.U2D;
-using UnityEditor.Experimental.GraphView;
+using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour
 {
@@ -71,6 +70,8 @@ public class BattleManager : MonoBehaviour
             {
                 EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_PLAYER_WIN);
                 Debug.Log("Player Won");
+
+                SceneManager.LoadScene("Derek Scene");
             }
             
         });
@@ -85,6 +86,7 @@ public class BattleManager : MonoBehaviour
             {
                 EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_ENEMY_WIN);
                 Debug.Log("Enemy Won");
+                SceneManager.LoadScene("Derek Scene");
             }
         });
 
