@@ -13,11 +13,18 @@ public class OUI_DialogueButton : MonoBehaviour
     private void Start()
     {
         EventBroadcaster.AddObserver(EVENT_NAMES.OVERWORLD_EVENTS.ON_DIALOGUE_INVOKABLE, t => {
-            currentSpeaker =  t["Dialogue Speaker"] as string;
+            currentSpeaker = t["Dialogue Speaker"] as string;
             currentDialogue = t["Dialogue"] as List<string>;
             button.gameObject.SetActive(true);
         });
+
+        EventBroadcaster.AddObserver(EVENT_NAMES.OVERWORLD_EVENTS.ON_DIALOGUE_LEFT, t => { 
+            if (button != null) 
+                button.gameObject.SetActive(false);  
+        });
+
         button.gameObject.SetActive(false);
+    
     }
 
 
