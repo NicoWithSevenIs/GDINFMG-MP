@@ -10,7 +10,7 @@ public abstract class Move
     protected MoveData? m_Data = null;
 
     public MoveData Data {
-        get => m_Data.Value;
+        get => m_Data.Value;    
         set => m_Data = value;
     }
 }

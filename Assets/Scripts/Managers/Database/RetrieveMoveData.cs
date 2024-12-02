@@ -31,8 +31,9 @@ public class RetrieveMoveData : MonoBehaviour
         MoveData newMove = new MoveData(name, description, power, 100, moveType, moveGroup);
         this.chosenMoves.Add(newMove);
 
-        Move move = MoveManager.GetMove(moveID);
-        move.Data = newMove;
+        MoveManager.assignMoveData(moveID, newMove);
+        //Move move = MoveManager.GetMove(moveID);
+        //move.Data = newMove;
         //this.printMoveData();
     }
 

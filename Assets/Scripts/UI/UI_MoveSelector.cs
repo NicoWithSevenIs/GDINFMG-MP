@@ -18,8 +18,17 @@ public class UI_MoveSelector : MonoBehaviour
         EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_CHANGED, t => {
             if (t["Battler Name"] as string != "Player")
                 return;
-            var mon = t["Active Pokemon"] as Pokemon_Battle_Instance;
-            heldMoveData = MoveManager.GetMove(mon.Pokemon.moveSet[index]).Data;
+            var mon = t["Active Pokemon"] as Pokemon_Battle_Instance; 
+            //heldMoveData = MoveManager.GetMove(mon.Pokemon.moveSet[index]).Data;
+            try
+            {
+                heldMoveData = MoveManager.GetMove(mon.Pokemon.moveSet[index]).Data;
+            }
+            catch (System.Exception ex)
+            {
+                Debug.Log(mon.Pokemon.moveSet[index]);
+            }
+
             OnPokemonChanged();
         });
     }

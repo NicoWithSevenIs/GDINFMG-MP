@@ -33310,6 +33310,17 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &471343406 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1258471703472914027, guid: 235e06d677fa3ba4287ec1a8484298f7, type: 3}
+  m_PrefabInstance: {fileID: 484105077}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88ee1a33662c8544598928fef42fe4cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &484105077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33661,7 +33672,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 471343406}
         m_TargetAssemblyTypeName: DatabaseManager, Assembly-CSharp
         m_MethodName: callReshuffle
         m_Mode: 1
@@ -59728,9 +59739,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 471343406}
         m_TargetAssemblyTypeName: DatabaseManager, Assembly-CSharp
-        m_MethodName: GeneratePlayerParty
+        m_MethodName: callSendBackData
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

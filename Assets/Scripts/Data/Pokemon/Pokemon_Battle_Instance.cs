@@ -81,6 +81,7 @@ public class Pokemon_Battle_Instance
 
             foreach (var key in keys)
             {
+                Debug.Log("Key in Battle_Instance: " + key.ToString());
                 float Base = pokemon.data.baseStats.GetByEnum(key);
                 float IV = pokemon.IV.GetByEnum(key);
                 float EV = pokemon.EV.GetByEnum(key);

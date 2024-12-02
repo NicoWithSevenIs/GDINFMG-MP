@@ -33,6 +33,12 @@ public class MoveManager: MonoBehaviour
 
     public static Move GetMove(int key) => instance.moveDict[key];
 
+    public static void assignMoveData(int key, MoveData movedata)
+    {
+        Debug.Log("moveData name: " + movedata.name + "at key: " + key);
+        instance.moveDict[key].Data = movedata; 
+    }
+
     public void Build()
     {
         Type moveType = typeof(Move);

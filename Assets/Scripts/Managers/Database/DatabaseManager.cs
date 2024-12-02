@@ -13,6 +13,7 @@ public class DatabaseManager : MonoBehaviour
 
     public UIHandler uiHandler;
 
+    
     public List<Pokemon> EnemyMons = new List<Pokemon>();
 
     public int partysize;
@@ -130,6 +131,7 @@ public class DatabaseManager : MonoBehaviour
             Debug.Log("Generated Pokemons: " + retrievePokeData.pokemonHolder.Count);
             Debug.Log("All Pokemon have been processed.");
             Debug.Log("RetrievePokeData PokemonHolder at GenEnemyMon: " + retrievePokeData.pokemonHolder.Count);
+            EnemyMons = retrievePokeData.pokemonHolder;
             Enemy.Instance.enemyMons = retrievePokeData.pokemonHolder;
             Debug.Log("Enemy.Instance.enemyMons: " + Enemy.Instance.enemyMons.Count);
 
@@ -255,7 +257,7 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
-    private IEnumerator RetrievePokeMoveData(int moveID)
+    public IEnumerator RetrievePokeMoveData(int moveID)
     {
         WWWForm form = new WWWForm();
         form.AddField("moveID", moveID);
@@ -416,6 +418,7 @@ public class DatabaseManager : MonoBehaviour
         UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/send_to_player.php", form);
         yield return retrieve_req.SendWebRequest();
 
+      
         if (retrieve_req == null)
         {
             Debug.LogError("Send Req is null.");
@@ -423,6 +426,7 @@ public class DatabaseManager : MonoBehaviour
 
         if (retrieve_req.result == UnityWebRequest.Result.Success)
         {
+            retrievePlayerData.chosenInstances.Clear();
             //string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\n');
 
         }
