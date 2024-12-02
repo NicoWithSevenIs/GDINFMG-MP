@@ -332,7 +332,7 @@ public class DatabaseManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Web Request for RetrievePlayerData faled.");
+            Debug.LogWarning("Web Request for GetPlayerData faled.");
         }
 
     }
@@ -361,10 +361,42 @@ public class DatabaseManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Web Request for RetrievePlayerData faled.");
+            Debug.LogWarning("Web Request for SendPlayerData faled.");
         }
     }
 
+    public void callReshuffle()
+    {
+        StartCoroutine(ReshuffleMons());
+    }
+
+    private IEnumerator ReshuffleMons()
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("playerID", PlayerManager.playerID);
+
+        UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/reshuffle_player_mons.php", form);
+        yield return retrieve_req.SendWebRequest();
+
+        if (retrieve_req == null)
+        {
+            Debug.LogError("Send Req is null.");
+        }
+
+        if (retrieve_req.result == UnityWebRequest.Result.Success)
+        {
+            string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\n');
+            foreach (string s in retrieve_result)
+            {
+                Debug.Log(s);
+            }
+
+        }
+        else
+        {
+            Debug.LogWarning("Web Request for RetrievePlayerData faled.");
+        }
+    }
 
 }
 
