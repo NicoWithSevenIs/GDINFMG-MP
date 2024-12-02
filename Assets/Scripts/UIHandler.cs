@@ -4,10 +4,21 @@ using UnityEngine;
 
 public class UIHandler : MonoBehaviour
 {
+    public GameObject generateDonePrompt;
     // Start is called before the first frame update
     void Start()
     {
-        
+        this.generateDonePrompt.SetActive(false);
+    }
+
+    public void clickedgenerateDonePromptOk()
+    {
+        this.generateDonePrompt.SetActive(false);
+    }
+
+    public void openGenerateDonePrompt()
+    {
+        this.generateDonePrompt.SetActive(true);
     }
 
     // Update is called once per frame

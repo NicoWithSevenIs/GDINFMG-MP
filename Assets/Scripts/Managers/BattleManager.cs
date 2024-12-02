@@ -36,9 +36,11 @@ public class BattleManager : MonoBehaviour
     private void Initialize()
     {
         //make queries here
+        List<Pokemon> enemyPokemons = new List<Pokemon>();
+        DatabaseManager.Instance.GenerateEnemyParty(enemyPokemons);
 
-        Player = new Battler(Battler.PLAYER, SampleMons.GetList());
-        Enemy  = new Battler(Battler.ENEMY, SampleMons.GetList());
+        Player = new Battler(Battler.PLAYER, PlayerManager.party);
+        Enemy  = new Battler(Battler.ENEMY, enemyPokemons);
 
 
         void DownloadSprites(Pokemon_Battle_Instance[] Party)

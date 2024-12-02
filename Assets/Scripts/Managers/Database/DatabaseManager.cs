@@ -11,6 +11,8 @@ public class DatabaseManager : MonoBehaviour
     public RetrieveMoveData retrieveMoveData;
     public RetrievePlayerData retrievePlayerData;
 
+    public UIHandler uiHandler;
+
     public int partysize;
     public int debug_num;
 
@@ -56,6 +58,7 @@ public class DatabaseManager : MonoBehaviour
         StartCoroutine(GenerateMon(selectedIndices, 0));
     }
 
+
     private IEnumerator GenerateMon(List<int> selectedIndices, int index)
     {
         if (index < selectedIndices.Count)
@@ -71,6 +74,54 @@ public class DatabaseManager : MonoBehaviour
         {
             Debug.Log("Generated Pokemons: " + retrievePokeData.pokemonHolder.Count);
             Debug.Log("All Pokemon have been processed.");
+            uiHandler.openGenerateDonePrompt();
+        }
+    }
+
+    public void GenerateEnemyParty(List<Pokemon> enemyPokemons)
+    {
+        if (retrievePokeData.pokemonHolder.Count != 0)
+        {
+            retrievePokeData.pokemonHolder.Clear();
+            retrievePokeData.pokeDataHolder.Clear();
+            retrieveMoveData.clearLists();
+        }
+
+        List<int> usedIndices = new List<int>();
+        List<int> selectedIndices = new List<int>();
+        for (int i = 0; i < partysize; i++)
+        {
+            int randomized_int;
+            do
+            {
+                randomized_int = Random.Range(1, 11);
+                //Debug.Log("Gen Party i value: " + i);
+                //Debug.Log("Gen Party Random Int: " + randomized_int);
+            } while (usedIndices.Contains(randomized_int));
+            usedIndices.Add(randomized_int);
+            selectedIndices.Add(randomized_int);
+        }
+
+        StartCoroutine(GenerateEnemyMon(selectedIndices, 0, enemyPokemons));
+    }
+
+    private IEnumerator GenerateEnemyMon(List<int> selectedIndices, int index, List<Pokemon> enemyPokemons)
+    {
+        if (index < selectedIndices.Count)
+        {
+            int pokemonID = selectedIndices[index];
+            Debug.Log("Starting RetrieveMon for pokemonID: " + pokemonID);
+
+            yield return StartCoroutine(RetrieveMon(pokemonID, index));
+
+            yield return StartCoroutine(GenerateMon(selectedIndices, index + 1));
+        }
+        else
+        {
+            Debug.Log("Generated Pokemons: " + retrievePokeData.pokemonHolder.Count);
+            Debug.Log("All Pokemon have been processed.");
+            //uiHandler.openGenerateDonePrompt();
+            enemyPokemons = retrievePokeData.pokemonHolder; 
         }
     }
 
