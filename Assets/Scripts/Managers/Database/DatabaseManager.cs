@@ -9,6 +9,7 @@ public class DatabaseManager : MonoBehaviour
     public static DatabaseManager Instance;
     public RetrievePokeData retrievePokeData;
     public RetrieveMoveData retrieveMoveData;
+    public RetrievePlayerData retrievePlayerData;
 
     public int partysize;
 
@@ -23,6 +24,8 @@ public class DatabaseManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        PlayerManager.initialize();
     }
 
     public void GeneratePlayerParty()
@@ -177,9 +180,6 @@ public class DatabaseManager : MonoBehaviour
             Debug.Log("selected ids: " + selectedIDs[i]);
         }
 
-
-        
-  
         for(int j = 0; j < retrievePokeData.pokemonHolder[currentIndex].moveSet.Length; j++)
         {
             retrievePokeData.pokemonHolder[currentIndex].moveSet[j] = selectedIDs[j];
@@ -253,6 +253,8 @@ public class DatabaseManager : MonoBehaviour
         retrievePokeData.pokemonHolder.Clear();
         retrievePokeData.pokeDataHolder.Clear();
         retrieveMoveData.clearLists();
+
+
     }
 
     private IEnumerator SendToPokeDetails(Pokemon pokemon, int partyMemberNum)
@@ -284,6 +286,7 @@ public class DatabaseManager : MonoBehaviour
             if (retrieve_result[0].Contains("Success"))
             {
                 Debug.Log("Send Req back!");
+                yield return StartCoroutine(GetPlayerData());
             }
             else
             {
@@ -298,6 +301,39 @@ public class DatabaseManager : MonoBehaviour
             Debug.LogWarning("Web Request for SendToPokeDetails faled.");
 
         }
+    }
+
+    private IEnumerator GetPlayerData()
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("playerID", PlayerManager.playerID);
+
+        UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/retrieve_move.php", form);
+        yield return retrieve_req.SendWebRequest();
+
+        if (retrieve_req == null)
+        {
+            Debug.LogError("Send Req is null.");
+        }
+
+        if (retrieve_req.result == UnityWebRequest.Result.Success)
+        {
+            string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\t');
+            if (retrieve_result[0].Contains("Success"))
+            {
+                retrievePlayerData.sendToPlayerManager(retrieve_result);
+            }
+            else
+            {
+                Debug.Log("Response: " + retrieve_req.downloadHandler.text);
+                Debug.LogWarning("Send data failed.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Web Request for RetrievePlayerData faled.");
+        }
+
     }
 
 }

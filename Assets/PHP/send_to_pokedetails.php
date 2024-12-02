@@ -19,7 +19,7 @@ $moveID4 = $_POST["moveID4"];
 $partyMemberNum = $_POST["partyMemberNum"];
 
 $moncheckquery = "SELECT pokemonID FROM pokemondetails; ";
-$moncheck = mysqli_query($con, $moncheckquery) or die("2: Name Check Query Failed."); //error code 2 = namecheck query failed
+$moncheck = mysqli_query($con, $moncheckquery) or die("2: Mon Check Query Failed."); //error code 2 = namecheck query failed
 
 $num_rows = mysqli_num_rows($moncheck);
 

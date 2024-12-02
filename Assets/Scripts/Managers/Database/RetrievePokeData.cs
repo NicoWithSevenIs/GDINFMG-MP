@@ -47,7 +47,7 @@ public class RetrievePokeData : MonoBehaviour
     public void generatePokemonWithNoMoves(Pokemon_Data data)
     {
         Pokemon pokemon = new Pokemon();
-        pokemon.ownerID = 121;
+        pokemon.ownerID = PlayerManager.playerID;
         pokemon.data = data;
         pokemon.sex = utilHelper.RandomGenerateSex();
         pokemon.IV = utilHelper.RandomGenerateIVs();
