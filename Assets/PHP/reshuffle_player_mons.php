@@ -58,7 +58,7 @@ while ($FoundInParty) {
 
 // query to get Pokemon Fields //
 
-$retrieve_pokemon_query = "SELECT pokemonID, playerID, pokemonGender, pokemonNature, moveID1, moveID2, moveID3, moveID4, instanceID FROM pokemonDetails WHERE instanceID = '$randomInstanceID';";
+$retrieve_pokemon_query = "SELECT pokemonID, playerID, pokemonGender, pokemonNature, moveID1, moveID2, moveID3, moveID4, instanceID FROM pokemondetails WHERE instanceID = '$randomInstanceID';";
 $retrieve_pokemon = mysqli_query($con, $retrieve_pokemon_query) or die("ERROR WITH RETIEVEING POKEMON FIELDS GRA");
 $pokemon_info = mysqli_fetch_assoc($retrieve_pokemon);
 
@@ -71,27 +71,53 @@ $moveID2 = $pokemon_info["moveID2"];
 $moveID3 = $pokemon_info["moveID3"];
 $moveID4 = $pokemon_info["moveID4"]; 
 
-echo "Success";
-echo "\t";
-echo $randomInstanceID;
-echo "\t";
-echo "$playerID";
-echo "\t";
-echo $pokemonID;
-echo "\t";
-echo "$pokemonGender";
-echo "\t";
-echo $pokemonNature;
-echo "\t";
-echo "$playerID";
-echo "\t";
-echo $moveID1;
-echo "\t";
-echo $moveID2;
-echo "\t";
-echo $moveID3;
-echo "\t";
-echo "$moveID4";
-echo "\t";
+
+
+// echo $pokemonGender;
+// echo "\t";
+// echo $pokemonNature;
+// echo "\t";
+// echo $playerID;
+// echo "\t";
+// echo $moveID1;
+// echo "\t";
+// echo $moveID2;
+// echo "\t";
+// echo $moveID3;
+// echo "\t";
+// echo $moveID4;
+// echo "\t";
+
+//query to get Pokemon IV Fields //
+$retrieve_pokemon_iv_query = "SELECT hpIV, atkIV, sp_atkIV, defIV, sp_defIV, speedIV FROM pokemonivdetails JOIN pokemondetails ON pokemonivdetails.instanceID = pokemondetails.instanceID WHERE pokemondetails.instanceID = '$randomInstanceID';";
+$retrieve_pokemon_iv = mysqli_query($con, $retrieve_pokemon_iv_query) or die("ERROR WITH RETIEVEING POKEMON IV FIELDS GRA");
+$iv_info = mysqli_fetch_assoc($retrieve_pokemon_iv);
+
+$hpIV = $iv_info["hpIV"];
+$atkIV = $iv_info["atkIV"];
+$sp_atkIV = $iv_info["sp_atkIV"];
+$defIV = $iv_info["defIV"];
+$sp_defIV = $iv_info["sp_defIV"];
+$speedIV = $iv_info["speedIV"];
+
+// echo "Success";
+// echo "\t";
+// echo $randomInstanceID;
+// echo "\t";
+// echo $playerID;
+// echo "\t";
+// echo $pokemonID;
+// echo "\t";
+// echo $hpIV;
+// echo "\t";
+// echo $atkIV;
+// echo "\t";
+// echo $sp_atkIV;
+// echo "\t";
+// echo $defIV;
+// echo "\t";
+// echo $sp_defIV;
+// echo "\t";
+// echo $speedIV;
 
 ?>
