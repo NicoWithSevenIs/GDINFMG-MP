@@ -317,7 +317,7 @@ public class DatabaseManager : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("playerID", PlayerManager.playerID);
 
-        UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/retrieve_player_mons.php", form);
+        UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/retrieve_player.php", form);
         yield return retrieve_req.SendWebRequest();
 
         if (retrieve_req == null)
@@ -328,7 +328,7 @@ public class DatabaseManager : MonoBehaviour
         if (retrieve_req.result == UnityWebRequest.Result.Success)
         {
             string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\n');
-            retrievePlayerData.sendToPlayerManager(retrieve_result);
+            
         }
         else
         {
@@ -336,6 +336,35 @@ public class DatabaseManager : MonoBehaviour
         }
 
     }
+
+    private IEnumerator SendPlayerData(int instanceID1, int instanceID2, int instanceID3)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("playerID", PlayerManager.playerID);
+        form.AddField("currentFloor", PlayerManager.currentFloor);
+        form.AddField("instanceID1", instanceID1);
+        form.AddField("instanceID2", instanceID2);
+        form.AddField("instanceID3", instanceID3);
+
+        UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/send_to_player.php", form);
+        yield return retrieve_req.SendWebRequest();
+
+        if (retrieve_req == null)
+        {
+            Debug.LogError("Send Req is null.");
+        }
+
+        if (retrieve_req.result == UnityWebRequest.Result.Success)
+        {
+            string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\n');
+
+        }
+        else
+        {
+            Debug.LogWarning("Web Request for RetrievePlayerData faled.");
+        }
+    }
+
 
 }
 

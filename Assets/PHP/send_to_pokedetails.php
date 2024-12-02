@@ -19,6 +19,7 @@ $moveID4 = $_POST["moveID4"];
 
 $send_data_query = "INSERT INTO pokemondetails (playerID, pokemonID, pokemonGender, pokemonNature, moveID1, moveID2, moveID3, moveID4) VALUES ('$playerID', '$pokemonID', '$pokemonGender', '$pokemonNature', '$moveID1', '$moveID2', '$moveID3', '$moveID4');";   
 mysqli_query($con, $send_data_query) or die("4: Insert user details query failed.");
+
 echo("Success!");
 
 ?>
