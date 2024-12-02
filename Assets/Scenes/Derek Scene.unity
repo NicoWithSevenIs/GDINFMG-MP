@@ -33469,8 +33469,6 @@ GameObject:
   - component: {fileID: 688303130}
   - component: {fileID: 688303129}
   - component: {fileID: 688303131}
-  - component: {fileID: 688303133}
-  - component: {fileID: 688303132}
   m_Layer: 0
   m_Name: Drayden
   m_TagString: Untagged
@@ -33541,15 +33539,15 @@ Transform:
   m_GameObject: {fileID: 688303128}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.04, y: 90.76, z: 0}
+  m_LocalPosition: {x: 0.04, y: 91, z: 0}
   m_LocalScale: {x: 1.37859, y: 1.37859, z: 1.37859}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1023293512}
   m_Father: {fileID: 1543527650}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &688303131
-BoxCollider2D:
+--- !u!60 &688303131
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -33592,36 +33590,20 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
---- !u!114 &688303132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 688303128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9388a63735e83be448006892bd7e66d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speakerName: Drayden
-  dialogue:
-  - Pretend I'm the Final Boss
-  - Here I Go!!
---- !u!114 &688303133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 688303128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7039b509aa910474db1a2f4895b7686e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Points:
+    m_Paths:
+    - - {x: -0.15625, y: 0.40625}
+      - {x: -0.3125, y: 0.3125}
+      - {x: -0.3125, y: 0}
+      - {x: -0.296875, y: -0.078125}
+      - {x: -0.3125, y: -0.15625}
+      - {x: -0.3125, y: -0.390625}
+      - {x: -0.28125, y: -0.46875}
+      - {x: 0.203125, y: -0.46875}
+      - {x: 0.28125, y: -0.359375}
+      - {x: 0.28125, y: 0.25}
+      - {x: 0.09375, y: 0.40625}
+  m_UseDelaunayMesh: 0
 --- !u!1 &782704640
 GameObject:
   m_ObjectHideFlags: 0
@@ -58177,6 +58159,8 @@ GameObject:
   - component: {fileID: 1023293512}
   - component: {fileID: 1023293514}
   - component: {fileID: 1023293513}
+  - component: {fileID: 1023293516}
+  - component: {fileID: 1023293515}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -58299,6 +58283,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1023293515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1023293511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9388a63735e83be448006892bd7e66d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speakerName: Drayden
+  dialogue:
+  - Pretend I'm the Final Boss
+  - Here I Go!!
+--- !u!114 &1023293516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1023293511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7039b509aa910474db1a2f4895b7686e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1080592942
 GameObject:
   m_ObjectHideFlags: 0

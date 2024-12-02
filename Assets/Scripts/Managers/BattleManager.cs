@@ -85,7 +85,7 @@ public class BattleManager : MonoBehaviour
                 EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_FORCE_SWITCH);
             else
             {
-                PlayerManager.currentFloor = 0;
+                PlayerManager.currentFloor = -1;
                 EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_ENEMY_WIN);
                 Debug.Log("Enemy Won");
    
