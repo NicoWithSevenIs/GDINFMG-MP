@@ -236,22 +236,22 @@ public class DatabaseManager : MonoBehaviour
 
     public IEnumerator SendBackData()
     {
-        yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[0], 0));
+        yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[0]));
         Debug.Log("Finished 0 Index");
 
-        yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[1], 1));
+        yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[1]));
         Debug.Log("Finished 1 Index");
 
-        yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[2], 2));
+        yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[2]));
         Debug.Log("Finished 2 Index");
 
-        yield return StartCoroutine(SendToPokemonIVDetails(retrievePokeData.pokemonHolder[0], 0));
+        yield return StartCoroutine(SendToPokemonIVDetails(retrievePokeData.pokemonHolder[0]));
         Debug.Log("Finished 0 IV");
 
-        yield return StartCoroutine(SendToPokemonIVDetails(retrievePokeData.pokemonHolder[1], 1));
+        yield return StartCoroutine(SendToPokemonIVDetails(retrievePokeData.pokemonHolder[1]));
         Debug.Log("Finished 1 IV");
 
-        yield return StartCoroutine(SendToPokemonIVDetails(retrievePokeData.pokemonHolder[2], 2));
+        yield return StartCoroutine(SendToPokemonIVDetails(retrievePokeData.pokemonHolder[2]));
         Debug.Log("Finished 2 IV");
 
         Debug.Log("clear all the holders");
@@ -263,7 +263,7 @@ public class DatabaseManager : MonoBehaviour
 
     }
 
-    private IEnumerator SendToPokeDetails(Pokemon pokemon, int partyMemberNum)
+    private IEnumerator SendToPokeDetails(Pokemon pokemon)
     {   
         WWWForm form = new WWWForm();
         form.AddField("playerID", pokemon.ownerID);
@@ -274,7 +274,6 @@ public class DatabaseManager : MonoBehaviour
         form.AddField("moveID2", pokemon.moveSet[1]);
         form.AddField("moveID3", pokemon.moveSet[2]);
         form.AddField("moveID4", pokemon.moveSet[3]);
-        form.AddField("partyMemberNum", partyMemberNum);
 
 
         UnityWebRequest send_req = UnityWebRequest.Post("http://localhost/send_to_pokedetails.php", form);
@@ -282,7 +281,7 @@ public class DatabaseManager : MonoBehaviour
 
     }
 
-    private IEnumerator SendToPokemonIVDetails(Pokemon pokemon, int partyMemberNum)
+    private IEnumerator SendToPokemonIVDetails(Pokemon pokemon)
     {
         WWWForm form = new WWWForm();
         form.AddField("hpIV", pokemon.IV.Health.ToString());
@@ -291,7 +290,7 @@ public class DatabaseManager : MonoBehaviour
         form.AddField("defIV", pokemon.IV.Defense.ToString());
         form.AddField("sp_defIV", pokemon.IV.Special_Defense.ToString());
         form.AddField("speedIV", pokemon.IV.Speed.ToString());
-        form.AddField("pokemonID", pokemon.data.id);
+        
 
         UnityWebRequest send_req = UnityWebRequest.Post("http://localhost/send_to_pokemon_ivs.php", form);
         yield return send_req.SendWebRequest();
