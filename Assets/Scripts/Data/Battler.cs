@@ -15,9 +15,6 @@ public class Battler
     private Pokemon_Battle_Instance[] party;
     public Pokemon_Battle_Instance[] Party { get => party; }
 
-    private string trainerName;
-    public string TrainerName { get => trainerName; }
-
     private int activePokemonIndex = 0;
     public int ActivePokemonIndex { get => activePokemonIndex; }
     public Pokemon_Battle_Instance ActivePokemon { get =>  party[activePokemonIndex]; }
@@ -35,7 +32,6 @@ public class Battler
         activePokemonIndex = index;
 
         var p = new Dictionary<string, object>();
-        p.Add("Trainer Name", trainerName);
         p.Add("Battler Name", battlerName);
         p.Add("Active Pokemon", ActivePokemon);
 
@@ -43,7 +39,7 @@ public class Battler
 
         var comp = new ActionSequenceComponent(() => {
             var p = new Dictionary<string, object>();
-            p["Message"] = $"{trainerName} sent out {ActivePokemon.Pokemon.data.name}!";
+            p["Message"] = $"{battlerName} sent out {ActivePokemon.Pokemon.data.name}!";
             EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, p);
         }, true);
 
@@ -51,16 +47,16 @@ public class Battler
 
         if(performAtCall)
             ActionSequencer.Perform();
+       
     }
 
-    public Battler(string trainerName, string battlerName, List<Pokemon> mons)
+    public Battler(string battlerName, List<Pokemon> mons)
     {
         party = new Pokemon_Battle_Instance[3];
         for (int i = 0; i < PARTY_SIZE; i++)
             party[i] = new Pokemon_Battle_Instance(mons[i], battlerName);
 
         this.battlerName = battlerName;
-        this.trainerName = trainerName;
     }
 
     

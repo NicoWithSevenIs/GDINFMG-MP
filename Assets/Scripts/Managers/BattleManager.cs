@@ -37,8 +37,8 @@ public class BattleManager : MonoBehaviour
     {
         //make queries here
 
-        Player = new Battler("George", Battler.PLAYER, SampleMons.GetList());
-        Enemy  = new Battler("Tina", Battler.ENEMY, SampleMons.GetList());
+        Player = new Battler(Battler.PLAYER, SampleMons.GetList());
+        Enemy  = new Battler(Battler.ENEMY, SampleMons.GetList());
 
 
         void DownloadSprites(Pokemon_Battle_Instance[] Party)
