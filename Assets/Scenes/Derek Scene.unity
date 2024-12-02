@@ -636,7 +636,7 @@ GameObject:
   - component: {fileID: 136645640}
   - component: {fileID: 136645639}
   m_Layer: 0
-  m_Name: ButtonTest
+  m_Name: UIHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33309,7 +33309,7 @@ GameObject:
   - component: {fileID: 657555525}
   - component: {fileID: 657555524}
   m_Layer: 5
-  m_Name: Button
+  m_Name: PokemonCenterButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58776,7 +58776,7 @@ GameObject:
   - component: {fileID: 1294878072}
   - component: {fileID: 1294878071}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: PCBoxButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58845,19 +58845,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1294878072}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 136645639}
-        m_TargetAssemblyTypeName: ButtonTest, Assembly-CSharp
-        m_MethodName: PC
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1294878072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58896,6 +58884,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1294878068}
   m_CullTransparentMesh: 1
+--- !u!1001 &1350960727
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3769448915484760420, guid: 235e06d677fa3ba4287ec1a8484298f7, type: 3}
+      propertyPath: m_Name
+      value: DatabaseManager(V1.0)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3822750544735095487, guid: 235e06d677fa3ba4287ec1a8484298f7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3822750544735095487, guid: 235e06d677fa3ba4287ec1a8484298f7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3822750544735095487, guid: 235e06d677fa3ba4287ec1a8484298f7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3822750544735095487, guid: 235e06d677fa3ba4287ec1a8484298f7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3822750544735095487, guid: 235e06d677fa3ba4287ec1a8484298f7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3822750544735095487, guid: 235e06d677fa3ba4287ec1a8484298f7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3822750544735095487, guid: 235e06d677fa3ba4287ec1a8484298f7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3822750544735095487, guid: 235e06d677fa3ba4287ec1a8484298f7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3822750544735095487, guid: 235e06d677fa3ba4287ec1a8484298f7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3822750544735095487, guid: 235e06d677fa3ba4287ec1a8484298f7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 235e06d677fa3ba4287ec1a8484298f7, type: 3}
 --- !u!1 &1395194479
 GameObject:
   m_ObjectHideFlags: 0
@@ -59496,3 +59541,4 @@ SceneRoots:
   - {fileID: 790806707}
   - {fileID: 136645640}
   - {fileID: 1799359406}
+  - {fileID: 1350960727}
