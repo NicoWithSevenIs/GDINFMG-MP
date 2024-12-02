@@ -143,7 +143,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      courtney blush_0: 5979513585344230365
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
