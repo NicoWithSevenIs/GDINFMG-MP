@@ -32,4 +32,10 @@ public class PlayButton : MonoBehaviour
         SceneManager.LoadScene("Admin Player");
     }
 
+    public void Title()
+    {
+        SceneManager.LoadScene("Title");
+
+    }
+
 }
