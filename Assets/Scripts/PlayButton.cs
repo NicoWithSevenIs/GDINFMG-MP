@@ -21,4 +21,15 @@ public class PlayButton : MonoBehaviour
     {
         SceneManager.LoadScene("Derek Scene");
     }
+
+    public void Admin()
+    {
+        SceneManager.LoadScene("Admin");
+    }
+
+    public void AdminPlayer()
+    {
+        SceneManager.LoadScene("Admin Player");
+    }
+
 }
