@@ -71,22 +71,28 @@ $moveID2 = $pokemon_info["moveID2"];
 $moveID3 = $pokemon_info["moveID3"];
 $moveID4 = $pokemon_info["moveID4"]; 
 
-
-
-// echo $pokemonGender;
-// echo "\t";
-// echo $pokemonNature;
-// echo "\t";
-// echo $playerID;
-// echo "\t";
-// echo $moveID1;
-// echo "\t";
-// echo $moveID2;
-// echo "\t";
-// echo $moveID3;
-// echo "\t";
-// echo $moveID4;
-// echo "\t";
+echo "Success";
+echo "\t";
+echo $randomInstanceID;
+echo "\t";
+echo $playerID;
+echo "\t";
+echo $pokemonID;
+echo "\t";
+echo $pokemonGender;
+echo "\t";
+echo $pokemonNature;
+echo "\t";
+echo $playerID;
+echo "\t";
+echo $moveID1;
+echo "\t";
+echo $moveID2;
+echo "\t";
+echo $moveID3;
+echo "\t";
+echo $moveID4;
+echo "\t";
 
 //query to get Pokemon IV Fields //
 $retrieve_pokemon_iv_query = "SELECT hpIV, atkIV, sp_atkIV, defIV, sp_defIV, speedIV FROM pokemonivdetails JOIN pokemondetails ON pokemonivdetails.instanceID = pokemondetails.instanceID WHERE pokemondetails.instanceID = '$randomInstanceID';";
@@ -100,24 +106,71 @@ $defIV = $iv_info["defIV"];
 $sp_defIV = $iv_info["sp_defIV"];
 $speedIV = $iv_info["speedIV"];
 
-// echo "Success";
-// echo "\t";
-// echo $randomInstanceID;
-// echo "\t";
-// echo $playerID;
-// echo "\t";
-// echo $pokemonID;
-// echo "\t";
-// echo $hpIV;
-// echo "\t";
-// echo $atkIV;
-// echo "\t";
-// echo $sp_atkIV;
-// echo "\t";
-// echo $defIV;
-// echo "\t";
-// echo $sp_defIV;
-// echo "\t";
-// echo $speedIV;
+echo $hpIV;
+echo "\t";
+echo $atkIV;
+echo "\t";
+echo $sp_atkIV;
+echo "\t";
+echo $defIV;
+echo "\t";
+echo $sp_defIV;
+echo "\t";
+echo $speedIV;
+echo "\t";
+
+//query to get Pokemon Stats//
+$retrieve_stats_sql = "SELECT hp, attack, special_attack, defense, special_defense, speed FROM pokestats WHERE pokemonID = '$pokemonID';";
+
+$retrieve_stats = mysqli_query($con,$retrieve_stats_sql) or die("PHP ERROR 2: Retrieve Mon Failed.");
+
+$stats_req_result = mysqli_fetch_assoc($retrieve_stats);
+
+$db_hp = $stats_req_result["hp"];
+$db_attack = $stats_req_result["attack"];
+$db_special_attack = $stats_req_result["special_attack"];
+$db_defense = $stats_req_result["defense"];
+$db_special_defense = $stats_req_result["special_defense"];
+$db_speed = $stats_req_result["speed"];
+
+echo $db_hp;
+echo "\t";
+echo $db_attack;
+echo "\t";
+echo $db_special_attack;
+echo "\t";
+echo $db_defense;
+echo "\t";
+echo $db_special_defense;
+echo "\t";
+echo $db_speed;
+echo "\t";
+
+//query to get Pokemon General Data//
+$retrieve_mon_sql = "SELECT pokemonID, pokemonName, pokemonType1, pokemonType2, pokemonWeight, pokemonHeight, spriteID FROM pokemon WHERE pokemonID = '$pokemonID';";
+
+$retrieve_mon = mysqli_query($con,$retrieve_mon_sql) or die("PHP ERROR 2: Retrieve Mon Failed.");
+
+$mon_req_result = mysqli_fetch_assoc($retrieve_mon);
+
+$db_pokemonName = $mon_req_result["pokemonName"];
+$db_pokemonType1 = $mon_req_result["pokemonType1"];
+$db_pokemonType2 = $mon_req_result["pokemonType2"];
+$db_pokemonWeight = $mon_req_result["pokemonWeight"];
+$db_pokemonHeight = $mon_req_result["pokemonHeight"];
+$spriteID = $mon_req_result["spriteID"];
+
+echo $db_pokemonName;
+echo "\t";
+echo $db_pokemonType1;
+echo "\t";
+echo $db_pokemonType2;
+echo "\t";
+echo $db_pokemonWeight;
+echo "\t";
+echo $db_pokemonHeight;
+echo "\t";
+echo $spriteID;
+
 
 ?>
