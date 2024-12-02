@@ -57,7 +57,7 @@ public class Pokemon_Battle_Instance
 
     public void TakeDamage(float damage)
     {
-        currentHP = Mathf.Max(0, currentHP - damage);
+        currentHP = Mathf.Clamp(currentHP - damage, 0, stat.Health);
 
         var p = new Dictionary<string, object>();
         p["Battler Name"] = ownerType;

@@ -69,8 +69,7 @@ public class BattleManager : MonoBehaviour
             else
             {
                 EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_PLAYER_WIN);
-                Debug.Log("Player Won");
-
+                PlayerManager.currentFloor++;
                 SceneManager.LoadScene("Derek Scene");
             }
             
@@ -86,6 +85,7 @@ public class BattleManager : MonoBehaviour
             {
                 EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_ENEMY_WIN);
                 Debug.Log("Enemy Won");
+                PlayerManager.currentFloor = 0;
                 SceneManager.LoadScene("Derek Scene");
             }
         });
