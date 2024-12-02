@@ -12,7 +12,6 @@ public static class PlayerManager
     public static void initialize()
     {
         playerID = 121;
-        currentFloor = 0;
     }
 
 

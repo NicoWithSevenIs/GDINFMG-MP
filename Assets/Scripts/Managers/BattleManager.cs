@@ -68,8 +68,10 @@ public class BattleManager : MonoBehaviour
                 Enemy.SwitchPokemon(Enemy.ActivePokemonIndex + 1);
             else
             {
-                EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_PLAYER_WIN);
                 PlayerManager.currentFloor++;
+                Debug.Log("Player Won");
+                EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_PLAYER_WIN);
+              
                 SceneManager.LoadScene("Derek Scene");
             }
             
@@ -83,9 +85,10 @@ public class BattleManager : MonoBehaviour
                 EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_FORCE_SWITCH);
             else
             {
+                PlayerManager.currentFloor = 0;
                 EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_ENEMY_WIN);
                 Debug.Log("Enemy Won");
-                PlayerManager.currentFloor = 0;
+   
                 SceneManager.LoadScene("Derek Scene");
             }
         });

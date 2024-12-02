@@ -11,10 +11,12 @@ public class PositionManager : MonoBehaviour
     public void Act()
     {
         PlayerManager.currentFloor++;
+        Debug.Log("Current Floor: " + PlayerManager.currentFloor);
     }
 
     private void Start()
     {
+        Debug.Log("Current Floor: " + PlayerManager.currentFloor);
         if(PlayerManager.currentFloor > 0 && PlayerManager.currentFloor <= 3)
             player.position = checkpoints[PlayerManager.currentFloor-1].position;
     }
