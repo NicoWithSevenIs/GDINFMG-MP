@@ -7,16 +7,13 @@ public static class PlayerManager
 {
     public static int playerID;
     public static int currentFloor;
-    public static int currentMoney;
-    public static List<Pokemon> party;
+    public static List<Pokemon> party = new List<Pokemon>();
 
     public static void initialize()
     {
         playerID = 121;
+        currentFloor = 0;
     }
 
-    public static void AddPokemon(Pokemon newMon)
-    {
-        party.Add(newMon);
-    }
+
 }

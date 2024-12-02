@@ -96,8 +96,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   retrievePokeData: {fileID: 8124199780328106717}
   retrieveMoveData: {fileID: 2084145500680075130}
-  retrievePlayerData: {fileID: 2984810491819832559}
+  retrievePlayerData: {fileID: 2678092661749687611}
   partysize: 3
+  debug_num: 0
 --- !u!1 &7001396827531793401
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,7 +153,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5572413430008640387}
-  - component: {fileID: 2984810491819832559}
+  - component: {fileID: 2678092661749687611}
   m_Layer: 0
   m_Name: RetrievePlayerData
   m_TagString: Untagged
@@ -175,7 +176,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3822750544735095487}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2984810491819832559
+--- !u!114 &2678092661749687611
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,6 +188,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aa9d1d2e9c9e7a44af4f52ba101bb94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  utilHelper: {fileID: 4512143534767403329}
+  chosenInstances: []
 --- !u!1 &9092722405447453482
 GameObject:
   m_ObjectHideFlags: 0

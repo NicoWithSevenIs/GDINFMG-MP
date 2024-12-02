@@ -12,6 +12,7 @@ public class DatabaseManager : MonoBehaviour
     public RetrievePlayerData retrievePlayerData;
 
     public int partysize;
+    public int debug_num;
 
     private void Awake()
     {
@@ -337,14 +338,18 @@ public class DatabaseManager : MonoBehaviour
 
     }
 
-    private IEnumerator SendPlayerData(int instanceID1, int instanceID2, int instanceID3)
+    private IEnumerator SendPlayerData(float instanceID1, float instanceID2, float instanceID3)
     {
         WWWForm form = new WWWForm();
         form.AddField("playerID", PlayerManager.playerID);
         form.AddField("currentFloor", PlayerManager.currentFloor);
-        form.AddField("instanceID1", instanceID1);
-        form.AddField("instanceID2", instanceID2);
-        form.AddField("instanceID3", instanceID3);
+
+        Debug.Log("player id: " + PlayerManager.playerID);
+        Debug.Log("currentFloor: " + PlayerManager.currentFloor);
+
+        form.AddField("instanceID1", instanceID1.ToString());
+        form.AddField("instanceID2", instanceID2.ToString());
+        form.AddField("instanceID3", instanceID3.ToString());
 
         UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/send_to_player.php", form);
         yield return retrieve_req.SendWebRequest();
@@ -367,7 +372,27 @@ public class DatabaseManager : MonoBehaviour
 
     public void callReshuffle()
     {
-        StartCoroutine(ReshuffleMons());
+        StartCoroutine(ReshuffleParty());
+    }
+
+    private IEnumerator ReshuffleParty()
+    {
+        debug_num = 0;
+        Debug.Log("debug num: " + debug_num);
+        yield return StartCoroutine(ReshuffleMons());
+        
+        debug_num++;
+        Debug.Log("debug num: " + debug_num);
+        yield return StartCoroutine(ReshuffleMons());
+
+        debug_num++;
+        Debug.Log("debug num: " + debug_num);
+        yield return StartCoroutine(ReshuffleMons());
+
+        //Debug.Log("size: " + retrievePlayerData.chosenInstances.Count);
+        yield return StartCoroutine(SendPlayerData(retrievePlayerData.chosenInstances[0], retrievePlayerData.chosenInstances[1], retrievePlayerData.chosenInstances[2]));
+
+        //retrievePlayerData.chosenInstances.Clear();
     }
 
     private IEnumerator ReshuffleMons()
@@ -386,10 +411,12 @@ public class DatabaseManager : MonoBehaviour
         if (retrieve_req.result == UnityWebRequest.Result.Success)
         {
             string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\t');
-            foreach (string s in retrieve_result)
-            {
-                Debug.Log(s);
-            }
+            Debug.Log("result length: " + retrieve_result.Length);
+            //foreach (string s in retrieve_result)
+            //{
+            //    Debug.Log(s);
+            //}
+            retrievePlayerData.sendToPlayerManager(retrieve_result);
 
         }
         else

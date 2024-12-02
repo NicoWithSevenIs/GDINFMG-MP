@@ -35,6 +35,7 @@ $id3 = $existing_info["instanceID3"];
 
 $FoundInParty = true;
 $id_num = 0;
+$randomInstanceID = 0;
 
 while ($FoundInParty) {
     $randomIndex = rand(0, count($list_instanceid) - 1);
@@ -71,27 +72,23 @@ $moveID2 = $pokemon_info["moveID2"];
 $moveID3 = $pokemon_info["moveID3"];
 $moveID4 = $pokemon_info["moveID4"]; 
 
-echo "Success";
+echo "Success"; // 0
 echo "\t";
-echo $randomInstanceID;
+echo $playerID; //1
 echo "\t";
-echo $playerID;
+echo $pokemonID; //2
 echo "\t";
-echo $pokemonID;
+echo $pokemonGender; //3
 echo "\t";
-echo $pokemonGender;
+echo $pokemonNature; //4
 echo "\t";
-echo $pokemonNature;
+echo $moveID1; //5
 echo "\t";
-echo $playerID;
+echo $moveID2; //6
 echo "\t";
-echo $moveID1;
+echo $moveID3; //7
 echo "\t";
-echo $moveID2;
-echo "\t";
-echo $moveID3;
-echo "\t";
-echo $moveID4;
+echo $moveID4; //8
 echo "\t";
 
 //query to get Pokemon IV Fields //
@@ -106,17 +103,17 @@ $defIV = $iv_info["defIV"];
 $sp_defIV = $iv_info["sp_defIV"];
 $speedIV = $iv_info["speedIV"];
 
-echo $hpIV;
+echo $hpIV; //9
 echo "\t";
-echo $atkIV;
+echo $atkIV; //10
 echo "\t";
-echo $sp_atkIV;
+echo $sp_atkIV; //11
 echo "\t";
-echo $defIV;
+echo $defIV; //12
 echo "\t";
-echo $sp_defIV;
+echo $sp_defIV; //13
 echo "\t";
-echo $speedIV;
+echo $speedIV; //14
 echo "\t";
 
 //query to get Pokemon Stats//
@@ -133,17 +130,17 @@ $db_defense = $stats_req_result["defense"];
 $db_special_defense = $stats_req_result["special_defense"];
 $db_speed = $stats_req_result["speed"];
 
-echo $db_hp;
+echo $db_hp; //15
 echo "\t";
-echo $db_attack;
+echo $db_attack; //16
 echo "\t";
-echo $db_special_attack;
+echo $db_special_attack; //17
 echo "\t";
-echo $db_defense;
+echo $db_defense; //18
 echo "\t";
-echo $db_special_defense;
+echo $db_special_defense; //19
 echo "\t";
-echo $db_speed;
+echo $db_speed; //20
 echo "\t";
 
 //query to get Pokemon General Data//
@@ -160,17 +157,18 @@ $db_pokemonWeight = $mon_req_result["pokemonWeight"];
 $db_pokemonHeight = $mon_req_result["pokemonHeight"];
 $spriteID = $mon_req_result["spriteID"];
 
-echo $db_pokemonName;
+echo $db_pokemonName; //21
 echo "\t";
-echo $db_pokemonType1;
+echo $db_pokemonType1; //22
 echo "\t";
-echo $db_pokemonType2;
+echo $db_pokemonType2; //23
 echo "\t";
-echo $db_pokemonWeight;
+echo $db_pokemonWeight; //24
 echo "\t";
-echo $db_pokemonHeight;
+echo $db_pokemonHeight; //25
 echo "\t";
-echo $spriteID;
-
-
+echo $spriteID; //26
+echo "\t";
+echo $randomInstanceID; //27
+echo "\t";
 ?>

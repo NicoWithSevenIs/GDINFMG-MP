@@ -276,5 +276,19 @@ public class DB_Utility_Helper : MonoBehaviour
 
         return EMoveType.STATUS;
     }
+
+    public ESex getDeicpheredSex(string esex)
+    {
+        if(esex.Contains("MALE"))
+        {
+            return ESex.MALE;
+        }
+        else if (esex.Contains("FEMALE"))
+        {
+            return ESex.FEMALE;
+        }
+
+        return ESex.NONE;
+    }
     
 }
