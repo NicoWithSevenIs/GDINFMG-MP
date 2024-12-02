@@ -52,6 +52,7 @@ public class Battler
 
     public Battler(string battlerName, List<Pokemon> mons)
     {
+        Debug.Log("enemy mons sizze in battler: " + mons.Count);
         party = new Pokemon_Battle_Instance[3];
         for (int i = 0; i < PARTY_SIZE; i++)
             party[i] = new Pokemon_Battle_Instance(mons[i], battlerName);

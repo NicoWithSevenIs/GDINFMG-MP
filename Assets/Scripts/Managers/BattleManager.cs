@@ -29,18 +29,18 @@ public class BattleManager : MonoBehaviour
     }
 
     Battler Player;
-    Battler Enemy;
+    Battler EnemyB;
 
     private bool hasLoaded = false;
 
     private void Initialize()
     {
         //make queries here
-        List<Pokemon> enemyPokemons = new List<Pokemon>();
-        DatabaseManager.Instance.GenerateEnemyParty(enemyPokemons);
 
         Player = new Battler(Battler.PLAYER, PlayerManager.party);
-        Enemy  = new Battler(Battler.ENEMY, enemyPokemons);
+
+        Debug.Log("Enemy Singleton MONS: " + Enemy.Instance.enemyMons.Count);
+        EnemyB  = new Battler(Battler.ENEMY, new(Enemy.Instance.enemyMons));
 
 
         void DownloadSprites(Pokemon_Battle_Instance[] Party)
@@ -60,14 +60,14 @@ public class BattleManager : MonoBehaviour
         }
 
         DownloadSprites(Player.Party);
-        DownloadSprites(Enemy.Party);
+        DownloadSprites(EnemyB.Party);
 
         EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, t => {
             if (t["Battler Name"] as string != "Enemy")
                 return;
 
-            if (Enemy.AvailablePokemon > 0 )
-                Enemy.SwitchPokemon(Enemy.ActivePokemonIndex + 1);
+            if (EnemyB.AvailablePokemon > 0 )
+                EnemyB.SwitchPokemon(EnemyB.ActivePokemonIndex + 1);
             else
             {
                 PlayerManager.currentFloor++;
@@ -112,7 +112,7 @@ public class BattleManager : MonoBehaviour
                         new ActionSequenceComponent(
                             () => {
                                 var p = new Dictionary<string, object>();
-                                string affix = mon == Enemy.ActivePokemon ? "Foe " : "";
+                                string affix = mon == EnemyB.ActivePokemon ? "Foe " : "";
                                 p["Message"] =  $"{affix}{mon.Pokemon.data.name} fainted!" ;
                                 EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, p);
                             }, true, false
@@ -150,8 +150,8 @@ public class BattleManager : MonoBehaviour
                     HandleFainting(Player.ActivePokemon, Player.ActivePokemon.OwnerType);
 
            
-                if (Enemy.ActivePokemon.CurrentHealth == 0)
-                    HandleFainting(Enemy.ActivePokemon, Enemy.ActivePokemon.OwnerType);
+                if (EnemyB.ActivePokemon.CurrentHealth == 0)
+                    HandleFainting(EnemyB.ActivePokemon, EnemyB.ActivePokemon.OwnerType);
                 
             };
 
@@ -163,21 +163,21 @@ public class BattleManager : MonoBehaviour
         }
 
         int playerMoveID = Player.ActivePokemon.Pokemon.moveSet[(int)t["Move Index"]];
-        int enemyMoveID = Enemy.ActivePokemon.Pokemon.moveSet[UnityEngine.Random.Range(0, 4)];
+        int enemyMoveID = EnemyB.ActivePokemon.Pokemon.moveSet[UnityEngine.Random.Range(0, 4)];
 
         float playerMonSPD = Player.ActivePokemon.stat.Speed;
-        float enemyMonSPD = Enemy.ActivePokemon.stat.Speed;
+        float enemyMonSPD = EnemyB.ActivePokemon.stat.Speed;
 
       
         if (playerMonSPD >= enemyMonSPD)
         {
-            AddToSequence(playerMoveID, Player.ActivePokemon, Enemy.ActivePokemon);
-            AddToSequence(enemyMoveID, Enemy.ActivePokemon, Player.ActivePokemon, "Foe ");
+            AddToSequence(playerMoveID, Player.ActivePokemon, EnemyB.ActivePokemon);
+            AddToSequence(enemyMoveID, EnemyB.ActivePokemon, Player.ActivePokemon, "Foe ");
         }
         else
         {
-            AddToSequence(enemyMoveID, Enemy.ActivePokemon, Player.ActivePokemon, "Foe ");
-            AddToSequence(playerMoveID, Player.ActivePokemon, Enemy.ActivePokemon);
+            AddToSequence(enemyMoveID, EnemyB.ActivePokemon, Player.ActivePokemon, "Foe ");
+            AddToSequence(playerMoveID, Player.ActivePokemon, EnemyB.ActivePokemon);
         }
         
         ActionSequencer.AddToSequenceFront(actions, 2);
@@ -191,7 +191,7 @@ public class BattleManager : MonoBehaviour
         if (!hasLoaded && loadProgress == 1f)
         {
             EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_LOADING_FINISHED);
-            Enemy.SwitchPokemon(Enemy.ActivePokemonIndex, false);
+            EnemyB.SwitchPokemon(EnemyB.ActivePokemonIndex, false);
             Player.SwitchPokemon(Player.ActivePokemonIndex, true);
    
             hasLoaded = true;
@@ -212,8 +212,8 @@ public class BattleManager : MonoBehaviour
 
     public int GetEnemyPokemonIndex(Pokemon_Battle_Instance battle_instance)
     {
-        for(int i =0; i< Enemy.Party.Count(); i++)
-            if (Enemy.Party[i] == battle_instance) 
+        for(int i =0; i< EnemyB.Party.Count(); i++)
+            if (EnemyB.Party[i] == battle_instance) 
                 return i;
 
         return -1;

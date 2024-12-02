@@ -13,6 +13,8 @@ public class DatabaseManager : MonoBehaviour
 
     public UIHandler uiHandler;
 
+    public List<Pokemon> EnemyMons = new List<Pokemon>();
+
     public int partysize;
     public int debug_num;
 
@@ -29,6 +31,12 @@ public class DatabaseManager : MonoBehaviour
         }
 
         PlayerManager.initialize();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return)) 
+        Debug.Log("Enemy.Instance.enemyMons: " + Enemy.Instance.enemyMons.Count);
     }
 
     public void GeneratePlayerParty()
@@ -78,10 +86,11 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
-    public void GenerateEnemyParty(List<Pokemon> enemyPokemons)
+    public void GenerateEnemyParty()
     {
         if (retrievePokeData.pokemonHolder.Count != 0)
         {
+            Debug.Log("GenerateEnemyParty enemyMons count: " + Enemy.Instance.enemyMons);
             retrievePokeData.pokemonHolder.Clear();
             retrievePokeData.pokeDataHolder.Clear();
             retrieveMoveData.clearLists();
@@ -102,10 +111,10 @@ public class DatabaseManager : MonoBehaviour
             selectedIndices.Add(randomized_int);
         }
 
-        StartCoroutine(GenerateEnemyMon(selectedIndices, 0, enemyPokemons));
+        StartCoroutine(GenerateEnemyMon(selectedIndices, 0));
     }
 
-    private IEnumerator GenerateEnemyMon(List<int> selectedIndices, int index, List<Pokemon> enemyPokemons)
+    private IEnumerator GenerateEnemyMon(List<int> selectedIndices, int index)
     {
         if (index < selectedIndices.Count)
         {
@@ -114,14 +123,16 @@ public class DatabaseManager : MonoBehaviour
 
             yield return StartCoroutine(RetrieveMon(pokemonID, index));
 
-            yield return StartCoroutine(GenerateMon(selectedIndices, index + 1));
+            yield return StartCoroutine(GenerateEnemyMon(selectedIndices, index + 1));
         }
         else
         {
             Debug.Log("Generated Pokemons: " + retrievePokeData.pokemonHolder.Count);
             Debug.Log("All Pokemon have been processed.");
-            //uiHandler.openGenerateDonePrompt();
-            enemyPokemons = retrievePokeData.pokemonHolder; 
+            Debug.Log("RetrievePokeData PokemonHolder at GenEnemyMon: " + retrievePokeData.pokemonHolder.Count);
+            Enemy.Instance.enemyMons = retrievePokeData.pokemonHolder;
+            Debug.Log("Enemy.Instance.enemyMons: " + Enemy.Instance.enemyMons.Count);
+
         }
     }
 
