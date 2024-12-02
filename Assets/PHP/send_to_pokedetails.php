@@ -28,15 +28,15 @@ $num_rows = mysqli_num_rows($moncheck);
 if ($num_rows != 3) {
     //query to insert //
     $send_data_query = "INSERT INTO pokemondetails (playerID, pokemonID, pokemonGender, pokemonNature, moveID1, moveID2, moveID3, moveID4, partyMemberNum) VALUES ('$playerID', '$pokemonID', '$pokemonGender', '$pokemonNature', '$moveID1', '$moveID2', '$moveID3', '$moveID4', '$partyMemberNum');";
+   
     mysqli_query($con, $send_data_query) or die("4: Insert user details query failed.");
     echo("Success!");
 }
 else {
     $updatequery = "UPDATE pokemondetails SET pokemonID = '$pokemonID', playerID = '$playerID', pokemonGender = '$pokemonGender',  pokemonNature = '$pokemonNature', moveID1 = '$moveID1', moveID2 = '$moveID2', moveID3 = '$moveID3', moveID4 = '$moveID4' WHERE partyMemberNum = '$partyMemberNum';";
     mysqli_query($con, $updatequery) or die("7: Save query failed");
-    echo("Update Success!");
- 
+    echo("Update Success!"); 
 }
 
-// , pokemonID = '$pokemonID', pokemonGender = '$pokemonGender', pokemonNature = '$pokemonNature', moveID1 = '$moveID1', moveID2 = '$moveID2', moveID3 = '$moveID3', moveID4 = '$moveID4' 
+
 ?>

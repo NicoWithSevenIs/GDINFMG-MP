@@ -53,8 +53,11 @@ public class RetrievePokeData : MonoBehaviour
         pokemon.EV = utilHelper.RandomGenerateEVs();
         pokemon.nature = utilHelper.RandomGenerateNature();
         pokemon.moveSet = new int[4];
-        this.pokemonHolder.Add(pokemon);    
-    
+        this.pokemonHolder.Add(pokemon);
+
+        this.printPokeIVStats();
+
+
     }
 
     private void printPokeData()
@@ -85,6 +88,19 @@ public class RetrievePokeData : MonoBehaviour
             Debug.Log("Pokemon SPEED: " + data.baseStats.Speed);
         }
        
+    }
+    private void printPokeIVStats()
+    {
+        foreach (Pokemon data in pokemonHolder)
+        {
+            Debug.Log("Pokemon IV HP: " + data.IV.Health);
+            Debug.Log("Pokemon IV ATK: " + data.IV.Attack);
+            Debug.Log("Pokemon IV SP.ATK: " + data.IV.Special_Attack);
+            Debug.Log("Pokemon IV DEF: " + data.IV.Defense);
+            Debug.Log("Pokemon IV SP.DEF: " + data.IV.Special_Defense);
+            Debug.Log("Pokemon IV SPEED: " + data.IV.Speed);
+
+        }
     }
 }
 

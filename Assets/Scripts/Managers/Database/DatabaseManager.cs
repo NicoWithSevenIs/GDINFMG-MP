@@ -237,16 +237,22 @@ public class DatabaseManager : MonoBehaviour
     public IEnumerator SendBackData()
     {
         yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[0], 0));
-
         Debug.Log("Finished 0 Index");
 
         yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[1], 1));
-
         Debug.Log("Finished 1 Index");
 
         yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[2], 2));
-
         Debug.Log("Finished 2 Index");
+
+        yield return StartCoroutine(SendToPokemonIVDetails(retrievePokeData.pokemonHolder[0], 0));
+        Debug.Log("Finished 0 IV");
+
+        yield return StartCoroutine(SendToPokemonIVDetails(retrievePokeData.pokemonHolder[1], 1));
+        Debug.Log("Finished 1 IV");
+
+        yield return StartCoroutine(SendToPokemonIVDetails(retrievePokeData.pokemonHolder[2], 2));
+        Debug.Log("Finished 2 IV");
 
         Debug.Log("clear all the holders");
 
@@ -274,33 +280,37 @@ public class DatabaseManager : MonoBehaviour
         UnityWebRequest send_req = UnityWebRequest.Post("http://localhost/send_to_pokedetails.php", form);
         yield return send_req.SendWebRequest();
 
+    }
 
-        if (send_req == null)
-        {
-            Debug.LogError("Send Req is null.");
-        }
+    private IEnumerator SendToPokemonIVDetails(Pokemon pokemon, int partyMemberNum)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("hpIV", pokemon.IV.Health.ToString());
+        form.AddField("atkIV", pokemon.IV.Attack.ToString());
+        form.AddField("sp_atkIV", pokemon.IV.Special_Attack.ToString());
+        form.AddField("defIV", pokemon.IV.Defense.ToString());
+        form.AddField("sp_defIV", pokemon.IV.Special_Defense.ToString());
+        form.AddField("speedIV", pokemon.IV.Speed.ToString());
+        form.AddField("pokemonID", pokemon.data.id);
+
+        UnityWebRequest send_req = UnityWebRequest.Post("http://localhost/send_to_pokemon_ivs.php", form);
+        yield return send_req.SendWebRequest();
 
         if (send_req.result == UnityWebRequest.Result.Success)
         {
             string[] retrieve_result = send_req.downloadHandler.text.Split('\t');
-            if (retrieve_result[0].Contains("Success"))
-            {
-                Debug.Log("Send Req back!");
-                yield return StartCoroutine(GetPlayerData());
-            }
-            else
-            {
-                Debug.Log("Response: " + send_req.downloadHandler.text);
-                Debug.LogWarning("Send data failed.");
-            }
+            Debug.Log(retrieve_result[0]);
         }
         else
         {
-            Debug.Log("Error: " + send_req.error + " Party Num: " + partyMemberNum);
-            Debug.Log("Response: " + send_req.downloadHandler.text);
-            Debug.LogWarning("Web Request for SendToPokeDetails faled.");
+            Debug.LogError("Web Request for SendToPokemonIVDetails faled.");
 
         }
+    }
+
+    public void callGetPlayerData()
+    {
+        StartCoroutine(GetPlayerData());
     }
 
     private IEnumerator GetPlayerData()
@@ -308,7 +318,7 @@ public class DatabaseManager : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("playerID", PlayerManager.playerID);
 
-        UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/retrieve_move.php", form);
+        UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/retrieve_player_mons.php", form);
         yield return retrieve_req.SendWebRequest();
 
         if (retrieve_req == null)
@@ -318,16 +328,8 @@ public class DatabaseManager : MonoBehaviour
 
         if (retrieve_req.result == UnityWebRequest.Result.Success)
         {
-            string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\t');
-            if (retrieve_result[0].Contains("Success"))
-            {
-                retrievePlayerData.sendToPlayerManager(retrieve_result);
-            }
-            else
-            {
-                Debug.Log("Response: " + retrieve_req.downloadHandler.text);
-                Debug.LogWarning("Send data failed.");
-            }
+            string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\n');
+            retrievePlayerData.sendToPlayerManager(retrieve_result);
         }
         else
         {

@@ -13,15 +13,14 @@ $playerID = $_POST["playerID"];
 $moncheckquery = "SELECT pokemonID FROM pokemondetails; ";
 $moncheck = mysqli_query($con, $moncheckquery) or die("2: Mon Check Query Failed."); //error code 2 = namecheck query failed
 
+$num_rows = mysqli_num_rows($moncheck);
 if ($num_rows != 3) {
     echo "You have missing mons!";
     exit();
 }
 
-$db_pokemonID = $existing_info["pokemonID"];
-
-echo"Success!";
-echo "\t";
-echo $db_pokemonID;
+while ($existing_info = mysqli_fetch_assoc($moncheck)) {
+     echo $existing_info['pokemonID'] . "\n"; // Output each pokemonID on a new line
+}
 
 ?>
