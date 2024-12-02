@@ -385,7 +385,7 @@ public class DatabaseManager : MonoBehaviour
 
         if (retrieve_req.result == UnityWebRequest.Result.Success)
         {
-            string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\n');
+            string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\t');
             foreach (string s in retrieve_result)
             {
                 Debug.Log(s);

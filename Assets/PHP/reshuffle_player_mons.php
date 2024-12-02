@@ -56,8 +56,42 @@ while ($FoundInParty) {
     }
 }
 
-// echo "Success";
-// echo "\t";
-// echo $randomInstanceID;
+// query to get Pokemon Fields //
+
+$retrieve_pokemon_query = "SELECT pokemonID, playerID, pokemonGender, pokemonNature, moveID1, moveID2, moveID3, moveID4, instanceID FROM pokemonDetails WHERE instanceID = '$randomInstanceID';";
+$retrieve_pokemon = mysqli_query($con, $retrieve_pokemon_query) or die("ERROR WITH RETIEVEING POKEMON FIELDS GRA");
+$pokemon_info = mysqli_fetch_assoc($retrieve_pokemon);
+
+$playerID = $pokemon_info["playerID"];
+$pokemonID = $pokemon_info["pokemonID"];
+$pokemonGender = $pokemon_info["pokemonGender"];
+$pokemonNature = $pokemon_info["pokemonNature"];
+$moveID1 = $pokemon_info["moveID1"];
+$moveID2 = $pokemon_info["moveID2"];    
+$moveID3 = $pokemon_info["moveID3"];
+$moveID4 = $pokemon_info["moveID4"]; 
+
+echo "Success";
+echo "\t";
+echo $randomInstanceID;
+echo "\t";
+echo "$playerID";
+echo "\t";
+echo $pokemonID;
+echo "\t";
+echo "$pokemonGender";
+echo "\t";
+echo $pokemonNature;
+echo "\t";
+echo "$playerID";
+echo "\t";
+echo $moveID1;
+echo "\t";
+echo $moveID2;
+echo "\t";
+echo $moveID3;
+echo "\t";
+echo "$moveID4";
+echo "\t";
 
 ?>
