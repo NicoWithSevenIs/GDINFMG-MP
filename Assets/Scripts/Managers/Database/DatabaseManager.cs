@@ -9,8 +9,10 @@ public class DatabaseManager : MonoBehaviour
     public static DatabaseManager Instance;
     public RetrievePokeData retrievePokeData;
     public RetrieveMoveData retrieveMoveData;
+    public RetrievePlayerData retrievePlayerData;
 
     public int partysize;
+    public int debug_num;
 
     private void Awake()
     {
@@ -23,6 +25,8 @@ public class DatabaseManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        PlayerManager.initialize();
     }
 
     public void GeneratePlayerParty()
@@ -177,9 +181,6 @@ public class DatabaseManager : MonoBehaviour
             Debug.Log("selected ids: " + selectedIDs[i]);
         }
 
-
-        
-  
         for(int j = 0; j < retrievePokeData.pokemonHolder[currentIndex].moveSet.Length; j++)
         {
             retrievePokeData.pokemonHolder[currentIndex].moveSet[j] = selectedIDs[j];
@@ -236,26 +237,34 @@ public class DatabaseManager : MonoBehaviour
 
     public IEnumerator SendBackData()
     {
-        yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[0], 0));
-
+        yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[0]));
         Debug.Log("Finished 0 Index");
 
-        yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[1], 1));
-
+        yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[1]));
         Debug.Log("Finished 1 Index");
 
-        yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[2], 2));
-
+        yield return StartCoroutine(SendToPokeDetails(retrievePokeData.pokemonHolder[2]));
         Debug.Log("Finished 2 Index");
+
+        yield return StartCoroutine(SendToPokemonIVDetails(retrievePokeData.pokemonHolder[0]));
+        Debug.Log("Finished 0 IV");
+
+        yield return StartCoroutine(SendToPokemonIVDetails(retrievePokeData.pokemonHolder[1]));
+        Debug.Log("Finished 1 IV");
+
+        yield return StartCoroutine(SendToPokemonIVDetails(retrievePokeData.pokemonHolder[2]));
+        Debug.Log("Finished 2 IV");
 
         Debug.Log("clear all the holders");
 
         retrievePokeData.pokemonHolder.Clear();
         retrievePokeData.pokeDataHolder.Clear();
         retrieveMoveData.clearLists();
+
+
     }
 
-    private IEnumerator SendToPokeDetails(Pokemon pokemon, int partyMemberNum)
+    private IEnumerator SendToPokeDetails(Pokemon pokemon)
     {   
         WWWForm form = new WWWForm();
         form.AddField("playerID", pokemon.ownerID);
@@ -266,37 +275,153 @@ public class DatabaseManager : MonoBehaviour
         form.AddField("moveID2", pokemon.moveSet[1]);
         form.AddField("moveID3", pokemon.moveSet[2]);
         form.AddField("moveID4", pokemon.moveSet[3]);
-        form.AddField("partyMemberNum", partyMemberNum);
 
 
         UnityWebRequest send_req = UnityWebRequest.Post("http://localhost/send_to_pokedetails.php", form);
         yield return send_req.SendWebRequest();
 
+    }
 
-        if (send_req == null)
-        {
-            Debug.LogError("Send Req is null.");
-        }
+    private IEnumerator SendToPokemonIVDetails(Pokemon pokemon)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("hpIV", pokemon.IV.Health.ToString());
+        form.AddField("atkIV", pokemon.IV.Attack.ToString());
+        form.AddField("sp_atkIV", pokemon.IV.Special_Attack.ToString());
+        form.AddField("defIV", pokemon.IV.Defense.ToString());
+        form.AddField("sp_defIV", pokemon.IV.Special_Defense.ToString());
+        form.AddField("speedIV", pokemon.IV.Speed.ToString());
+        
+
+        UnityWebRequest send_req = UnityWebRequest.Post("http://localhost/send_to_pokemon_ivs.php", form);
+        yield return send_req.SendWebRequest();
 
         if (send_req.result == UnityWebRequest.Result.Success)
         {
             string[] retrieve_result = send_req.downloadHandler.text.Split('\t');
-            if (retrieve_result[0].Contains("Success"))
-            {
-                Debug.Log("Send Req back!");
-            }
-            else
-            {
-                Debug.Log("Response: " + send_req.downloadHandler.text);
-                Debug.LogWarning("Send data failed.");
-            }
+            Debug.Log(retrieve_result[0]);
         }
         else
         {
-            Debug.Log("Error: " + send_req.error + " Party Num: " + partyMemberNum);
-            Debug.Log("Response: " + send_req.downloadHandler.text);
-            Debug.LogWarning("Web Request for SendToPokeDetails faled.");
+            Debug.LogError("Web Request for SendToPokemonIVDetails faled.");
 
+        }
+    }
+
+    public void callGetPlayerData()
+    {
+        StartCoroutine(GetPlayerData());
+    }
+
+    private IEnumerator GetPlayerData()
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("playerID", PlayerManager.playerID);
+
+        UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/retrieve_player.php", form);
+        yield return retrieve_req.SendWebRequest();
+
+        if (retrieve_req == null)
+        {
+            Debug.LogError("Send Req is null.");
+        }
+
+        if (retrieve_req.result == UnityWebRequest.Result.Success)
+        {
+            string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\n');
+            
+        }
+        else
+        {
+            Debug.LogWarning("Web Request for GetPlayerData faled.");
+        }
+
+    }
+
+    private IEnumerator SendPlayerData(float instanceID1, float instanceID2, float instanceID3)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("playerID", PlayerManager.playerID);
+        form.AddField("currentFloor", PlayerManager.currentFloor);
+
+        Debug.Log("player id: " + PlayerManager.playerID);
+        Debug.Log("currentFloor: " + PlayerManager.currentFloor);
+
+        form.AddField("instanceID1", instanceID1.ToString());
+        form.AddField("instanceID2", instanceID2.ToString());
+        form.AddField("instanceID3", instanceID3.ToString());
+
+        UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/send_to_player.php", form);
+        yield return retrieve_req.SendWebRequest();
+
+        if (retrieve_req == null)
+        {
+            Debug.LogError("Send Req is null.");
+        }
+
+        if (retrieve_req.result == UnityWebRequest.Result.Success)
+        {
+            string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\n');
+
+        }
+        else
+        {
+            Debug.LogWarning("Web Request for SendPlayerData faled.");
+        }
+    }
+
+    public void callReshuffle()
+    {
+        StartCoroutine(ReshuffleParty());
+    }
+
+    private IEnumerator ReshuffleParty()
+    {
+        debug_num = 0;
+        Debug.Log("debug num: " + debug_num);
+        yield return StartCoroutine(ReshuffleMons());
+        
+        debug_num++;
+        Debug.Log("debug num: " + debug_num);
+        yield return StartCoroutine(ReshuffleMons());
+
+        debug_num++;
+        Debug.Log("debug num: " + debug_num);
+        yield return StartCoroutine(ReshuffleMons());
+
+        //Debug.Log("size: " + retrievePlayerData.chosenInstances.Count);
+        yield return StartCoroutine(SendPlayerData(retrievePlayerData.chosenInstances[0], retrievePlayerData.chosenInstances[1], retrievePlayerData.chosenInstances[2]));
+
+        //retrievePlayerData.chosenInstances.Clear();
+    }
+
+    private IEnumerator ReshuffleMons()
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("playerID", PlayerManager.playerID);
+
+        UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/reshuffle_player_mons.php", form);
+        yield return retrieve_req.SendWebRequest();
+
+        if (retrieve_req == null)
+        {
+            Debug.LogError("Send Req is null.");
+        }
+
+        if (retrieve_req.result == UnityWebRequest.Result.Success)
+        {
+            string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\t');
+            Debug.Log("result length: " + retrieve_result.Length);
+            //foreach (string s in retrieve_result)
+            //{
+            //    Debug.Log(s);
+            //}
+            retrievePlayerData.sendToPlayerManager(retrieve_result);
+
+        }
+        else
+        {
+            Debug.LogWarning("Web Request for RetrievePlayerData faled.");
         }
     }
 
