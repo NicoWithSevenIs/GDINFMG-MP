@@ -3081,7 +3081,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadBar: {fileID: 805856156}
   transitionTime: 1
-  holdTime: 1
+  holdTime: 2
   rotateSpeed: 100
 --- !u!114 &691032717 stripped
 MonoBehaviour:

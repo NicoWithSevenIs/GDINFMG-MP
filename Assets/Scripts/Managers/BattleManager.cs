@@ -4,8 +4,6 @@ using UnityEngine;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
-using UnityEngine.U2D;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour
