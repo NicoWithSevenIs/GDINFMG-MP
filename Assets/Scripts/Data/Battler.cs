@@ -26,7 +26,7 @@ public class Battler
         return party[index];
     }
 
-    public void SwitchPokemon(int index)
+    public void SwitchPokemon(int index, bool performAtCall = true)
     {
         index = Mathf.Clamp(index, 0, PARTY_SIZE-1);
         activePokemonIndex = index;
@@ -36,6 +36,18 @@ public class Battler
         p.Add("Active Pokemon", ActivePokemon);
 
         EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_CHANGED, p);
+
+        var comp = new ActionSequenceComponent(() => {
+            var p = new Dictionary<string, object>();
+            p["Message"] = $"{battlerName} sent out {ActivePokemon.Pokemon.data.name}!";
+            EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, p);
+        }, true);
+
+        ActionSequencer.AddToSequenceFront(new() { comp }, 0);
+
+        if(performAtCall)
+            ActionSequencer.Perform();
+       
     }
 
     public Battler(string battlerName, List<Pokemon> mons)

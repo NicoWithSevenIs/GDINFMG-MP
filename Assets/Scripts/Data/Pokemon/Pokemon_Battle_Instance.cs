@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class Pokemon_Battle_Instance 
 {
@@ -12,6 +13,8 @@ public class Pokemon_Battle_Instance
     public Pokemon Pokemon { get => pokemon; }
 
     private StatModHandler modHandler = new();
+    public StatModHandler ModHandler { get => modHandler; }
+
     private Stat totalStats;
     public Stat TotalStats { get => totalStats;  }
     public Stat stat {  get => modHandler.ApplyMods(totalStats); }
@@ -29,6 +32,7 @@ public class Pokemon_Battle_Instance
 
 
     private string ownerType;
+    public string OwnerType { get => ownerType; }
 
     private string front_url;
     public string Front_Sprite_URL { get => front_url; }
@@ -60,8 +64,6 @@ public class Pokemon_Battle_Instance
         p["Active Pokemon"] = this;
         EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_HEALTH_CHANGED, p);
 
-        if (currentHP == 0)
-            EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, p);
     }
 
  
@@ -117,7 +119,8 @@ public class Pokemon_Battle_Instance
        float power,
        EType type,
        EMoveType moveClass,
-       out bool isACriticalStrike
+       out bool isACriticalStrike,
+       int critRateMultiplier = 1
    )
     {
         if (moveClass == EMoveType.STATUS)
@@ -137,17 +140,59 @@ public class Pokemon_Battle_Instance
         float damage = levelMultiplier * power * (A / D) / 50 + 2;
 
 
+        List<ActionSequenceComponent> prompts = new();
+
         //STAB
         if (attacker.Pokemon.data.type1 == type || attacker.Pokemon.data.type2 == type)
             damage *= 1.5f;
 
         //CRIT
-        isACriticalStrike = Random.Range(1, 25) == 24;
+
+        int random = Random.Range(Mathf.Min(critRateMultiplier, 24), 25);
+    
+        isACriticalStrike = random == 24;
+        //isACriticalStrike = true;
         if (isACriticalStrike)
+        {
             damage *= (2 * Pokemon_Battle_Instance.LEVEL + 5) / Pokemon_Battle_Instance.LEVEL + 5;
 
+            var critComp = new ActionSequenceComponent(() => {
+                var p = new Dictionary<string, object>();
+                p["Message"] = $"It was a Critical Hit!";
+                EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, p);
+            }, true);
+
+
+            prompts.Add(critComp);
+           
+        }
+
+
         //Type Effectiveness
-        damage *= TypeChecker.GetEffectivenessMultiplier(type, target.Pokemon.data.type1, target.Pokemon.data.type2);
+
+        float TypeMultiplier = TypeChecker.GetEffectivenessMultiplier(type, target.Pokemon.data.type1, target.Pokemon.data.type2);
+        damage *= TypeMultiplier;
+
+        if(TypeMultiplier != 1)
+        {
+            var typeComp = new ActionSequenceComponent(() => {
+                var p = new Dictionary<string, object>();
+
+                if(TypeMultiplier == 0)
+                    p["Message"] = $"It had No Effect";
+                else if (TypeMultiplier < 1)
+                    p["Message"] = $"It's Not Very Effective";
+                else if (TypeMultiplier > 1)
+                    p["Message"] = $"It's Super Effective";
+
+                EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, p);
+            }, true);
+
+            prompts.Add(typeComp);
+        }
+
+        ActionSequencer.AddToSequenceFront(prompts, 0);
+
 
         //Random
         damage *= Random.Range(85f, 100f) / 100f;

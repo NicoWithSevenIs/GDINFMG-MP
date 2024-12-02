@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
 using System.Linq;
+using System;
+using UnityEngine.U2D;
+using UnityEditor.Experimental.GraphView;
 
 public class BattleManager : MonoBehaviour
 {
@@ -62,8 +65,14 @@ public class BattleManager : MonoBehaviour
             if (t["Battler Name"] as string != "Enemy")
                 return;
 
-            if(Enemy.AvailablePokemon > 0)
+            if (Enemy.AvailablePokemon > 0 )
                 Enemy.SwitchPokemon(Enemy.ActivePokemonIndex + 1);
+            else
+            {
+                EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_PLAYER_WIN);
+                Debug.Log("Player Won");
+            }
+            
         });
 
         EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, t => {
@@ -72,29 +81,112 @@ public class BattleManager : MonoBehaviour
 
             if (Player.AvailablePokemon > 0)
                 EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_FORCE_SWITCH);
+            else
+            {
+                EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_ENEMY_WIN);
+                Debug.Log("Enemy Won");
+            }
         });
+
+        EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_MOVE_DECLARED, PerformMove);
+
     }
 
     
+    private void PerformMove(Dictionary<string, object> t)
+    {
+
+
+        var actions = new List<ActionSequenceComponent>();
+
+        void HandleFainting(Pokemon_Battle_Instance mon, string name)
+        {
+            var faintPrompt = new List<ActionSequenceComponent>() {
+                        new ActionSequenceComponent(
+                            () => {
+                                var p = new Dictionary<string, object>();
+                                string affix = mon == Enemy.ActivePokemon ? "Foe " : "";
+                                p["Message"] =  $"{affix}{mon.Pokemon.data.name} fainted!" ;
+                                EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, p);
+                            }, true, false
+                        ),
+                        new ActionSequenceComponent(
+                            () => {
+                                var p = new Dictionary<string, object>();
+                                p["Battler Name"] = name;
+                                p["Active Pokemon"] = mon;
+                                EventBroadcaster.InvokeEvent(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_FAINT, p);
+                            }, false, false
+                        )
+                    };
+
+            ActionSequencer.AddToSequenceFront(faintPrompt, 1);
+        }
+
+        void AddToSequence(int moveID, Pokemon_Battle_Instance attacker, Pokemon_Battle_Instance target, string namePrefix = "")
+        {
+
+            Move m = MoveManager.GetMove(moveID);
+
+            Action promptAction = () => {
+                var p = new Dictionary<string, object>();
+                p["Message"] =  $"{namePrefix}{attacker.Pokemon.data.name} used {m.Data.name}!" ;
+                EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_DIALOGUE_INVOKED, p);
+            };
+
+            Action moveAction = () => {
+
+                m.PerformMove(attacker, target);
+
+                //bandaid fix
+                if (Player.ActivePokemon.CurrentHealth == 0)
+                    HandleFainting(Player.ActivePokemon, Player.ActivePokemon.OwnerType);
+
+           
+                if (Enemy.ActivePokemon.CurrentHealth == 0)
+                    HandleFainting(Enemy.ActivePokemon, Enemy.ActivePokemon.OwnerType);
+                
+            };
+
+            var prompt = new ActionSequenceComponent(promptAction, true);
+            var move  = new ActionSequenceComponent(moveAction, false);
+
+            actions.Add(prompt);
+            actions.Add(move);
+        }
+
+        int playerMoveID = Player.ActivePokemon.Pokemon.moveSet[(int)t["Move Index"]];
+        int enemyMoveID = Enemy.ActivePokemon.Pokemon.moveSet[UnityEngine.Random.Range(0, 4)];
+
+        float playerMonSPD = Player.ActivePokemon.stat.Speed;
+        float enemyMonSPD = Enemy.ActivePokemon.stat.Speed;
+
+      
+        if (playerMonSPD >= enemyMonSPD)
+        {
+            AddToSequence(playerMoveID, Player.ActivePokemon, Enemy.ActivePokemon);
+            AddToSequence(enemyMoveID, Enemy.ActivePokemon, Player.ActivePokemon, "Foe ");
+        }
+        else
+        {
+            AddToSequence(enemyMoveID, Enemy.ActivePokemon, Player.ActivePokemon, "Foe ");
+            AddToSequence(playerMoveID, Player.ActivePokemon, Enemy.ActivePokemon);
+        }
+        
+        ActionSequencer.AddToSequenceFront(actions, 2);
+        ActionSequencer.Perform();
+
+    }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Player.ActivePokemon.TakeDamage(10);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            Enemy.ActivePokemon.TakeDamage(10);
-        }
 
         if (!hasLoaded && loadProgress == 1f)
         {
             EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_LOADING_FINISHED);
-            SampleMons.Instance.MakeMoves();
-            Player.SwitchPokemon(Player.ActivePokemonIndex);
-            Enemy.SwitchPokemon(Enemy.ActivePokemonIndex);
+            Enemy.SwitchPokemon(Enemy.ActivePokemonIndex, false);
+            Player.SwitchPokemon(Player.ActivePokemonIndex, true);
+   
             hasLoaded = true;
         }
     }

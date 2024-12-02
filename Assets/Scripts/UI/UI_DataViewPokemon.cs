@@ -9,11 +9,13 @@ public class UI_DataViewPokemon : MonoBehaviour
 
     [SerializeField] private Button statButton;
     [SerializeField] private Button moveButton;
+    [SerializeField] private Button modifierButton;
 
     [SerializeField] private CanvasGroup statPanel;
     [SerializeField] private CanvasGroup movePanel;
+    [SerializeField] private CanvasGroup modifierPanel;
 
-
+    [SerializeField] private UI_ModifierHandler modifierHandler;
 
     [SerializeField] private List<UI_StatTextGroup> textGroup;
 
@@ -22,22 +24,29 @@ public class UI_DataViewPokemon : MonoBehaviour
     {
         statPanel.gameObject.SetActive(true);
         movePanel.gameObject.SetActive(true);
-        showStatPanel(true); 
+        showStatPanel(1); 
     }
 
-    public void showStatPanel(bool willShow)
+    public void showStatPanel(int index)
     {
-        statButton.interactable = !willShow;
-        statPanel.alpha = willShow ? 1 : 0;
-        statPanel.interactable = willShow;
 
-        moveButton.interactable = willShow;
-        movePanel.alpha = willShow ? 0 : 1;
-        movePanel.interactable = !willShow;
+        void setActive(Button button, CanvasGroup panel, bool willShow)
+        {
+            button.interactable = !willShow;
+            panel.alpha = willShow ? 1 : 0;
+            panel.interactable = willShow;
+        }
+
+        setActive(statButton, statPanel, index == 1);
+        setActive(moveButton, movePanel, index == 2);   
+        setActive(modifierButton, modifierPanel, index == 3);
+        
     }
 
     public void LoadPokemonData(Pokemon_Battle_Instance mon)
     {
+
+        modifierHandler.LoadMods(mon.ModHandler);
 
         for (int i = 0; i < Enum.GetNames(typeof(EStatType)).Length; i++) {
             var t = (EStatType)i;
