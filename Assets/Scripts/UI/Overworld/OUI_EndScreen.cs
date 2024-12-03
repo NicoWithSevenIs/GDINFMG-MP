@@ -22,6 +22,6 @@ public class OUI_EndScreen : MonoBehaviour
 
     public void ReturnToMenu()
     {
-        SceneManager.LoadScene("Derek Scene");
+        SceneManager.LoadScene("Title");
     }
 }

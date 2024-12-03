@@ -151,7 +151,7 @@ MonoBehaviour:
   gameOverText: {fileID: 1209356473}
   audioSource: {fileID: 661496914}
   win: {fileID: 8300000, guid: be94f679285f3ed47a6d3c1aecaff30a, type: 3}
-  lose: {fileID: 8300000, guid: cae199bedac21f14199120e549d41373, type: 3}
+  lose: {fileID: 8300000, guid: ee6cc5918e1763749b1050407f012ec9, type: 3}
 --- !u!4 &18981204
 Transform:
   m_ObjectHideFlags: 0
@@ -953,13 +953,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 18981202}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 18981203}
+        m_TargetAssemblyTypeName: OUI_EndScreen, Assembly-CSharp
+        m_MethodName: ReturnToMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
