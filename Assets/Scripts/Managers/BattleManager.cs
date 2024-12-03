@@ -40,8 +40,8 @@ public class BattleManager : MonoBehaviour
         Player = new Battler(Battler.PLAYER, PlayerManager.party);
 
         Debug.Log("Enemy Singleton MONS: " + Enemy.Instance.enemyMons.Count);
-        EnemyB  = new Battler(Battler.ENEMY, new(Enemy.Instance.enemyMons));
-
+        EnemyB  = new Battler(Battler.ENEMY, Enemy.Instance.enemyMons);
+    
 
         void DownloadSprites(Pokemon_Battle_Instance[] Party)
         {

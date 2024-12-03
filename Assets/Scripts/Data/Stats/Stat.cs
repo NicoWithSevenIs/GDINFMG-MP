@@ -24,6 +24,7 @@ public class Stat
         int size = Enum.GetNames(typeof(EStatType)).Length;
         for (int i = 0; i < size; i++)
             s[(EStatType)i] = 0;
+        //Debug.LogError("default stat construct called.");
     }
 
     public Stat(float HP, float ATK, float DEF, float spATK, float spDEF, float SPE)

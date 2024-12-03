@@ -36,8 +36,47 @@ public class DatabaseManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return)) 
-        Debug.Log("Enemy.Instance.enemyMons: " + Enemy.Instance.enemyMons.Count);
+        if (Input.GetKeyDown(KeyCode.Return))
+            foreach (var pokemon in Enemy.Instance.enemyMons)
+            {
+                if (pokemon.data.baseStats == null) Debug.Log("enemy: [ERROR]: NULL: " + pokemon.data.name);
+                else
+                    pokemon.data.baseStats.DoOnAll(t =>
+                    {
+                        string s = pokemon.data.name;
+                        foreach (var entry in t)
+                        {
+                            s += $"{entry.Key.ToString()}: {entry.Value} | ";
+
+                        }
+
+                        Debug.Log(s);
+
+
+                    });
+            }
+
+        if (Input.GetKeyDown(KeyCode.N))
+            foreach (var pokemon in PlayerManager.party)
+            {
+                if (pokemon.data.baseStats == null) Debug.Log("enemy: [ERROR]: NULL: " + pokemon.data.name);
+                else
+                    pokemon.data.baseStats.DoOnAll(t =>
+                    {
+                        string s = pokemon.data.name;
+                        foreach (var entry in t)
+                        {
+                            s += $"{entry.Key.ToString()}: {entry.Value} | ";
+
+                        }
+
+                        Debug.Log(s);
+
+
+                    });
+            }
+
+
     }
 
     public void GeneratePlayerParty()
@@ -122,9 +161,9 @@ public class DatabaseManager : MonoBehaviour
             int pokemonID = selectedIndices[index];
             Debug.Log("Starting RetrieveMon for pokemonID: " + pokemonID);
 
-            yield return StartCoroutine(RetrieveMon(pokemonID, index));
+            yield return RetrieveMon(pokemonID, index);
 
-            yield return StartCoroutine(GenerateEnemyMon(selectedIndices, index + 1));
+            yield return GenerateEnemyMon(selectedIndices, index + 1);
         }
         else
         {
@@ -133,6 +172,24 @@ public class DatabaseManager : MonoBehaviour
             Debug.Log("RetrievePokeData PokemonHolder at GenEnemyMon: " + retrievePokeData.pokemonHolder.Count);
             EnemyMons = retrievePokeData.pokemonHolder;
             Enemy.Instance.enemyMons = retrievePokeData.pokemonHolder;
+            foreach (var pokemon in retrievePokeData.pokemonHolder)
+            {
+                if (pokemon.data.baseStats == null) Debug.Log("enemy: [ERROR]: NULL: " + pokemon.data.name);
+                else
+                    pokemon.data.baseStats.DoOnAll(t =>
+                    {
+                        string s = pokemon.data.name;
+                        foreach (var entry in t)
+                        {
+                            s += $"{entry.Key.ToString()}: {entry.Value} | ";
+
+                        }
+
+                        Debug.Log(s);
+
+
+                    });
+            }
             Debug.Log("Enemy.Instance.enemyMons: " + Enemy.Instance.enemyMons.Count);
 
         }
@@ -155,6 +212,10 @@ public class DatabaseManager : MonoBehaviour
                 yield return StartCoroutine(RetrieveStat(pokemonID, currIndex, data));
             }
         }       
+        else
+        {
+            Debug.LogError("Retrieve Mon Failed.");
+        }
     }
 
     private IEnumerator RetrieveStat(int pokemonID, int currIndex, Pokemon_Data refData)
@@ -175,15 +236,31 @@ public class DatabaseManager : MonoBehaviour
                 string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\t');
                 if (retrieve_result[0].Contains("Success"))
                 {
-                    retrievePokeData.retrievePokeData2(retrieve_result, refData);
-                    retrievePokeData.generatePokemonWithNoMoves(refData);
-                    yield return StartCoroutine(RetrievePokeMovePool(pokemonID, currIndex));
+                retrievePokeData.retrievePokeData2(retrieve_result, refData);
+                retrievePokeData.generatePokemonWithNoMoves(retrievePokeData.pokeDataHolder[currIndex]);
+                foreach(var pokemon in retrievePokeData.pokemonHolder)
+                {
+                    pokemon.data.baseStats.DoOnAll(t => {
+                        string s = "AFTER GENERATE MON WITH NO MOVES: " + pokemon.data.name;
+                        foreach (var entry in t)
+                        {
+                            s += $"{entry.Key.ToString()}: {entry.Value} | ";
+
+                        }
+
+                        Debug.Log(s);
+
+
+                    });
+                }
+
+                yield return StartCoroutine(RetrievePokeMovePool(pokemonID, currIndex));
 
                 }
             }
             else
             {
-                Debug.LogError("Web Request for RetrievePokeData faled.");
+                Debug.LogError("Web Request for RetrieveStat faled.");
             }
         }
 

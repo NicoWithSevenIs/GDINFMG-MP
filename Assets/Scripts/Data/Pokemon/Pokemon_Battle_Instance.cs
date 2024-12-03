@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static Unity.Burst.Intrinsics.X86.Avx;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Pokemon_Battle_Instance 
 {
@@ -45,6 +47,7 @@ public class Pokemon_Battle_Instance
     {
         this.pokemon = pokemon;
         GetTotalStat();
+        Debug.Log(pokemon.data.name + " Health: " + pokemon.data.baseStats.Health);
         currentHP = stat.Health;
         this.ownerType = ownerType;
     }
@@ -70,6 +73,8 @@ public class Pokemon_Battle_Instance
     private void GetTotalStat()
     {
         totalStats = new();
+
+
         totalStats.DoOnAll(t => {
 
             var keys = t.Keys.ToList();
@@ -79,9 +84,10 @@ public class Pokemon_Battle_Instance
 
             Nature.GetNatureMultiplier(pokemon.nature, out increasedByNature, out decreasedByNature);
 
+            if (pokemon.data.baseStats == null) Debug.Log("[ERROR]: STATS NULL! " +  pokemon.data.name??"data is null?");
             foreach (var key in keys)
             {
-                Debug.Log("Key in Battle_Instance: " + key.ToString());
+
                 float Base = pokemon.data.baseStats.GetByEnum(key);
                 float IV = pokemon.IV.GetByEnum(key);
                 float EV = pokemon.EV.GetByEnum(key);
@@ -149,7 +155,7 @@ public class Pokemon_Battle_Instance
 
         //CRIT
 
-        int random = Random.Range(Mathf.Min(critRateMultiplier, 24), 25);
+        int random = UnityEngine.Random.Range(Mathf.Min(critRateMultiplier, 24), 25);
     
         isACriticalStrike = random == 24;
         //isACriticalStrike = true;
@@ -196,7 +202,7 @@ public class Pokemon_Battle_Instance
 
 
         //Random
-        damage *= Random.Range(85f, 100f) / 100f;
+        damage *= UnityEngine.Random.Range(85f, 100f) / 100f;
 
         /*
         //Burn

@@ -39,6 +39,7 @@ public struct Pokemon_Data
         this.type2 = type2;
         this.weight = weight;
         this.height = height;
+        if (baseStats == null) Debug.LogError(new Exception("[ERROR]: BASE STAT IN POKEMON_DATA IS NULL."));
         this.baseStats = baseStats;
     }
 

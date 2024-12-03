@@ -33,12 +33,15 @@ public class RetrievePokeData : MonoBehaviour
         float special_defense = float.Parse(retrieve_result[5]);
         float speed = float.Parse(retrieve_result[6]);
 
+        Stat stat = new Stat(hp, attack, defense, special_attack, special_defense, speed);
+       
+
         Pokemon_Data newData =
         new Pokemon_Data(refData.id, refData.spriteID, refData.name,
-        refData.type1, refData.type2,
-                         new Stat(hp, attack, defense, special_attack, special_defense, speed),
+        refData.type1, refData.type2, stat,
                          refData.weight, refData.height);
         this.pokeDataHolder.Add(newData);
+       
         //this.printPokeData();
         //this.printPokeStats();
     }
