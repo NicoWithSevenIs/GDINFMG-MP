@@ -19,15 +19,8 @@ public class UI_MoveSelector : MonoBehaviour
             if (t["Battler Name"] as string != "Player")
                 return;
             var mon = t["Active Pokemon"] as Pokemon_Battle_Instance; 
-            //heldMoveData = MoveManager.GetMove(mon.Pokemon.moveSet[index]).Data;
-            try
-            {
-                heldMoveData = MoveManager.GetMove(mon.Pokemon.moveSet[index]).Data;
-            }
-            catch (System.Exception ex)
-            {
-                Debug.Log(mon.Pokemon.moveSet[index]);
-            }
+            heldMoveData = MoveManager.GetMove(mon.Pokemon.moveSet[index]).Data;
+          
 
             OnPokemonChanged();
         });
