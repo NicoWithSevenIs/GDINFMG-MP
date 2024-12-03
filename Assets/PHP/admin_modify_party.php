@@ -20,8 +20,8 @@ $instanceidquery = "SELECT instanceID FROM pokemondetails WHERE instanceID = '$i
 $instancecheck = mysqli_query($con, $instanceidquery) or die("2: Name Check Query Failed."); //error code 2 = namecheck query failed
 
 // check namecheck return //
-if (mysqli_num_rows($instancecheck) > 0) {
-    echo "Pokemon ID Already Exists in Pokemon!";
+if (mysqli_num_rows($instancecheck) == 0) {
+    echo "Pokemon ID Already Doesn't  in Pokemon!";
     exit();
 }
 
@@ -30,8 +30,8 @@ $instanceidquery2 = "SELECT instanceID FROM pokemondetails WHERE instanceID = '$
 $instancecheck2 = mysqli_query($con, $instanceidquery2) or die("2: Name Check Query Failed."); //error code 2 = namecheck query failed
 
 // check namecheck return //
-if (mysqli_num_rows($instancecheck2) > 0) {
-    echo "Pokemon ID Already Exists in Pokemon!";
+if (mysqli_num_rows($instancecheck2) == 0) {
+    echo "Pokemon ID Already Doesn't  in Pokemon!";
     exit();
 }
 
@@ -40,8 +40,8 @@ $instanceidquery3 = "SELECT instanceID FROM pokemondetails WHERE instanceID = '$
 $instancecheck3 = mysqli_query($con, $instanceidquery3) or die("2: Name Check Query Failed."); //error code 2 = namecheck query failed
 
 // check namecheck return //
-if (mysqli_num_rows($instancecheck3) > 0) {
-    echo "Pokemon ID Already Exists in Pokemon!";
+if (mysqli_num_rows($instancecheck3) == 0) {
+    echo "Pokemon ID Already Doesn't in Pokemon!";
     exit();
 }
 
