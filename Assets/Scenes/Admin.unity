@@ -1892,7 +1892,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &234999276
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6971,6 +6971,72 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 848737181}
   m_CullTransparentMesh: 1
+--- !u!1 &890371852
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 890371853}
+  - component: {fileID: 890371854}
+  m_Layer: 0
+  m_Name: Admin_Add
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &890371853
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890371852}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 930.4115, y: 432.39105, z: -6.492128}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &890371854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890371852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0dffb0f4ec38747916651463a8be27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pokemonInputs:
+  - {fileID: 360248802}
+  - {fileID: 1188751075}
+  - {fileID: 1683281372}
+  - {fileID: 1074227245}
+  - {fileID: 812419167}
+  - {fileID: 1997703974}
+  - {fileID: 1476467746}
+  statInputs:
+  - {fileID: 1474452283}
+  - {fileID: 591687885}
+  - {fileID: 1411291918}
+  - {fileID: 1346506736}
+  - {fileID: 1573083779}
+  - {fileID: 785452949}
+  movepoolInputs:
+  - {fileID: 890881253}
+  - {fileID: 32013807}
+  - {fileID: 381363153}
+  - {fileID: 896865874}
+  - {fileID: 230357662}
+  - {fileID: 541833368}
 --- !u!1 &890881251
 GameObject:
   m_ObjectHideFlags: 0
@@ -8774,9 +8840,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1498122961}
-        m_TargetAssemblyTypeName: PlayButton, Assembly-CSharp
-        m_MethodName: AdminPlayer
+      - m_Target: {fileID: 890371854}
+        m_TargetAssemblyTypeName: Admin_AddPokemon, Assembly-CSharp
+        m_MethodName: callAdminAdd
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17075,3 +17141,4 @@ SceneRoots:
   - {fileID: 1019486366}
   - {fileID: 1498122960}
   - {fileID: 721459058}
+  - {fileID: 890371853}
