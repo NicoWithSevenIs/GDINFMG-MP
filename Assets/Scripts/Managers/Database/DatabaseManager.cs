@@ -18,6 +18,7 @@ public class DatabaseManager : MonoBehaviour
 
     public int partysize;
     public int debug_num;
+    public int pokemon_db_list_size;
 
     private void Awake()
     {
@@ -75,7 +76,36 @@ public class DatabaseManager : MonoBehaviour
 
                     });
             }
+    }
 
+
+    public void StartPlayerPartyGenerator()
+    {
+        StartCoroutine(GetMaxPokemonCountForPlayer());
+    }
+
+    public IEnumerator GetMaxPokemonCountForPlayer()
+    {
+        UnityWebRequest retrieve_req = UnityWebRequest.Get("http://localhost/get_pokemon_count.php");
+        yield return retrieve_req.SendWebRequest();
+        if (retrieve_req.result == UnityWebRequest.Result.Success)
+        {
+            string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\t');
+            if (retrieve_result[0].Contains("Success"))
+            {
+                this.pokemon_db_list_size = int.Parse(retrieve_result[1]);
+                Debug.Log("pokemon db list size: " + this.pokemon_db_list_size);
+                this.GeneratePlayerParty();
+            }
+            else
+            {
+                Debug.Log("Success wasn't the first text thrown.");
+            }
+        }
+        else
+        {
+            Debug.LogError("GetMaxPokemonCount Failed.");
+        }
 
     }
 
@@ -95,7 +125,7 @@ public class DatabaseManager : MonoBehaviour
             int randomized_int;
             do
             {
-                randomized_int = Random.Range(1, 11);
+                randomized_int = Random.Range(1, this.pokemon_db_list_size);
                 //Debug.Log("Gen Party i value: " + i);
                 //Debug.Log("Gen Party Random Int: " + randomized_int);
             } while (usedIndices.Contains(randomized_int));
@@ -105,7 +135,6 @@ public class DatabaseManager : MonoBehaviour
 
         StartCoroutine(GenerateMon(selectedIndices, 0));
     }
-
 
     private IEnumerator GenerateMon(List<int> selectedIndices, int index)
     {
