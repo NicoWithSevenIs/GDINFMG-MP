@@ -5,16 +5,26 @@ using UnityEngine.Networking;
 
 public class Admin_Ui : MonoBehaviour
 {
+    public DB_Utility_Helper db_UtilityHelper;
+
     public List<int> spriteID_list = new List<int>();
     public List<int> pokemonID_list = new List<int>();
     public List<string> pokemonName_list = new List<string>();
     public List<string> pokemonType1_list = new List<string>();
     public List<string> pokemonType2_list = new List<string>();
     
-    public List<MoveData> moveDatas = new List<MoveData>();
+    public List<MoveData> moveData_list = new List<MoveData>();
+
+    public List<int> moveID_list = new List<int>();
+    public List<int> movePower_list = new List<int>();
+    public List<string> moveName_list = new List<string>();
+    public List<string> moveDesc_list = new List<string>();
+    public List<string> moveGroup_list = new List<string>(); // move group refers to whether a move is physical, special, or status
+    public List<string> moveType_list = new List<string>();
 
     public void callRetrieveUI()
     {
+        this.clearLists();
         StartCoroutine(RetrieveDataUI());
     }
 
@@ -37,7 +47,10 @@ public class Admin_Ui : MonoBehaviour
                 {
                     //Debug.Log(s);
                     this.DecipherPokemonData(s);
+                    this.DecipherMoveData(s);
                 }
+
+                this.putInMoveData();
             }
             else
             {
@@ -77,6 +90,76 @@ public class Admin_Ui : MonoBehaviour
             string spriteid = value.Substring(10);
             this.spriteID_list.Add(int.Parse(spriteid));
         }
+    }
+
+    private void DecipherMoveData(string value)
+    {
+        if (value.Contains("MoveID: "))
+        {
+            string moveID = value.Substring(8);
+            this.moveID_list.Add(int.Parse(moveID));    
+        }
+        else if (value.Contains("MoveName: "))
+        {
+            string moveName = value.Substring(10);
+            this.moveName_list.Add(moveName);
+        }
+        else if (value.Contains("MoveDescription: "))
+        {
+            string moveDesc = value.Substring(17);
+            this.moveDesc_list.Add(moveDesc);
+        }
+        else if (value.Contains("MoveType: "))
+        {
+            string moveType = value.Substring(10);
+            this.moveType_list.Add(moveType);
+        }
+        else if (value.Contains("MoveGroup: "))
+        {
+            string moveGroup = value.Substring(11);
+            this.moveGroup_list.Add(moveGroup);
+        }
+        else if (value.Contains("MovePower: "))
+        {
+            string movePower = value.Substring(11);
+            this.movePower_list.Add(int.Parse(movePower));
+        }
+    }
+
+    private void putInMoveData()
+    {
+        int size = this.moveID_list.Count;
+
+        for (int i = 0; i < size; i++)
+        {
+            string name = this.moveName_list[i];
+            string description = this.moveDesc_list[i];
+            int power = this.movePower_list[i];
+            int pp = 100;
+            EType moveType = db_UtilityHelper.getDecipheredType1(this.moveType_list[i]);
+            EMoveType moveGroup = db_UtilityHelper.getDecipheredMoveType(this.moveGroup_list[i]);  
+
+            MoveData data = new MoveData(name, description, power, pp, moveType, moveGroup);
+            this.moveData_list.Add(data);
+        }
+    }
+
+    private void clearLists()
+    {
+        this.spriteID_list.Clear();
+        this.pokemonID_list.Clear();    
+        this.pokemonName_list.Clear();
+        this.pokemonType1_list.Clear();
+        this.pokemonType2_list.Clear();
+
+        this.moveData_list.Clear();
+
+        this.moveID_list.Clear();
+        this.moveName_list.Clear();
+        this.moveDesc_list.Clear();
+        this.movePower_list.Clear();
+        this.moveType_list.Clear();
+        this.moveGroup_list.Clear();
     }
 }
 
