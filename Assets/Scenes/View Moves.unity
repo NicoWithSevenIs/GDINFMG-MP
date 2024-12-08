@@ -528,6 +528,7 @@ GameObject:
   m_Component:
   - component: {fileID: 220969261}
   - component: {fileID: 220969262}
+  - component: {fileID: 220969263}
   m_Layer: 5
   m_Name: Root
   m_TagString: Untagged
@@ -565,6 +566,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 220969260}
   m_CullTransparentMesh: 1
+--- !u!114 &220969263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220969260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a89525b8a37729c4286f9e5e729fef81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewMovesButton: {fileID: 1736568095}
+  viewPokemonButton: {fileID: 1737178148}
+  viewMovesPanel: {fileID: 324718964}
+  viewPokemonPanel: {fileID: 58862826}
 --- !u!1001 &257441421
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4308,7 +4325,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1736568096}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 220969263}
+        m_TargetAssemblyTypeName: UI_ViewMovesNavigation, Assembly-CSharp
+        m_MethodName: SelectPanel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1736568096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4360,7 +4389,7 @@ GameObject:
   - component: {fileID: 1737178149}
   - component: {fileID: 1737178148}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: View Pokemon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4429,7 +4458,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1737178149}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 220969263}
+        m_TargetAssemblyTypeName: UI_ViewMovesNavigation, Assembly-CSharp
+        m_MethodName: SelectPanel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1737178149
 MonoBehaviour:
   m_ObjectHideFlags: 0
