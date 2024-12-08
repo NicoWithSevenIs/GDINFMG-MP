@@ -199,8 +199,7 @@ public class DatabaseManager : MonoBehaviour
             Debug.Log("Generated Pokemons: " + retrievePokeData.pokemonHolder.Count);
             Debug.Log("All Pokemon have been processed.");
             Debug.Log("RetrievePokeData PokemonHolder at GenEnemyMon: " + retrievePokeData.pokemonHolder.Count);
-            //EnemyMons = retrievePokeData.pokemonHolder;
-            //Enemy.Instance.enemyMons = retrievePokeData.pokemonHolder;
+
             foreach (Pokemon refMon in retrievePokeData.pokemonHolder)
             {
                 Pokemon newMon = new Pokemon();
@@ -538,7 +537,7 @@ public class DatabaseManager : MonoBehaviour
 
         if (retrieve_req.result == UnityWebRequest.Result.Success)
         {
-            retrievePlayerData.chosenInstances.Clear();
+            //retrievePlayerData.chosenInstances.Clear();
             //string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\n');
 
         }
@@ -555,28 +554,32 @@ public class DatabaseManager : MonoBehaviour
 
     private IEnumerator ReshuffleParty()
     {
+        yield return StartCoroutine(retrievePlayerData.GetDBInstances());
+
         debug_num = 0;
         Debug.Log("debug num: " + debug_num);
-        yield return StartCoroutine(ReshuffleMons());
-        
-        debug_num++;
-        Debug.Log("debug num: " + debug_num);
-        yield return StartCoroutine(ReshuffleMons());
+        yield return StartCoroutine(ReshuffleMons(retrievePlayerData.chosenInstances[0]));
 
         debug_num++;
         Debug.Log("debug num: " + debug_num);
-        yield return StartCoroutine(ReshuffleMons());
+        yield return StartCoroutine(ReshuffleMons(retrievePlayerData.chosenInstances[1]));
+
+        debug_num++;
+        Debug.Log("debug num: " + debug_num);
+        yield return StartCoroutine(ReshuffleMons(retrievePlayerData.chosenInstances[2]));
 
         //Debug.Log("size: " + retrievePlayerData.chosenInstances.Count);
         yield return StartCoroutine(SendPlayerData(retrievePlayerData.chosenInstances[0], retrievePlayerData.chosenInstances[1], retrievePlayerData.chosenInstances[2]));
 
-        //retrievePlayerData.chosenInstances.Clear();
+        retrievePlayerData.chosenInstances.Clear();
+        retrievePlayerData.dbInstanceID_list.Clear();
     }
 
-    private IEnumerator ReshuffleMons()
+    private IEnumerator ReshuffleMons(float randomInstanceID)
     {
+        Debug.Log("Random instance: " + randomInstanceID);
         WWWForm form = new WWWForm();
-        form.AddField("playerID", PlayerManager.playerID);
+        form.AddField("randomInstanceID", randomInstanceID.ToString());
 
         UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/reshuffle_player_mons.php", form);
         yield return retrieve_req.SendWebRequest();

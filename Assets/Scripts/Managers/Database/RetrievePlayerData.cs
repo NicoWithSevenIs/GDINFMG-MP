@@ -9,8 +9,12 @@ public class RetrievePlayerData : MonoBehaviour
     public List<float> chosenInstances = new List<float>();
     public List<Pokemon> PartyMons = new List<Pokemon>();
 
+    //public List<float> partyInstanceID_list = new List<float>();
+    public List<float> dbInstanceID_list = new List<float>();
+    
     public void sendToPlayerManager(string[] retrieve_result)
     {
+        Debug.Log(retrieve_result[1]);
         int playerID = int.Parse(retrieve_result[1]);
         int pokemonID = int.Parse(retrieve_result[2]);
 
@@ -64,7 +68,7 @@ public class RetrievePlayerData : MonoBehaviour
 
         //Debug.Log("instanceid: " + retrieve_result[27]);
         
-        chosenInstances.Add(instanceID);
+        //chosenInstances.Add(instanceID);
 
         PlayerManager.party.Add(pokemon);
         PartyMons.Add(pokemon);
@@ -114,5 +118,67 @@ public class RetrievePlayerData : MonoBehaviour
 
         }
 
+    }
+
+    public IEnumerator GetDBInstances()
+    {
+        //WWWForm form = new WWWForm();
+        //form.AddField("playerID", PlayerManager.playerID);
+         
+        UnityWebRequest retrieve_req = UnityWebRequest.Get("http://localhost/get_instance_ids.php");
+        yield return retrieve_req.SendWebRequest();
+
+        if (retrieve_req.result == UnityWebRequest.Result.Success)
+        {
+            string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\t');
+            if (retrieve_result[0].Contains("Success"))
+            {
+                foreach (string str in retrieve_result)
+                {
+                    //if (str.Contains("Player Party Instance: "))
+                    //{
+                    //    string partyinstanceid = str.Substring(23);
+                    //    Debug.Log(str);
+                    //    this.partyInstanceID_list.Add(float.Parse(partyinstanceid));
+                    //}
+                    if (str.Contains("Pokemon Details Instance: "))
+                    {
+                        string dbinstanceid = str.Substring(26);
+                        this.dbInstanceID_list.Add(float.Parse(dbinstanceid));
+                      
+                    }
+                }
+
+                if (this.dbInstanceID_list.Count == 3)
+                {
+                    foreach (float id in this.dbInstanceID_list)
+                    {
+                        this.chosenInstances.Add(id);
+                    }
+                }
+                else
+                {   
+                    int randomid = 0;
+                    for (int i = 0; i < 3; i++)
+                    {
+                        do
+                        {
+                            randomid = Random.Range(0, this.dbInstanceID_list.Count);
+                         
+                        } while (this.chosenInstances.Contains(this.dbInstanceID_list[randomid]));
+                        this.chosenInstances.Add(this.dbInstanceID_list[randomid]);
+                    }
+                }
+            }
+            else
+            {
+                Debug.Log("Retrieval of move pool failed.");
+            }
+        }
+        else
+        {
+            Debug.LogError("Web Request for RetrievePokeData faled.");
+
+        }
     }
 }

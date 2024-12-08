@@ -8,55 +8,7 @@ if (mysqli_connect_errno()) {
     exit();
 }
 
-$playerID = $_POST["playerID"];
-
-
-$get_instance_query = "SELECT instanceID FROM pokemondetails;";
-$get_instance = mysqli_query($con,$get_instance_query);
-$list_instanceid = [];
-
-if (mysqli_num_rows($get_instance) < 3) {
-    echo "inadequate party!";
-    exit();
-}
-
-while ($row = mysqli_fetch_array($get_instance)) {
-    $list_instanceid[] = $row["instanceID"];
-}
-
-
-$instancecheckquery = "SELECT instanceID1, instanceID2, instanceID3 FROM player WHERE playerID = '$playerID'; ";
-$instanceCheck = mysqli_query($con, $instancecheckquery) or die("2: Name Check Query Failed.");
-
-$existing_info = mysqli_fetch_assoc($instanceCheck);
-$id1 = $existing_info["instanceID1"];
-$id2 = $existing_info["instanceID2"];
-$id3 = $existing_info["instanceID3"];
-
-$FoundInParty = true;
-$id_num = 0;
-$randomInstanceID = 0;
-
-while ($FoundInParty) {
-    $randomIndex = rand(0, count($list_instanceid) - 1);
-    $randomInstanceID = $list_instanceid[$randomIndex]; 
-
-    if ($randomInstanceID != $id1) {
-         $FoundInParty = false;
-        $id_num = 1;
-    }
-
-    if ($randomInstanceID != $id2) {
-        $FoundInParty = false;
-        $id_num = 2;
-    }
-
-    if ($randomInstanceID != $id3) {
-        $FoundInParty = false;
-        $id_num = 3;
-    }
-}
-
+$randomInstanceID = $_POST["randomInstanceID"];
 // query to get Pokemon Fields //
 
 $retrieve_pokemon_query = "SELECT pokemonID, playerID, pokemonGender, pokemonNature, moveID1, moveID2, moveID3, moveID4, instanceID FROM pokemondetails WHERE instanceID = '$randomInstanceID';";
@@ -91,7 +43,7 @@ echo "\t";
 echo $moveID4; //8
 echo "\t";
 
-//query to get Pokemon IV Fields //
+// //query to get Pokemon IV Fields //
 $retrieve_pokemon_iv_query = "SELECT hpIV, atkIV, sp_atkIV, defIV, sp_defIV, speedIV FROM pokemonivdetails JOIN pokemondetails ON pokemonivdetails.instanceID = pokemondetails.instanceID WHERE pokemondetails.instanceID = '$randomInstanceID';";
 $retrieve_pokemon_iv = mysqli_query($con, $retrieve_pokemon_iv_query) or die("ERROR WITH RETIEVEING POKEMON IV FIELDS GRA");
 $iv_info = mysqli_fetch_assoc($retrieve_pokemon_iv);
@@ -171,4 +123,5 @@ echo $spriteID; //26
 echo "\t";
 echo $randomInstanceID; //27
 echo "\t";
+
 ?>
