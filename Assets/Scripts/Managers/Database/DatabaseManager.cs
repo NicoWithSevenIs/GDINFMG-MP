@@ -514,18 +514,14 @@ public class DatabaseManager : MonoBehaviour
 
     }
 
-    private IEnumerator SendPlayerData(float instanceID1, float instanceID2, float instanceID3)
+    private IEnumerator SendPlayerData(float instanceID, float idnum)
     {
         WWWForm form = new WWWForm();
         form.AddField("playerID", PlayerManager.playerID);
-        form.AddField("currentFloor", PlayerManager.currentFloor);
 
-        Debug.Log("player id: " + PlayerManager.playerID);
-        Debug.Log("currentFloor: " + PlayerManager.currentFloor);
-
-        form.AddField("instanceID1", instanceID1.ToString());
-        form.AddField("instanceID2", instanceID2.ToString());
-        form.AddField("instanceID3", instanceID3.ToString());
+        form.AddField("instanceID", instanceID.ToString());
+        form.AddField("idnum", idnum.ToString());
+      
 
         UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/send_to_player.php", form);
         yield return retrieve_req.SendWebRequest();
@@ -538,7 +534,7 @@ public class DatabaseManager : MonoBehaviour
 
         if (retrieve_req.result == UnityWebRequest.Result.Success)
         {
-            retrievePlayerData.chosenInstances.Clear();
+            //retrievePlayerData.chosenInstances.Clear();
             //string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\n');
 
         }
@@ -558,17 +554,20 @@ public class DatabaseManager : MonoBehaviour
         debug_num = 0;
         Debug.Log("debug num: " + debug_num);
         yield return StartCoroutine(ReshuffleMons());
-        
-        debug_num++;
-        Debug.Log("debug num: " + debug_num);
-        yield return StartCoroutine(ReshuffleMons());
+        yield return StartCoroutine(SendPlayerData(retrievePlayerData.chosenInstances[0], 0));
 
         debug_num++;
         Debug.Log("debug num: " + debug_num);
         yield return StartCoroutine(ReshuffleMons());
+        yield return StartCoroutine(SendPlayerData(retrievePlayerData.chosenInstances[1], 1));
+
+        debug_num++;
+        Debug.Log("debug num: " + debug_num);
+        yield return StartCoroutine(ReshuffleMons());
+        yield return StartCoroutine(SendPlayerData(retrievePlayerData.chosenInstances[2], 2));
 
         //Debug.Log("size: " + retrievePlayerData.chosenInstances.Count);
-        yield return StartCoroutine(SendPlayerData(retrievePlayerData.chosenInstances[0], retrievePlayerData.chosenInstances[1], retrievePlayerData.chosenInstances[2]));
+
 
         //retrievePlayerData.chosenInstances.Clear();
     }
@@ -590,10 +589,10 @@ public class DatabaseManager : MonoBehaviour
         {
             string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\t');
             Debug.Log("result length: " + retrieve_result.Length);
-            //foreach (string s in retrieve_result)
-            //{
-            //    Debug.Log(s);
-            //}
+            foreach (string s in retrieve_result)
+            {
+                Debug.Log(s);
+            }
             retrievePlayerData.sendToPlayerManager(retrieve_result);
 
         }

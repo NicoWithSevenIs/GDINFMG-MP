@@ -41,19 +41,15 @@ while ($FoundInParty) {
     $randomIndex = rand(0, count($list_instanceid) - 1);
     $randomInstanceID = $list_instanceid[$randomIndex]; 
 
-    if ($randomInstanceID != $id1) {
-         $FoundInParty = false;
-        $id_num = 1;
+    $id_num = 1;
+
+    if ($randomInstanceID == $id1 || $randomInstanceID == $id2 || $randomInstanceID == $id3) {
+        // If there is a match, set id_num to 0 (continue loop)
+        $id_num = 0;
     }
 
-    if ($randomInstanceID != $id2) {
+    if ($id_num == 1) {
         $FoundInParty = false;
-        $id_num = 2;
-    }
-
-    if ($randomInstanceID != $id3) {
-        $FoundInParty = false;
-        $id_num = 3;
     }
 }
 

@@ -37,7 +37,7 @@ public class RetrievePlayerData : MonoBehaviour
         Stat EV = new Stat(85, 85, 85, 85, 85, 85);
 
         float baseHP = float.Parse(retrieve_result[15]);
-        Debug.Log("retrieve player data basehp: " + baseHP);
+        //Debug.Log("retrieve player data basehp: " + baseHP);
         float baseAtk = float.Parse(retrieve_result[16]);
         float baseSpAtk = float.Parse(retrieve_result[17]);
         float baseDef = float.Parse(retrieve_result[18]);
