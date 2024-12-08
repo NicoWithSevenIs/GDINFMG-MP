@@ -35,7 +35,7 @@ public class MoveManager: MonoBehaviour
 
     public static void assignMoveData(int key, MoveData movedata)
     {
-        Debug.Log("moveData name: " + movedata.name + "at key: " + key);
+        //Debug.Log("moveData name: " + movedata.name + "at key: " + key);
         instance.moveDict[key].Data = movedata; 
     }
 
