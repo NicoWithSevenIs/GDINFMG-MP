@@ -4,8 +4,20 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class Admin_Ui : MonoBehaviour
+public class Admin_Ui : MonoBehaviour, ILoadable
 {
+    #region Singleton
+    public static Admin_Ui instance { get; private set; } = null;
+    private void Awake()
+    {
+        if(instance == null){
+            instance = this; 
+        }else Destroy(gameObject);
+
+        loadingTask = RetrieveDataUIAsync();
+    }
+    #endregion
+
     public DB_Utility_Helper db_UtilityHelper;
 
     public List<int> spriteID_list = new List<int>();
@@ -27,10 +39,8 @@ public class Admin_Ui : MonoBehaviour
 
     public Task loadingTask;
 
-    private void Awake()
-    {
-        loadingTask = RetrieveDataUIAsync();
-    }
+    public float loadProgress => loadingTask.IsCompleted ? 1f : 0f;
+    public bool hasLoaded => loadingTask.IsCompleted;
 
     public void callRetrieveUI()
     {
@@ -61,6 +71,7 @@ public class Admin_Ui : MonoBehaviour
             }
 
             this.putInMoveData();
+            EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_LOADING_FINISHED);
         }
         else
         {

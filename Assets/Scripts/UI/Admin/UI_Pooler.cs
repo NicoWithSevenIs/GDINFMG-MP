@@ -25,21 +25,39 @@ public class UI_Pooler : MonoBehaviour
     private GameObject Create()
     {
         GameObject go = Instantiate(prefab);
-        go.transform.parent = container;
+        go.transform.SetParent(container);
         go.transform.localPosition = Vector3.zero;
+        go.transform.localScale = Vector3.one;
+        go.SetActive(false);
         pool.Add(go);
         return go;
     }
 
     public GameObject TryGet()
     {
+        GameObject poolable = null;
+
         if(hasAvailable)
-            return pool.Find(t=>!t.activeSelf);
+           poolable = pool.Find(t=>!t.activeSelf);
 
         if(expandable)
-           return Create();
+           poolable =  Create();
 
-        return null;
+        poolable?.SetActive(true);
+
+        return poolable;
     }
 
+    public List<GameObject> TryGetBatch(int amount)
+    {
+        List<GameObject> l = new();
+        for(int i =0; i < amount; i++)
+        {
+            GameObject go = TryGet();
+            if (go == null)
+                break;
+            l.Add(go);
+        }
+        return l;
+    }
 }
