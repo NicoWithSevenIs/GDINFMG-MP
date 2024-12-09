@@ -14,7 +14,7 @@ public class AncientPower : Move
         target.TakeDamage(damage);
 
         int rand = Random.Range(1, 10);
-        if (rand == 10)
+        if (rand == 9)
         {
             attacker.ModHandler.AddMod(EStatType.ATTACK, 1, attacker.Pokemon.data.name);
             attacker.ModHandler.AddMod(EStatType.DEFENSE, 1, attacker.Pokemon.data.name);
