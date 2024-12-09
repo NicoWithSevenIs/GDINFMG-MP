@@ -82,6 +82,7 @@ public class Admin_Ui : MonoBehaviour, ILoadable
                 this.DecipherMoveData(s);
             }
 
+            this.putInPokemonData();
             this.putInMoveData();
 
             foreach(var d in pokemonData_list)
