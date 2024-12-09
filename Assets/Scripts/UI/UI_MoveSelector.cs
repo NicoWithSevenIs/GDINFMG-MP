@@ -13,7 +13,7 @@ public class UI_MoveSelector : MonoBehaviour
 
     protected MoveData heldMoveData;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         EventBroadcaster.AddObserver(EVENT_NAMES.BATTLE_EVENTS.ON_POKEMON_CHANGED, t => {
             if (t["Battler Name"] as string != "Player")

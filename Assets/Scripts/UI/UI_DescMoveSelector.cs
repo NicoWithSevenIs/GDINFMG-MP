@@ -10,6 +10,16 @@ public class UI_DescMoveSelector : UI_MoveSelector
     [SerializeField] private Image type;
     [SerializeField] private TextMeshProUGUI typeName;
 
+    protected override void Awake()
+    {
+        EventBroadcaster.AddObserver(EVENT_NAMES.UI_EVENTS.ON_VIEWER_INVOKED, t => {
+            Pokemon_Battle_Instance mon = BattleManager.instance.GetPlayerPokemon((int)t["Party Index"]);
+            heldMoveData = MoveManager.GetMove(mon.Pokemon.moveSet[index]).Data;
+
+            OnPokemonChanged();
+        });
+    }
+
     protected override void OnPokemonChanged()
     {
         base.OnPokemonChanged();

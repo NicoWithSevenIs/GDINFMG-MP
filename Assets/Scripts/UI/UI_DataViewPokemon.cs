@@ -54,7 +54,7 @@ public class UI_DataViewPokemon : MonoBehaviour
             int IV = (int)mon.Pokemon.IV.GetByEnum(t);
             int EV = (int)mon.Pokemon.EV.GetByEnum(t);
             int total = (int)mon.TotalStats.GetByEnum(t);
-            textGroup[i].SetStats(baseStat, IV, EV, total);
+            textGroup[i].SetStats(baseStat, EV, IV, total);
         }
 
     }
