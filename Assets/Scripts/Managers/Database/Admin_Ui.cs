@@ -14,6 +14,7 @@ public class Admin_Ui : MonoBehaviour
     public List<string> pokemonType1_list = new List<string>();
     public List<string> pokemonType2_list = new List<string>();
     
+    public List<Pokemon_Data> pokemonData_list = new List<Pokemon_Data>();
     public List<MoveData> moveData_list = new List<MoveData>();
 
     public List<int> moveID_list = new List<int>();
@@ -89,6 +90,7 @@ public class Admin_Ui : MonoBehaviour
                     this.DecipherMoveData(s);
                 }
 
+                this.putInPokemonData();
                 this.putInMoveData();
             }
             else
@@ -183,6 +185,23 @@ public class Admin_Ui : MonoBehaviour
         }
     }
 
+    private void putInPokemonData()
+    {
+        int size = this.pokemonID_list.Count;
+
+        for (int i = 0; i < size; i++)
+        {
+            int id = this.pokemonID_list[i];
+            int spriteid = this.spriteID_list[i];
+            string name = this.pokemonName_list[i];
+            EType type1 = db_UtilityHelper.getDecipheredType1(this.pokemonType1_list[i]);
+            EType? type2 = db_UtilityHelper.getDecipheredType2(this.pokemonType2_list[i]);
+
+            Pokemon_Data data = new Pokemon_Data(id, spriteid, name, type1, type2, new Stat(), 10, 10);
+            this.pokemonData_list.Add(data);
+        }
+    }
+
     private void clearLists()
     {
         this.spriteID_list.Clear();
@@ -191,6 +210,7 @@ public class Admin_Ui : MonoBehaviour
         this.pokemonType1_list.Clear();
         this.pokemonType2_list.Clear();
 
+        this.pokemonData_list.Clear();
         this.moveData_list.Clear();
 
         this.moveID_list.Clear();

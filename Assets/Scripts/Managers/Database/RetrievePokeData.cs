@@ -58,7 +58,7 @@ public class RetrievePokeData : MonoBehaviour
         pokemon.moveSet = new int[4];
         this.pokemonHolder.Add(pokemon);
 
-        this.printPokeIVStats();
+        //this.printPokeIVStats();
 
 
     }

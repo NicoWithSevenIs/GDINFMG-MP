@@ -94,7 +94,7 @@ public class DatabaseManager : MonoBehaviour
             if (retrieve_result[0].Contains("Success"))
             {
                 this.pokemon_db_list_size = int.Parse(retrieve_result[1]);
-                Debug.Log("pokemon db list size: " + this.pokemon_db_list_size);
+                //Debug.Log("pokemon db list size: " + this.pokemon_db_list_size);
                 this.GeneratePlayerParty();
             }
             else
@@ -139,7 +139,7 @@ public class DatabaseManager : MonoBehaviour
     private IEnumerator GenerateMon(List<int> selectedIndices, int index)
     {
         if (index < selectedIndices.Count)
-        {
+        {   
             int pokemonID = selectedIndices[index];
             Debug.Log("Starting RetrieveMon for pokemonID: " + pokemonID);
 
@@ -199,26 +199,32 @@ public class DatabaseManager : MonoBehaviour
             Debug.Log("Generated Pokemons: " + retrievePokeData.pokemonHolder.Count);
             Debug.Log("All Pokemon have been processed.");
             Debug.Log("RetrievePokeData PokemonHolder at GenEnemyMon: " + retrievePokeData.pokemonHolder.Count);
-            EnemyMons = retrievePokeData.pokemonHolder;
-            Enemy.Instance.enemyMons = retrievePokeData.pokemonHolder;
-            foreach (var pokemon in retrievePokeData.pokemonHolder)
+
+            foreach (Pokemon refMon in retrievePokeData.pokemonHolder)
             {
-                if (pokemon.data.baseStats == null) Debug.Log("enemy: [ERROR]: NULL: " + pokemon.data.name);
-                else
-                    pokemon.data.baseStats.DoOnAll(t =>
-                    {
-                        string s = pokemon.data.name;
-                        foreach (var entry in t)
-                        {
-                            s += $"{entry.Key.ToString()}: {entry.Value} | ";
-
-                        }
-
-                        Debug.Log(s);
-
-
-                    });
+                Pokemon newMon = new Pokemon();
+                newMon = refMon;
+                Enemy.Instance.enemyMons.Add(newMon);   
+                EnemyMons.Add(newMon);
             }
+            //foreach (var pokemon in retrievePokeData.pokemonHolder)
+            //{
+            //    if (pokemon.data.baseStats == null) Debug.Log("enemy: [ERROR]: NULL: " + pokemon.data.name);
+            //    else
+            //        pokemon.data.baseStats.DoOnAll(t =>
+            //        {
+            //            string s = pokemon.data.name;
+            //            foreach (var entry in t)
+            //            {
+            //                s += $"{entry.Key.ToString()}: {entry.Value} | ";
+
+            //            }
+
+            //            Debug.Log(s);
+
+
+            //        });
+            //}
             Debug.Log("Enemy.Instance.enemyMons: " + Enemy.Instance.enemyMons.Count);
 
         }
@@ -267,21 +273,21 @@ public class DatabaseManager : MonoBehaviour
                 {
                 retrievePokeData.retrievePokeData2(retrieve_result, refData);
                 retrievePokeData.generatePokemonWithNoMoves(retrievePokeData.pokeDataHolder[currIndex]);
-                foreach(var pokemon in retrievePokeData.pokemonHolder)
-                {
-                    pokemon.data.baseStats.DoOnAll(t => {
-                        string s = "AFTER GENERATE MON WITH NO MOVES: " + pokemon.data.name;
-                        foreach (var entry in t)
-                        {
-                            s += $"{entry.Key.ToString()}: {entry.Value} | ";
+                //foreach(var pokemon in retrievePokeData.pokemonHolder)
+                //{
+                //    pokemon.data.baseStats.DoOnAll(t => {
+                //        string s = "AFTER GENERATE MON WITH NO MOVES: " + pokemon.data.name;
+                //        foreach (var entry in t)
+                //        {
+                //            s += $"{entry.Key.ToString()}: {entry.Value} | ";
 
-                        }
+                //        }
 
-                        Debug.Log(s);
+                //        Debug.Log(s);
 
 
-                    });
-                }
+                //    });
+                //}
 
                 yield return StartCoroutine(RetrievePokeMovePool(pokemonID, currIndex));
 
@@ -343,18 +349,18 @@ public class DatabaseManager : MonoBehaviour
             selectedIDs.Add(movePoolCopy[randomIndex]);
         }
 
-        Debug.Log("Pokemon Name: " + retrievePokeData.pokemonHolder[currentIndex].data.name);
-        Debug.Log("Move Pool Copy size: " + movePoolCopy.Count);
+        //Debug.Log("Pokemon Name: " + retrievePokeData.pokemonHolder[currentIndex].data.name);
+        //Debug.Log("Move Pool Copy size: " + movePoolCopy.Count);
 
-        for (int i = 0; i < selectedIDs.Count; i++)
-        {
-            Debug.Log("selected ids: " + selectedIDs[i]);
-        }
+        //for (int i = 0; i < selectedIDs.Count; i++)
+        //{
+        //    Debug.Log("selected ids: " + selectedIDs[i]);
+        //}
 
         for(int j = 0; j < retrievePokeData.pokemonHolder[currentIndex].moveSet.Length; j++)
         {
             retrievePokeData.pokemonHolder[currentIndex].moveSet[j] = selectedIDs[j];
-            Debug.Log("check pokemon holder move id data: index " + j + ": " + retrievePokeData.pokemonHolder[currentIndex].moveSet[j]);
+            //Debug.Log("check pokemon holder move id data: index " + j + ": " + retrievePokeData.pokemonHolder[currentIndex].moveSet[j]);
         }
 
         for (int i = 0; i < selectedIDs.Count; i++)
@@ -430,7 +436,6 @@ public class DatabaseManager : MonoBehaviour
         retrievePokeData.pokemonHolder.Clear();
         retrievePokeData.pokeDataHolder.Clear();
         retrieveMoveData.clearLists();
-
 
     }
 
@@ -532,7 +537,7 @@ public class DatabaseManager : MonoBehaviour
 
         if (retrieve_req.result == UnityWebRequest.Result.Success)
         {
-            retrievePlayerData.chosenInstances.Clear();
+            //retrievePlayerData.chosenInstances.Clear();
             //string[] retrieve_result = retrieve_req.downloadHandler.text.Split('\n');
 
         }
@@ -549,28 +554,32 @@ public class DatabaseManager : MonoBehaviour
 
     private IEnumerator ReshuffleParty()
     {
+        yield return StartCoroutine(retrievePlayerData.GetDBInstances());
+
         debug_num = 0;
         Debug.Log("debug num: " + debug_num);
-        yield return StartCoroutine(ReshuffleMons());
-        
-        debug_num++;
-        Debug.Log("debug num: " + debug_num);
-        yield return StartCoroutine(ReshuffleMons());
+        yield return StartCoroutine(ReshuffleMons(retrievePlayerData.chosenInstances[0]));
 
         debug_num++;
         Debug.Log("debug num: " + debug_num);
-        yield return StartCoroutine(ReshuffleMons());
+        yield return StartCoroutine(ReshuffleMons(retrievePlayerData.chosenInstances[1]));
+
+        debug_num++;
+        Debug.Log("debug num: " + debug_num);
+        yield return StartCoroutine(ReshuffleMons(retrievePlayerData.chosenInstances[2]));
 
         //Debug.Log("size: " + retrievePlayerData.chosenInstances.Count);
         yield return StartCoroutine(SendPlayerData(retrievePlayerData.chosenInstances[0], retrievePlayerData.chosenInstances[1], retrievePlayerData.chosenInstances[2]));
 
-        //retrievePlayerData.chosenInstances.Clear();
+        retrievePlayerData.chosenInstances.Clear();
+        retrievePlayerData.dbInstanceID_list.Clear();
     }
 
-    private IEnumerator ReshuffleMons()
+    private IEnumerator ReshuffleMons(float randomInstanceID)
     {
+        Debug.Log("Random instance: " + randomInstanceID);
         WWWForm form = new WWWForm();
-        form.AddField("playerID", PlayerManager.playerID);
+        form.AddField("randomInstanceID", randomInstanceID.ToString());
 
         UnityWebRequest retrieve_req = UnityWebRequest.Post("http://localhost/reshuffle_player_mons.php", form);
         yield return retrieve_req.SendWebRequest();
