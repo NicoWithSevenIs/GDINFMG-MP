@@ -13,10 +13,12 @@ public class UI_MonViewHandler : MonoBehaviour
 
         EventBroadcaster.AddObserver(EVENT_NAMES.UI_EVENTS.ON_LOADING_FINISHED, t => {
 
-
-
+            
             var monDatas = Admin_Ui.instance.pokemonData_list;
             var poolables = pooler.TryGetBatch(monDatas.Count);
+
+
+            Debug.Log("monDnataCount: " + monDatas.Count);
 
             for (int i = 0; i < poolables.Count; i++)
             {

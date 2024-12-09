@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -14,7 +15,7 @@ public class Admin_Ui : MonoBehaviour, ILoadable
             instance = this; 
         }else Destroy(gameObject);
 
-        loadingTask = RetrieveDataUIAsync();
+        loadables.Add(RetrieveDataUIAsync());
     }
     #endregion
 
@@ -37,10 +38,21 @@ public class Admin_Ui : MonoBehaviour, ILoadable
     public List<string> moveType_list = new List<string>();
 
 
-    public Task loadingTask;
+    private List<Task> loadables = new();
+    public float loadProgress => (float)(loadables.Where(t => t.IsCompleted).Count()) / (float)loadables.Count();
+    public bool hasLoaded => !loadables.Any(t => !t.IsCompleted);
 
-    public float loadProgress => loadingTask.IsCompleted ? 1f : 0f;
-    public bool hasLoaded => loadingTask.IsCompleted;
+    private bool loadFInished = false;
+
+    //ermmm
+    private void Update()
+    {
+        if(hasLoaded && !loadFInished)
+        {
+            EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_LOADING_FINISHED);
+            loadFInished = true;
+        }
+    }
 
     public void callRetrieveUI()
     {
@@ -71,7 +83,13 @@ public class Admin_Ui : MonoBehaviour, ILoadable
             }
 
             this.putInMoveData();
-            EventBroadcaster.InvokeEvent(EVENT_NAMES.UI_EVENTS.ON_LOADING_FINISHED);
+
+            foreach(var d in pokemonData_list)
+            {
+                loadables.Add(WebAPIManager.Instance.DownloadImage($"{BattleManager.BASE_URL}{d.spriteID}.png"));
+            }
+
+
         }
         else
         {
