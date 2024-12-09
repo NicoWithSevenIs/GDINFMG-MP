@@ -38,4 +38,9 @@ public class PlayButton : MonoBehaviour
 
     }
 
+    public void View()
+    {
+        SceneManager.LoadScene("View Moves");
+    }
+
 }

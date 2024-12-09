@@ -23,5 +23,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Admin.unity
     guid: 3df42b87ccda32c40a86c93d3a3f463f
+  - enabled: 1
+    path: Assets/Scenes/View Moves.unity
+    guid: 84bfa5c5dcf232e4a8ff6dc7d96edffc
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
